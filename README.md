@@ -1,16 +1,30 @@
-# React + Vite
+# MarketKey
+**Simplifying Temporary Food Facility (TFF) permits for Fremont food vendors through lightweight civic tech and multilingual accessibility.**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## About the Project
+Navigating county health permits can be an intimidating, bureaucratic hurdle—especially for small business owners and immigrant food vendors. MarketKey is a zero-backend web application designed to streamline the Alameda County TFF permit application process. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+By translating complex government forms into an intuitive, plain-language questionnaire, MarketKey helps Fremont vendors generate official, ready-to-file PDF applications in seconds.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Key Features
+* **Zero-Framework Architecture:** Built using pure HTML, CSS (Tailwind), and Vanilla JavaScript for maximum speed and simplicity. No bloated build tools or complex frameworks.
+* **Client-Side PDF Automation:** Leverages `pdf-lib` directly in the browser to map user answers onto the official government PDF template (`tff-application.pdf`) instantly.
+* **Zero-Data-Retention Privacy Policy:** All processing happens entirely in the user's browser memory. No sensitive business or personal data is ever saved to an external database or server.
+* **Multilingual Accessibility:** Designed to support local vendors in multiple languages (English, Spanish, Mandarin).
+* **Instant Deployment:** Hosted seamlessly via Vercel for immediate public accessibility.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Project Directory Structure
+
+```text
+MarketKey/
+├── index.html           # Main user interface and multi-step wizard structure
+├── style.css            # Custom styles complementing Tailwind CSS
+├── script.js            # Frontend logic, form handlers, and pdf-lib generator engine
+├── tff-application.pdf  # The official blank government form template
+└── README.md            # Project documentation
