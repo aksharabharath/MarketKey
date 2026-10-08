@@ -51,3 +51,7 @@ This project is configured for instant continuous deployment via Vercel. Every p
 
 ## Congressional App Challenge
 Built with passion by the MarketKey team to empower local small businesses and food entrepreneurs in Fremont, California.
+
+---
+
+### Places of AI Usage
