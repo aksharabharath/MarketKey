@@ -1,0 +1,942 @@
+[
+  {
+    "index": 1,
+    "name": "booth name",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 2,
+    "name": "Check Box14",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 3,
+    "name": "Check Box15",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 4,
+    "name": "Check Box16",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 5,
+    "name": "Check Box17",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 6,
+    "name": "Check Box18",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 7,
+    "name": "Check Box19",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 8,
+    "name": "Check Box20",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 9,
+    "name": "Check Box21",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 10,
+    "name": "Check Box22",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 11,
+    "name": "Check Box23",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 12,
+    "name": "Check Box24",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 13,
+    "name": "Check Box25",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 14,
+    "name": "Check Box26",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 15,
+    "name": "Check Box27",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 16,
+    "name": "Check Box28",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 17,
+    "name": "Check Box29",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 18,
+    "name": "Check Box30",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 19,
+    "name": "Check Box31",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 20,
+    "name": "Check Box32",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 21,
+    "name": "Check Box33",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 22,
+    "name": "Check Box34",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 23,
+    "name": "Check Box49",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 24,
+    "name": "Check Box50",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 25,
+    "name": "Check Box51",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 26,
+    "name": "Check Box52",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 27,
+    "name": "Check Box35",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 28,
+    "name": "Check Box36",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 29,
+    "name": "Check Box53",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 30,
+    "name": "Check Box54",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 31,
+    "name": "Check Box55",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 32,
+    "name": "Check Box56",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 33,
+    "name": "Check Box57",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 34,
+    "name": "Check Box58",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 35,
+    "name": "Check Box59",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 36,
+    "name": "Check Box60",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 37,
+    "name": "Check Box37",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 38,
+    "name": "Check Box38",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 39,
+    "name": "Check Box61",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 40,
+    "name": "Check Box62",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 41,
+    "name": "Check Box63",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 42,
+    "name": "Check Box64",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 43,
+    "name": "Check Box39",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 44,
+    "name": "Check Box40",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 45,
+    "name": "Check Box65",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 46,
+    "name": "Check Box66",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 47,
+    "name": "Check Box67",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 48,
+    "name": "Check Box68",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 49,
+    "name": "Check Box69",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 50,
+    "name": "Check Box70",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 51,
+    "name": "Check Box71",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 52,
+    "name": "Check Box72",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 53,
+    "name": "one",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 54,
+    "name": "two",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 55,
+    "name": "three",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 56,
+    "name": "four",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 57,
+    "name": "Check Box41",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 58,
+    "name": "Check Box42",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 59,
+    "name": "Check Box43",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 60,
+    "name": "Check Box44",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 61,
+    "name": "Check Box45",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 62,
+    "name": "Check Box46",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 63,
+    "name": "Check Box47",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 64,
+    "name": "Check Box48",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 65,
+    "name": "print name",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 66,
+    "name": "phone number",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 67,
+    "name": "today's date",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 68,
+    "name": "OWNER NAME",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 69,
+    "name": "BUSINESS NAME",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 70,
+    "name": "INDICATE INDOOR OR OUTDOOR",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 71,
+    "name": "NAME OF THE BOOTH",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 72,
+    "name": "BUSINESS ADDRESS WITH CITY STATE AND ZIP CODE",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 73,
+    "name": "MAILING ADDRESS IF DIFFERNET FROM BUSINESS ADDRESS",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 74,
+    "name": "NAME OF THE EVENT",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 75,
+    "name": "ADDRESS OF THE EVENT",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 76,
+    "name": "START DATE END DATE",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 77,
+    "name": "START TIME END TIME",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 78,
+    "name": "EVENT SPONSOR NAME",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 79,
+    "name": "CONTACT PHONE",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 80,
+    "name": "SPONSOR EMAIL",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 81,
+    "name": "YES OR NO",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 82,
+    "name": "WHERE WILL YOU OBTAIN CLEAN WATER FOR HANDWASH AND WAREWASH",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 83,
+    "name": "WHERE WILL YOU DISPOSE OF DIRTY WATER GARBAGE AND USED FRY OIL",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 84,
+    "name": "WILL YOU PROVIDE A FULLY ENCLOSED BOOTH IF NO EXPLAIN WHY IF YES EXPLAIN THE MATERIALS USED",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 85,
+    "name": "WHAT ARE YOUR OPERATING PROCEDURES FOR ACCEPTING CUSTOMER OWNED RE USEABLE CONTAINERS SUCH AS CUPS MUGS PLATES ETC HOW WILL YOU ENSURE THE CONTAINERS WILL NOT CREATE A CONTAMINATION ISSUE INSIDE YOUR BOOTH OR WITH YOUR EMPLOYEES TFF OPERATORS ARE NOT ALLOWED TO PROVIDE MULTI USE UTENSILS FOR CUSTOMERS WITH OUT DEPARTMENT APPROVAL",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 86,
+    "name": "Print Name",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 87,
+    "name": "Applicant Signature",
+    "type": "PDFSignature"
+  },
+  {
+    "index": 88,
+    "name": "Date",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 89,
+    "name": "Commissary  Commercial Kitchen",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 90,
+    "name": "Owner Name",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 91,
+    "name": "Street Address",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 92,
+    "name": "City  Zip Code",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 93,
+    "name": "I Facility Owner Manager",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 94,
+    "name": "SERVICES PLEASE CIRCLE YES OR NO",
+    "type": "PDFRadioGroup"
+  },
+  {
+    "index": 95,
+    "name": "undefined",
+    "type": "PDFRadioGroup"
+  },
+  {
+    "index": 96,
+    "name": "undefined_2",
+    "type": "PDFRadioGroup"
+  },
+  {
+    "index": 97,
+    "name": "undefined_3",
+    "type": "PDFRadioGroup"
+  },
+  {
+    "index": 98,
+    "name": "Print Authorized Signer Name",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 99,
+    "name": "Phone",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 100,
+    "name": "Date_2",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 101,
+    "name": "Event Name and Dates",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 102,
+    "name": "gallons of water is required for hand washing and at least",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 103,
+    "name": "gallons of water total is",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 104,
+    "name": "# OF BOOTHS",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 105,
+    "name": "EMAIL ADDRESS",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 106,
+    "name": "BUSINESS AND CELL PHONE",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 107,
+    "name": "MENU ITEM #1",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 108,
+    "name": "MENU ITEM #2",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 109,
+    "name": "MENU ITEM #3",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 110,
+    "name": "MENU ITEM #4",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 111,
+    "name": "MENU ITEM #5",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 112,
+    "name": "MENU ITEM #6",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 113,
+    "name": "PREPPED BEFORE EVENT 1",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 114,
+    "name": "PREPPED BEFORE EVENT 2",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 115,
+    "name": "PREPPED BEFORE EVENT 3",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 116,
+    "name": "PREPPED BEFORE EVENT 4",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 117,
+    "name": "PREPPED BEFORE EVENT 5",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 118,
+    "name": "PREPPED BEFORE EVENT 6",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 119,
+    "name": "PREPPED AT EVENT 1",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 120,
+    "name": "PREPPED AT EVENT 2",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 121,
+    "name": "PREPPED AT EVENT 3",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 122,
+    "name": "PREPPED AT EVENT 4",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 123,
+    "name": "PREPPED AT EVENT 5",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 124,
+    "name": "PREPPED AT EVENT 6",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 125,
+    "name": "BROUGHT HOT OR COLD 1",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 126,
+    "name": "BROUGHT HOT OR COLD 2",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 127,
+    "name": "BROUGHT HOT OR COLD 3",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 128,
+    "name": "BROUGHT HOT OR COLD 4",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 129,
+    "name": "BROUGHT HOT OR COLD 5",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 130,
+    "name": "BROUGHT HOT OR COLD 6",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 131,
+    "name": "SERVED HOT OR COLD 1",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 132,
+    "name": "SERVED HOT OR COLD 2",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 133,
+    "name": "SERVED HOT OR COLD 3",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 134,
+    "name": "SERVED HOT OR COLD 4",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 135,
+    "name": "SERVED HOT OR COLD 5",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 136,
+    "name": "SERVED HOT OR COLD 6",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 137,
+    "name": "EQUIPMENT 1",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 138,
+    "name": "EQUIPMENT 3",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 139,
+    "name": "EQUIPMENT 2",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 140,
+    "name": "EQUIPMENT 4",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 141,
+    "name": "EQUIPMENT 5",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 142,
+    "name": "EQUIPMENT 6",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 143,
+    "name": "ELECTRIC 1",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 144,
+    "name": "ELECTRIC 2",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 145,
+    "name": "ELECTRIC 3",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 146,
+    "name": "ELECTRIC 4",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 147,
+    "name": "ELECTRIC 5",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 148,
+    "name": "ELECTRIC 6",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 149,
+    "name": "SAMPLING Y/N",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 150,
+    "name": "HOW WILL YOU TRANSPORT UTENSILS?",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 151,
+    "name": "WILL YOU OR SPONSOR PROVIDE RESUABLE PLATEWARE ETC?",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 152,
+    "name": "services",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 153,
+    "name": "NO ANSWER EXPLAINED",
+    "type": "PDFSignature"
+  },
+  {
+    "index": 154,
+    "name": "CITY/COUNTY",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 155,
+    "name": "Why",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 156,
+    "name": "Container of 100degree water with a free flow spigot so water flows freely while",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 157,
+    "name": "Bucket to catch the dirty water",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 158,
+    "name": "Liquid soap in a pump dispenser",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 159,
+    "name": "Single use paper towels",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 160,
+    "name": "1",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 161,
+    "name": "1 Bucket with soapy water to use for washing",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 162,
+    "name": "1 Bucket with plain water to use for rinsing",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 163,
+    "name": "1 Bucket with bleach and water to use for sanitizing",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 164,
+    "name": "2",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 165,
+    "name": "Prevention of crosscontamination",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 166,
+    "name": "Maintain an organized clean and sanitary food prep area",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 167,
+    "name": "Make operational corrections as needed",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 168,
+    "name": "3",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 169,
+    "name": "4",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 170,
+    "name": "5",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 171,
+    "name": "6",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 172,
+    "name": "7",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 173,
+    "name": "Served directly to the customer OR",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 174,
+    "name": "Held at or above 135 degrees F in a steam table or equivalent equipment",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 175,
+    "name": "Discarded at the end of each day",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 176,
+    "name": "8",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 177,
+    "name": "9",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 178,
+    "name": "10",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 179,
+    "name": "In containers with a hinged lid OR",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 180,
+    "name": "In squeeze bottles OR",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 181,
+    "name": "In individual packets",
+    "type": "PDFCheckBox"
+  },
+  {
+    "index": 182,
+    "name": "11",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 183,
+    "name": "13 1",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 184,
+    "name": "13 2",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 185,
+    "name": "12",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 186,
+    "name": "Sponsor Approval",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 187,
+    "name": "Generator Information",
+    "type": "PDFTextField"
+  },
+  {
+    "index": 188,
+    "name": "Signature1",
+    "type": "PDFSignature"
+  }
+]
