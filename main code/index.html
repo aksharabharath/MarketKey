@@ -14,25 +14,81 @@
 </head>
 
 <body>
-    <header>
-        <a class="logo" href="index.html">MarketKey</a>
-    </header>
-    
-    <main>
-        <section class="intro">
-            <h1>MarketKey</h1>
-            <p class="tagline">You sell, we document</p>
-        </section>
-        
-        <section class="languageSelection">
-            <h2 id="languageHeading">Choose your language</h2>
-            <div class="languageButtons">
-                <button type="button" data-lang="en">English</button>
-                <button type="button" data-lang="es">Español</button>
-                <button type="button" data-lang="zh">中文</button>
-                <button type="button" data-lang="hi">हिं</button>
+    <header class="app-header">
+        <div class="header-left">
+            <a class="logo" href="index.html">MarketKey</a>
+        </div>
+        <div class="header-right" id="headerControls" style="display: none;">
+            <button class="start-over-btn" id="startOverBtn">Start over</button>
+            <div class="lang-switcher">
+                <span data-lang="en" class="active">EN</span>
+                <span data-lang="es">ES</span>
+                <span data-lang="zh">中文</span>
+                <span data-lang="hi">हिं</span>
             </div>
-            <p id="message" aria-live="polite"></p>    
+        </div>
+    </header>
+
+    <main>
+        <nav class="step-tracker" aria-label="Application Progress">
+            <div class="step-dot active" data-step="1">
+                <div class="step-circle">1</div>
+                <span class="step-label">Language</span>
+            </div>
+            <div class="step-dot" data-step="2">
+                <div class="step-circle">2</div>
+                <span class="step-label">Path</span>
+            </div>
+            <div class="step-dot" data-step="3">
+                <div class="step-circle">3</div>
+                <span class="step-label">Questions</span>
+            </div>
+            <div class="step-dot" data-step="4">
+                <div class="step-circle">4</div>
+                <span class="step-label">Review</span>
+            </div>
+            <div class="step-dot" data-step="5">
+                <div class="step-circle">5</div>
+                <span class="step-label">Done</span>
+            </div>
+        </nav>
+
+        <section id="screen1" class="screen active">
+            <div class="intro">
+                <div class="eyebrow">Fremont vendors · Alameda County</div>
+                <h1>MarketKey</h1>
+                <p class="tagline">You sell, we document</p>
+            </div>
+            <div class="languageSelection">
+                <h2 id="languageHeading">Choose your language</h2>
+                <div class="languageButtons">
+                    <button type="button" data-lang="en">English</button>
+                    <button type="button" data-lang="es">Español</button>
+                    <button type="button" data-lang="zh">中文</button>
+                    <button type="button" data-lang="hi">हिं</button>
+                </div>
+                <p id="message" aria-live="polite"></p>    
+            </div>
+        </section>
+
+        <section id="screen2" class="screen">
+            <div class="eyebrow">Step 2 of 5</div>
+            <h2 class="triage-title">What type of products are you selling at the market?</h2>
+            <p class="triage-desc">Cooked food and samples use the county form, while whole produce from your own farm often does not.</p>
+            
+            <div class="path-cards">
+                <button type="button" class="path-card" id="tffPathBtn">
+                    <div class="path-kicker">Temporary food facility</div>
+                    <h3>Prepared food, hot food, baked goods, samples</h3>
+                    <p>Fills out the official Alameda County temporary food facility application directly in your browser.</p>
+                </button>
+                
+                <button type="button" class="path-card" id="agPathBtn">
+                    <div class="path-kicker">Agricultural route</div>
+                    <h3>Raw produce, fruit, honey grown on my farm</h3>
+                    <p>View guidance for agricultural exemptions and direct-to-consumer rules.</p>
+                </button>
+            </div>
         </section>
     </main>
 </body>
