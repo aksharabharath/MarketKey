@@ -14,7 +14,7 @@ main { width: 100%; min-height: calc(100vh - 77px); padding: 60px 5%; text-align
 .languageButtons button:hover { opacity: 0.9; transform: translateY(-2px); }
 #message { min-height: 24px; font-size: 18px; margin-top: 24px; font-family: 'Garet', sans-serif; } /* message */
 
-/* Step tracker & Header controls */
+/* header controls & steps */
 .app-header { display: flex; justify-content: space-between; align-items: center; padding: 24px 5%; border-bottom: 1px solid rgba(253, 203, 123, 0.2); }
 .header-left { display: flex; align-items: center; gap: 16px; }
 .header-right { display: flex; align-items: center; gap: 12px; }
@@ -24,14 +24,14 @@ main { width: 100%; min-height: calc(100vh - 77px); padding: 60px 5%; text-align
 .lang-switcher span { cursor: pointer; opacity: 0.6; }
 .lang-switcher span.active { opacity: 1; font-weight: bold; border-bottom: 1px solid #fdcb7b; }
 
-/* 5-step tracker bar */
+/* 5 step tracker */
 .step-tracker { display: flex; justify-content: center; gap: 12px; margin: 20px 0 40px; font-family: 'League Spartan', sans-serif; font-size: 14px; }
 .step-dot { display: flex; align-items: center; gap: 6px; opacity: 0.5; }
 .step-dot.active { opacity: 1; font-weight: bold; }
 .step-circle { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #fdcb7b; display: flex; align-items: center; justify-content: center; font-size: 12px; }
 .step-dot.active .step-circle { background-color: #fdcb7b; color: #d9641f; }
 
-/* Triage Screen / Path Cards */
+/* path cards / triage */
 .screen { display: none; }
 .screen.active { display: block; }
 .eyebrow { font-family: 'League Spartan', sans-serif; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; opacity: 0.9; }
