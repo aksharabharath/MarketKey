@@ -3,18 +3,32 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MarketKey</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;600;700&family=Yeseva+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="vendor/pdf-lib.min.js" defer></script>
     <script src="script.js" defer></script>
 </head>
 
 <body>
-    <header><a class="logo" href="index.html">MarketKey</a></header>
+    <header>
+        <a class="logo" href="index.html">MarketKey</a>
+    </header>
+    
     <main>
-        <section class="intro"><h1>MarketKey</h1><p class="tagline">You sell, we document</p></section>
+        <section class="intro">
+            <h1>MarketKey</h1>
+            <p class="tagline">You sell, we document</p>
+        </section>
+        
         <section class="languageSelection">
-            <h2 id="languageHeading">Choose your language</h2><div class="languageButtons"><!--later--></div>
+            <h2 id="languageHeading">Choose your language</h2>
+            <div class="languageButtons">
+                <!-- Dynamically populated or rendered via script.js -->
+            </div>
             <p id="message" aria-live="polite"></p>    
         </section>
     </main>
