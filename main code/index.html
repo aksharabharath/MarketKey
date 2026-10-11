@@ -14,6 +14,7 @@
 </head>
 
 <body>
+
     <header class="app-header">
         <div class="header-left">
             <a class="logo" href="index.html">MarketKey</a>
@@ -30,29 +31,31 @@
     </header>
 
     <main>
-        <nav class="step-tracker" aria-label="Application Progress">
+        <!-- step tracker -->
+        <nav class="step-tracker">
             <div class="step-dot active" data-step="1">
                 <div class="step-circle">1</div>
-                <span class="step-label">Language</span>
+                <span>Language</span>
             </div>
             <div class="step-dot" data-step="2">
                 <div class="step-circle">2</div>
-                <span class="step-label">Path</span>
+                <span>Path</span>
             </div>
             <div class="step-dot" data-step="3">
                 <div class="step-circle">3</div>
-                <span class="step-label">Questions</span>
+                <span>Questions</span>
             </div>
             <div class="step-dot" data-step="4">
                 <div class="step-circle">4</div>
-                <span class="step-label">Review</span>
+                <span>Review</span>
             </div>
             <div class="step-dot" data-step="5">
                 <div class="step-circle">5</div>
-                <span class="step-label">Done</span>
+                <span>Done</span>
             </div>
         </nav>
 
+        <!-- screen 1: language -->
         <section id="screen1" class="screen active">
             <div class="intro">
                 <div class="eyebrow">Fremont vendors · Alameda County</div>
@@ -67,10 +70,11 @@
                     <button type="button" data-lang="zh">中文</button>
                     <button type="button" data-lang="hi">हिं</button>
                 </div>
-                <p id="message" aria-live="polite"></p>    
+                <p id="message"></p>    
             </div>
         </section>
 
+        <!-- screen 2: path selection -->
         <section id="screen2" class="screen">
             <div class="eyebrow">Step 2 of 5</div>
             <h2 class="triage-title">What type of products are you selling at the market?</h2>
@@ -91,6 +95,7 @@
             </div>
         </section>
     </main>
+
 </body>
 
 </html>
