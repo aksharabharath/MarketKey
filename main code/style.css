@@ -5,7 +5,6 @@ body { margin: 0; min-height: 100vh; background-color: #fdcb7b; color: #d9641f; 
 header { padding: 24px 5%;  background-color: #d9641f; color: #fdcb7b; border-bottom: 1px solid rgba(253, 203, 123, 0.2); } 
 .logo { color: inherit; text-decoration: none; font-size: 24px; font-weight: bold; font-family: 'League Spartan', sans-serif; } /* logo */
 main { width: 100%; min-height: calc(100vh - 77px); padding: 60px 5%;  ackground-color: #fdcb7b; color: #d9641f; text-align: center; }
-.intro h1 { margin: 0; font-size: 88px; font-family: 'Yeseva One', Georgia, serif; color: #d9641f; }
 .tagline { margin: 12px 0 0; font-weight: bold; font-size: 26px; font-family: 'League Spartan', sans-serif; }
 .languageSelection { margin-top: 40px; }
 .languageSelection h2 { margin: 0 0 28px; font-size: 30px; font-family: 'Yeseva One', Georgia, serif; } /* language section just shortened */
