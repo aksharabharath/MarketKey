@@ -28,7 +28,7 @@ main { width: 100%; min-height: calc(100vh - 77px); padding: 60px 5%;  ackground
 .step-dot { display: flex; align-items: center; gap: 6px; opacity: 0.5; }
 .step-dot.active { opacity: 1; font-weight: bold; }
 .step-circle { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #d9641f; display: flex; align-items: center; justify-content: center; font-size: 12px; }
-.step-dot.active .step-circle { background-color: #fdcb7b; color: #d9641f; }
+.step-dot.active .step-circle { background-color: #d9641f; color: #fdcb7b; }
 
 /* path cards / triage */
 .screen { display: none; }
