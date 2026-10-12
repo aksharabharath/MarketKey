@@ -4,7 +4,6 @@
 
 * Primary Background Color: `#d9641f` (Rich Sunset Orange/Amber)
 * Primary Text & Accent Color: `#fdcb7b` (Warm Sunny Yellow/Gold)
-* Design Note: Color contrast ratios are regularly evaluated for mobile readability under outdoor sunlight conditions. Secondary element colors (like button states and form cards) complement this warm palette.
 
 ---
 
