@@ -1,27 +1,27 @@
-document.getElementById('generateBtn').addEventListener('click', async () => {
-    const businessName = document.getElementById('businessNameInput5').value || 'Fremont Business';
+const appState = {
+    lang: 'en',
+    currentStep: 1,
+    path: null,
+    formData: {}
+};
 
-    try {
-        const existingPdfBytes = await fetch('./tff-application.pdf').then(res => res.arrayBuffer());
-
-        const pdfDoc = await PDFDocument.load(existingPdfBytes);
-        const form = pdfDoc.getForm();
-
-        form.getTextField('BUSINESS NAME').setText(businessName);
-
-        const pdfBytes = await pdfDoc.save();
-        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'Completed-TFF-Application.pdf';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        alert('Success! PDF downloaded.');
-    } catch (error) {
-        console.error('Error generating PDF:', error);
-        alert('Check console for details.');
+// wait for the html to load before wiring up buttons and screens
+document.addEventListener('DOMContentLoaded', () => {
+    // start on screen 1 and set step tracker
+    showScreen('screen1');
+    updateStepTracker(1);
+    
+    // hide header controls on load until language is chosen
+    const headerControls = document.getElementById('headerControls');
+    if (headerControls) {
+        headerControls.style.display = 'none';
     }
+
+    // bind click events for language buttons on screen 1
+    document.querySelectorAll('.languageButtons button').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const selectedLang = e.target.getAttribute('data-lang');
+            saveLanguage(selectedLang);
+        });
+    });
 });
