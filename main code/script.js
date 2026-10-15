@@ -29,6 +29,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //------------------- (insert #2-4), check MarketKey/docs/handoff_notes.md for reference if need clarification
 
+//2: 
+function showScreen(screenId){
+    const screens = document.querySelectorAll(".screen");
+    screens.forEach(function(screen) {
+        screen.classList.remove("active");
+    });
+    const targetScreen = document.getElementById(screenId);
+    targetScreen.classList.add("active");
+    window.scrollTo(0, 0);
+}
+const nextButtons = document.querySelectorAll(".next-btn");
+
+nextButtons.forEach(function(button) {
+    button.addEventListener("click", function() {
+        const currentScreen = button.closest(".screen");
+        const nextScreen = currentScreen.nextElementSibling;
+        if (nextScreen && nextScreen.classList.contains("screen")) {
+            showScreen(nextScreen.id);
+        }
+    });
+});
 
 // 5. PDF and review functions
 // read-only review screen from appState.formData
