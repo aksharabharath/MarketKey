@@ -1,3 +1,4 @@
+// 1. entire thing functions
 const appState = {
     lang: 'en',
     currentStep: 1,
@@ -26,8 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+//------------------- (insert #2-4)
 
 
+// 5. PDF and review functions
 // read-only review screen from appState.formData
 function renderReviewScreen() {
     // targets  review container in HTML and populate it
