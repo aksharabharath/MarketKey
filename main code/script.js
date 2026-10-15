@@ -25,3 +25,95 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+
+
+// read-only review screen from appState.formData
+function renderReviewScreen() {
+    // targets  review container in HTML and populate it
+    const reviewContainer = document.getElementById('reviewContent');
+    if (!reviewContainer) return;
+
+    reviewContainer.innerHTML = ''; // clear old review cards
+
+    // loop thru appState.formData and display keys/answers as read-only cards
+    for (const [key, value] of Object.entries(appState.formData)) {
+        const card = document.createElement('div');
+        card.className = 'review-card';
+        card.innerHTML = `
+            <span class="review-label">${key}</span>
+            <span class="review-value">${value ? value : 'Not answered'}</span>
+        `;
+        reviewContainer.appendChild(card);
+    }
+}
+
+// offline PDF engine using pdf-lib
+async function generateCountyPDF() {
+    try {
+        // load the local blank county PDF template from your assets folder
+        const formUrl = '../assets/tff-application.pdf'; 
+        const formBytes = await fetch(formUrl).then(res => res.arrayBuffer());
+
+        // load the PDF document using pdf-lib
+        const pdfDoc = await PDFLib.PDFDocument.load(formBytes);
+        const form = pdfDoc.getForm();
+
+        // map each key from appState.formData to the exact PDF form field names
+        for (const [key, value] of Object.entries(appState.formData)) {
+            try {
+                const field = form.getField(key);
+                if (field) {
+                    if (typeof value === 'boolean' && value) {
+                        field.check();
+                    } else if (typeof value === 'string') {
+                        field.setText(value);
+                    }
+                }
+            } catch (err) {
+                console.warn(`Field not found on PDF template: ${key}`);
+            }
+        }
+
+        // lock form fields so uneditable
+        form.flatten();
+
+        const pdfBytes = await pdfDoc.save();
+        return pdfBytes;
+
+    } catch (error) {
+        console.error('Error generating PDF locally:', error);
+        alert('Could not generate PDF. Please ensure the local template file is present.');
+        return null;
+    }
+}
+
+// trigger browser download, wipe memory, and advance to Step 5
+async function downloadAndWipe() {
+    const businessName = appState.formData['businessName'] || 'Vendor';
+    
+    // generate the PDF bytes
+    const pdfBytes = await generateCountyPDF();
+    if (!pdfBytes) return; // stop if generation failed
+
+    // create a browser Blob and trigger an automatic local download
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const blobUrl = URL.createObjectURL(blob);
+    
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = `MarketKey-TFF-${businessName.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // revoke blob URL after 2 seconds for memory management
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
+
+    appState.formData = {};
+    appState.path = null;
+
+    // advance view to Step 5 (Done screen)
+    showScreen('screen5');
+    updateStepTracker(5);
+}
