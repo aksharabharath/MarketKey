@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-//------------------- (insert #2-4)
+//------------------- (insert #2-4), check MarketKey/docs/handoff_notes.md for reference if need clarification
 
 
 // 5. PDF and review functions
