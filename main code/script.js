@@ -21,11 +21,23 @@ document.addEventListener('DOMContentLoaded', () => {
             saveLanguage(selectedLang);
         });
     });
+    const nextButtons = document.querySelectorAll(".next-btn");
+//next button code- 
+    nextButtons.forEach(function(button) {
+    button.addEventListener("click", function() {
+        const currentScreen = button.closest(".screen");
+        const nextScreen = currentScreen.nextElementSibling;
+
+        if (nextScreen && nextScreen.classList.contains("screen")) {
+            showScreen(nextScreen.id);
+        }
+    });
+  });
 });
 
 //------------------- (insert #2-4), check MarketKey/docs/handoff_notes.md for reference if need clarification
 
-//2: 
+//2, for screen switching : 
 function showScreen(screenId){
     const screens = document.querySelectorAll(".screen");
     screens.forEach(function(screen) {
@@ -33,19 +45,24 @@ function showScreen(screenId){
     });
     const targetScreen = document.getElementById(screenId);
     targetScreen.classList.add("active");
+    const stepNumber = Number(screenId.replace("screen", ""));
+    updateStepTracker(stepNumber);
     window.scrollTo(0, 0);
 }
-const nextButtons = document.querySelectorAll(".next-btn");
 
-nextButtons.forEach(function(button) {
-    button.addEventListener("click", function() {
-        const currentScreen = button.closest(".screen");
-        const nextScreen = currentScreen.nextElementSibling;
-        if (nextScreen && nextScreen.classList.contains("screen")) {
-            showScreen(nextScreen.id);
+
+//2, for UPD stateTracker 
+function updateStepTracker(currentStep) {
+    const steps = document.querySelectorAll(".step-dot");
+    steps.forEach(function(step) {
+        const number = Number(step.dataset.step);
+        if (number <= currentStep) {
+            step.classList.add("active");
+        } else {
+            step.classList.remove("active");
         }
     });
-});
+}
 
 // 5. PDF and review functions
 function renderReviewScreen() {
