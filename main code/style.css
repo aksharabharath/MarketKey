@@ -12,7 +12,7 @@ main { width: 100%; min-height: calc(100vh - 77px); padding: 60px 5%;  backgroun
 .languageButtons button { background-color: #ea7530; color: #fdcb7b; border: none; padding: 12px 24px; font-size: 18px; font-weight: bold; font-family: 'League Spartan', sans-serif; border-radius: 8px; cursor: pointer; }
 .languageButtons button:hover { opacity: 0.9; transform: translateY(-2px); }
 #message { min-height: 24px; font-size: 18px; margin-top: 24px; font-family: 'Garet', sans-serif; } /* message */
-h3{background-color: #ea7530; color: #fdcb7b;}
+h3{color: #fdcb7b;}
 
 /* header controls & steps */
 .app-header { display: flex; justify-content: space-between; align-items: center; padding: 24px 5%;  background-color: #d9641f; color: #fdcb7b; border-bottom: 1px solid rgba(253, 203, 123, 0.2); }
