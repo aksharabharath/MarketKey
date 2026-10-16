@@ -39,6 +39,19 @@
     }
   },
   {
+    "id": "mailingAddress",
+    "pdfFieldKey": "MAILING ADDRESS IF DIFFERENT FROM BUSINESS ADDRESS",
+    "type": "text",
+    "category": "vendorDetails",
+    "required": false,
+    "prompts": {
+      "en": "What is your mailing address (if different from your business address)?",
+      "es": "¿Cuál es su dirección postal (si es diferente a la de su negocio)?",
+      "zh": "您的邮寄地址是什么（如果与营业地址不同）？",
+      "hi": "आपका डाक पता क्या है (यदि आपके व्यावसायिक पते से भिन्न है)?"
+    }
+  },
+  {
     "id": "businessPhone",
     "pdfFieldKey": "BUSINESS AND CELL PHONE",
     "type": "text",
@@ -64,7 +77,20 @@
       "hi": "आपका ईमेल पता क्या है?"
     }
   },
-    {
+  {
+    "id": "boothCountAndType",
+    "pdfFieldKey": "SUBMIT ONE APPLICATION PER BOOTH. # of Booths. INDICATE INDOOR OR OUTDOOR",
+    "type": "text",
+    "category": "eventDetails",
+    "required": true,
+    "prompts": {
+      "en": "How many booths are you operating, and is your setup indoor or outdoor?",
+      "es": "¿Cuántos puestos opera y su instalación es bajo techo o al aire libre?",
+      "zh": "您运营多少个摊位？您的设置是室内还是室外？",
+      "hi": "आप कितने बूथ संचालित कर रहे हैं, और आपका सेटअप इनडोर है या आउटडोर?"
+    }
+  },
+  {
     "id": "eventName",
     "pdfFieldKey": "NAME OF THE EVENT",
     "type": "text",
@@ -169,6 +195,19 @@
     }
   },
   {
+    "id": "prePackagedQuestion",
+    "pdfFieldKey": "DO ALL OF YOUR MENU ITEMS REMAIN IN ORIGINAL FACTORY SEALED PACKAGE OR PREPACKAGED BY YOU AT COMMENCIPAL KITCHEN",
+    "type": "text",
+    "category": "menuDetails",
+    "required": true,
+    "prompts": {
+      "en": "Do all menu items/samples remain factory-sealed or pre-packaged by you at a commercial kitchen?",
+      "es": "¿Todos los artículos del menú permanecen sellados de fábrica o preempaquetados por usted en cocina comercial?",
+      "zh": "您的所有菜单项或样品是否保持原厂密封，或者是由您在商业厨房预先包装好的？",
+      "hi": "क्या आपके सभी मेनू आइटम या नमूने कारखाने से सील बंद रहते हैं या आपके द्वारा कमर्शियल किचन में पैक किए जाते हैं?"
+    }
+  },
+  {
     "id": "menuItem1",
     "pdfFieldKey": "MENU ITEM #1",
     "type": "text",
@@ -246,20 +285,32 @@
       "hi": "आपका छठा मेनू आइटम क्या है (यदि लागू हो)?"
     }
   },
-
-    {
-        "id": "handwashSpigot",
-        "pdfFieldKey": "Container of 100degree water with a free flow spigot so water flows freely while",
-        "type": "checkbox",
-        "category": "sanitation",
-        "required": true,
-        "prompts": {
-        "en": "Will you provide a container of 100°F warm water with a free-flow spigot for handwashing?",
-        "es": "¿Proporcionará un contenedor de agua tibia a 100°F con un grifo de flujo libre para lavarse las manos?",
-        "zh": "您是否会提供一个带有自由流水龙头、盛有 100°F 温水的容器用于洗手？",
-        "hi": "क्या आप हाथ धोने के लिए स्वतंत्र रूप से बहने वाले नल के साथ 100°F गर्म पानी का कंटेनर प्रदान करेंगे?"
-        }
-    },
+  {
+    "id": "menuMatrixDetails",
+    "pdfFieldKey": "DETAILED MENU MATRIX PREP STATE TRANSPORT TEMP SERVICE EQUIPMENT USED",
+    "type": "text",
+    "category": "menuDetails",
+    "required": true,
+    "prompts": {
+      "en": "Provide details on food prep timing, hot/cold transport state, and specific equipment used for each item.",
+      "es": "Proporcione detalles sobre la preparación, transporte en caliente/frío y equipo específico usado para cada artículo.",
+      "zh": "提供有关食品准备时间、冷热运输状态以及每种物品所用特定设备的详细信息。",
+      "hi": "प्रत्येक आइटम के लिए खाद्य तैयारी समय, गर्म/ठंडे परिवहन राज्य, और उपयोग किए जाने वाले विशिष्ट उपकरणों का विवरण दें।"
+    }
+  },
+  {
+    "id": "handwashSpigot",
+    "pdfFieldKey": "Container of 100degree water with a free flow spigot so water flows freely while",
+    "type": "checkbox",
+    "category": "sanitation",
+    "required": true,
+    "prompts": {
+      "en": "Will you provide a container of 100°F warm water with a free-flow spigot for handwashing?",
+      "es": "¿Proporcionará un contenedor de agua tibia a 100°F con un grifo de flujo libre para lavarse las manos?",
+      "zh": "您是否会提供一个带有自由流水龙头、盛有 100°F 温水的容器用于洗手？",
+      "hi": "क्या आप हाथ धोने के लिए स्वतंत्र रूप से बहने वाले नल के साथ 100°F गर्म पानी का कंटेनर प्रदान करेंगे?"
+    }
+  },
   {
     "id": "handwashBucket",
     "pdfFieldKey": "Bucket to catch the dirty water",
@@ -338,8 +389,7 @@
       "hi": "क्या आप सैनिटाइजिंग के लिए ब्लीच और पानी के घोल वाली बाल्टी प्रदान करेंगे?"
     }
   },
-
-{
+  {
     "id": "waterSource",
     "pdfFieldKey": "WHERE WILL YOU OBTAIN CLEAN WATER FOR HANDWASH AND WAREWASH",
     "type": "text",
@@ -379,8 +429,34 @@
     }
   },
   {
+    "id": "boothLayoutDrawing",
+    "pdfFieldKey": "SUBMIT WITH THIS APPLICATION A DRAWING SHOWING PLACEMENT OF EQUIPMENT IN BOOTH",
+    "type": "text",
+    "category": "operations",
+    "required": true,
+    "prompts": {
+      "en": "Describe your booth layout or equipment placement for your required sketch.",
+      "es": "Describa la distribución de su puesto o la colocación de equipos para su boceto requerido.",
+      "zh": "描述您的摊位布局或所需草图的设备放置位置。",
+      "hi": "अपने आवश्यक स्केच के लिए अपने बूथ लेआउट या उपकरण प्लेसमेंट का वर्णन करें।"
+    }
+  },
+  {
+    "id": "utensilTransportProcedure",
+    "pdfFieldKey": "HOW WILL YOU TRANSPORT UTENSILS AND EQUIPMENT AND MAINTAIN BOOTH CLEAN SANITARY ORGANIZED",
+    "type": "text",
+    "category": "operations",
+    "required": true,
+    "prompts": {
+      "en": "How will you transport utensils/equipment and keep your booth clean, sanitary, and organized?",
+      "es": "¿Cómo transportará los utensilios/equipos y mantendrá su puesto limpio, sanitario y organizado?",
+      "zh": "您将如何运输餐具/设备并保持摊位清洁、卫生和有序？",
+      "hi": "आप बर्तन/उपकरणों का परिवहन कैसे करेंगे और अपने बूथ को स्वच्छ, सेनेटरी और व्यवस्थित रखेंगे?"
+    }
+  },
+  {
     "id": "commissaryName",
-    "pdfFieldKey": "Commissary  Commercial Kitchen",
+    "pdfFieldKey": "Commissary Commercial Kitchen",
     "type": "text",
     "category": "operations",
     "required": true,
@@ -391,18 +467,56 @@
       "hi": "आपके स्वीकृत कमिसरी या कमर्शियल किचन का नाम और पता क्या है?"
     }
   },
-
-{
+  {
     "id": "reusableContainers",
-    "pdfFieldKey": "WHAT ARE YOUR OPERATING PROCEDURES FOR ACCEPTING CUSTOMER OWNED RE USEABLE CONTAINERS SUCH AS CUPS MUGS PLATES ETC HOW WILL YOU ENSURE THE CONTAINERS WILL NOT CREATE A CONTAMINATION ISSUE INSIDE YOUR BOOTH OR WITH YOUR EMPLOYEES TFF OPERATORS ARE NOT ALLOWED TO PROVIDE MULTI USE UTENSILS FOR CUSTOMERS WITH OUT DEPARTMENT APPROVAL",
+    "pdfFieldKey": "WHAT ARE YOUR OPERATING PROCEDURES FOR ACCEPTING CUSTOMER OWNED RE USEABLE CONTAINERS",
     "type": "text",
     "category": "compliance",
     "required": false,
     "prompts": {
       "en": "What are your procedures for handling customer-owned reusable containers (cups, mugs, plates) to prevent contamination?",
-      "es": "¿Cuáles son sus procedimientos para manejar recipientes reutilizables propiedad del cliente (tazas, platos) para prevenir la contaminación?",
-      "zh": "您如何处理顾客自带的可重复使用容器（杯子、盘子等）以防止污染？",
-      "hi": "दूषित होने से बचाने के लिए आप ग्राहकों के अपने पुन: प्रयोज्य बर्तनों (कप, प्लेट) को संभालने की क्या प्रक्रिया अपनाते हैं?"
+      "es": "¿Cuáles son sus procedimientos para manejar recipientes reutilizables propiedad del cliente para prevenir la contaminación?",
+      "zh": "您如何处理顾客自带的可重复使用容器以防止污染？",
+      "hi": "दूषित होने से बचाने के लिए आप ग्राहकों के अपने पुन: प्रयोज्य बर्तनों को संभालने की क्या प्रक्रिया अपनाते हैं?"
+    }
+  },
+  {
+    "id": "samplingYN",
+    "pdfFieldKey": "SAMPLING Y/N",
+    "type": "text",
+    "category": "operations",
+    "required": false,
+    "prompts": {
+      "en": "Will you be offering food samples at your booth?",
+      "es": "¿Ofrecerá muestras de comida en su puesto?",
+      "zh": "您是否会在摊位提供食品样品？",
+      "hi": "क्या आप अपने बूथ पर खाद्य नमूने (samples) पेश करेंगे?"
+    }
+  },
+  {
+    "id": "generatorInfo",
+    "pdfFieldKey": "Generator Information",
+    "type": "text",
+    "category": "operations",
+    "required": false,
+    "prompts": {
+      "en": "Will you be using a generator? If yes, provide details.",
+      "es": "¿Utilizará un generador? Si es así, proporcione los detalles.",
+      "zh": "您是否会使用发电机？如果是，请提供详细信息。",
+      "hi": "क्या आप जनरेटर का उपयोग करेंगे? यदि हाँ, तो विवरण दें।"
+    }
+  },
+  {
+    "id": "sponsorApproval",
+    "pdfFieldKey": "Sponsor Approval",
+    "type": "text",
+    "category": "compliance",
+    "required": false,
+    "prompts": {
+      "en": "Has the event sponsor signed off or approved your booth setup?",
+      "es": "¿El patrocinador del evento ha firmado o aprobado la configuración de su puesto?",
+      "zh": "活动赞助商是否已签署或批准您的摊位设置？",
+      "hi": "क्या कार्यक्रम प्रायोजक ने आपके बूथ सेटअप को मंजूरी दे दी है?"
     }
   },
   {
@@ -442,45 +556,6 @@
       "es": "¿Cuál es la fecha de hoy?",
       "zh": "今天的日期是什么？",
       "hi": "आज की तारीख क्या है?"
-    }
-  },
-    {
-        "id": "samplingYN",
-        "pdfFieldKey": "SAMPLING Y/N",
-        "type": "text",
-        "category": "operations",
-        "required": false,
-        "prompts": {
-        "en": "Will you be offering food samples at your booth?",
-        "es": "¿Ofrecerá muestras de comida en su puesto?",
-        "zh": "您是否会在摊位提供食品样品？",
-        "hi": "क्या आप अपने बूथ पर खाद्य नमूने (samples) पेश करेंगे?"
-        }
-    },
-  {
-    "id": "generatorInfo",
-    "pdfFieldKey": "Generator Information",
-    "type": "text",
-    "category": "operations",
-    "required": false,
-    "prompts": {
-      "en": "Will you be using a generator? If yes, provide details.",
-      "es": "¿Utilizará un generador? Si es así, proporcione los detalles.",
-      "zh": "您是否会使用发电机？如果是，请提供详细信息。",
-      "hi": "क्या आप जनरेटर का उपयोग करेंगे? यदि हाँ, तो विवरण दें।"
-    }
-  },
-  {
-    "id": "sponsorApproval",
-    "pdfFieldKey": "Sponsor Approval",
-    "type": "text",
-    "category": "compliance",
-    "required": false,
-    "prompts": {
-      "en": "Has the event sponsor signed off or approved your booth setup?",
-      "es": "¿El patrocinador del evento ha firmado o aprobado la configuración de su puesto?",
-      "zh": "活动赞助商是否已签署或批准您的摊位设置？",
-      "hi": "क्या कार्यक्रम प्रायोजक ने आपके बूथ सेटअप को मंजूरी दे दी है?"
     }
   }
 ]
