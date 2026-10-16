@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.languageButtons button').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const selectedLang = e.target.getAttribute('data-lang');
+            const selectedLang = e.currentTarget.getAttribute('data-lang');
             saveLanguage(selectedLang);
         });
     });
@@ -62,6 +62,11 @@ function updateStepTracker(currentStep) {
             step.classList.remove("active");
         }
     });
+}
+//2 for savelang 
+function saveLang(langCode) {
+     if (!selectedLang) return;
+    appState.lang = update.langCode;
 }
 
 // 5. PDF and review functions
