@@ -38,14 +38,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const tffBtn = document.getElementById('tffPathBtn');
-    if (tffBtn) {
-        tffBtn.addEventListener('click', () => {
-            appState.path = 'tff';
-            const today = new Date().toISOString().split('T')[0];
-            appState.formData['todaysDate'] = today;
-            showScreen('screen3');
-        });
-    }
+        if (tffBtn) {
+            tffBtn.addEventListener('click', () => {
+                appState.path = 'tff';
+                const today = new Date().toISOString().split('T')[0];
+                appState.formData['todaysDate'] = today;
+                
+                showScreen('screen3');
+                loadQuestionnaire(); // <--- THIS WAS MISSING
+            });
+        }
 
     const agBtn = document.getElementById('agPathBtn');
     if (agBtn) {
