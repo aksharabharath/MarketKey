@@ -164,29 +164,44 @@ const uiTranslations = {
     en: {
         step2Title: "What type of products are you selling at the market?",
         step2Desc: "Cooked food and samples use the county form, while whole produce from your own farm often does not.",
+        tffKicker: "Temporary food facility",
         tffTitle: "Prepared food, hot food, baked goods, samples",
-        agTitle: "Raw produce, fruit, honey grown on my farm"
+        tffDesc: "Fills out the official Alameda County temporary food facility application directly in your browser.",
+        agKicker: "Agricultural route",
+        agTitle: "Raw produce, fruit, honey grown on my farm",
+        agDesc: "View guidance for agricultural exemptions and direct-to-consumer rules."
     },
     es: {
         step2Title: "¿Qué tipo de productos vende en el mercado?",
         step2Desc: "Los alimentos cocinados y muestras usan el formulario del condado, mientras que los productos agrícolas propios a menudo no.",
+        tffKicker: "Instalación de comida temporal",
         tffTitle: "Comida preparada, comida caliente, productos horneados, muestras",
-        agTitle: "Productos crudos, fruta, miel cosechada en mi granja"
+        tffDesc: "Llena la solicitud oficial de instalaciones de comida temporal del Condado de Alameda directamente en su navegador.",
+        agKicker: "Ruta agrícola",
+        agTitle: "Productos crudos, fruta, miel cosechada en mi granja",
+        agDesc: "Vea la guía para exenciones agrícolas y reglas de venta directa al consumidor."
     },
     zh: {
         step2Title: "您在市场出售什么类型的产品？",
         step2Desc: "熟食和样品需要使用县级表格，而您自己农场种植的整块农产品通常不需要。",
+        tffKicker: "临时食品设施",
         tffTitle: "熟食、热食、烘焙食品、样品",
-        agTitle: "在我农场种植的生鲜农产品、水果、蜂蜜"
+        tffDesc: "直接在您的浏览器中填写阿拉amed达县官方临时食品设施申请表。",
+        agKicker: "农业路线",
+        agTitle: "在我农场种植的生鲜农产品、水果、蜂蜜",
+        agDesc: "查看农业豁免和直销规则指南。"
     },
     hi: {
         step2Title: "आप बाजार में किस प्रकार के उत्पाद बेच रहे हैं?",
         step2Desc: "पका हुआ भोजन और नमूने काउंटी फॉर्म का उपयोग करते हैं, जबकि आपके अपने खेत की ताजा उपज अक्सर ऐसा नहीं करती है।",
+        tffKicker: "अस्थायी खाद्य सुविधा",
         tffTitle: "तैयार भोजन, गर्म भोजन, पके हुए सामान, नमूने",
-        agTitle: "मेरे खेत में उगाई गई कच्ची उपज, फल, शहद"
+        tffDesc: "सीधे अपने ब्राउज़र में आधिकारिक Alameda County अस्थायी खाद्य सुविधा आवेदन भरें।",
+        agKicker: "कृषि मार्ग",
+        agTitle: "मेरे खेत में उगाई गई कच्ची उपज, फल, शहद",
+        agDesc: "कृषि छूट और प्रत्यक्ष-से-उपभोक्ता नियमों के लिए मार्गदर्शन देखें।"
     }
 };
-
 function updatePageText() {
     const lang = appState.lang;
     const t = uiTranslations[lang];
