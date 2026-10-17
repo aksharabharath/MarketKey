@@ -63,3 +63,50 @@ button.active, .path-card.active {
     color: #d9641f !important;
     border-color: #d9641f !important;
 }
+
+#applicationForm {
+    max-width: 700px;
+    margin: 30px auto;
+    text-align: left;
+}
+
+.question {
+    margin-bottom: 24px;
+}
+
+.question label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 17px;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+.question input:not([type="checkbox"]) {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #d9641f;
+    border-radius: 8px;
+    background-color: #fff8ed;
+    color: #713515;
+    font: inherit;
+}
+
+.question input:focus {
+    outline: 3px solid #fdcb7b;
+    outline-offset: 3px;
+}
+
+.checkbox-question {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.checkbox-question input {
+    width: 20px;
+    height: 20px;
+    margin-top: 4px;
+    flex-shrink: 0;
+    accent-color: #d9641f;
+}
