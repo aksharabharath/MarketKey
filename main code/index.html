@@ -12,7 +12,7 @@
     <script src="vendor/pdf-lib.min.js" defer></script>
     <script src="script.js" defer></script>
 </head>
-
+    
 <body>
 
     <header class="app-header">
@@ -20,7 +20,7 @@
             <a class="logo" href="index.html">MarketKey</a>
         </div>
         <div class="header-right" id="headerControls" style="display: none;">
-            <button class="start-over-btn" id="startOverBtn">Start over</button>
+            <button type="button" class="start-over-btn" id="startOverBtn">Start over</button>
             <div class="lang-switcher">
                 <span data-lang="en" class="active">EN</span>
                 <span data-lang="es">ES</span>
@@ -70,7 +70,7 @@
                     <button type="button" data-lang="hi">हिं</button>
                 </div>
                 <p id="message"></p>  
-                <button type="button" class="next-btn">Next</button>
+                <button type="button" class="next-btn" id="langNextBtn">Next</button>
             </div>
         </section>
 
@@ -91,8 +91,66 @@
                     <div class="path-kicker">Agricultural route</div>
                     <h3>Raw produce, fruit, honey grown on my farm</h3>
                     <p>View guidance for agricultural exemptions and direct-to-consumer rules.</p>
-                    <button type="button" class="next-btn">Next</button>
                 </button>
+            </div>
+
+            <div id="agGuidanceView" style="display: none;" class="ag-guidance-box">
+                <h3>Agricultural Exemption Guidance</h3>
+                <p>If you are selling only whole, uncut raw produce grown exclusively on your own farm, you generally do not need a TFF permit under California direct-marketing rules.</p>
+                <button type="button" class="back-btn" id="agBackBtn">Back to path selection</button>
+            </div>
+        </section>
+
+        <!-- screen 3: questionnaire -->
+        <section id="screen3" class="screen">
+            <div class="eyebrow">Step 3 of 5</div>
+            <h2>Temporary Food Facility Application</h2>
+            <div id="liveCounter" class="live-counter">0 of 37 answered</div>
+            
+            <div id="validationAlert" class="validation-alert" style="display: none;">
+                Please fill out all required fields with standard characters before proceeding.
+            </div>
+
+            <form id="applicationForm">
+                <!-- Questionnaire fields injected here -->
+            </form>
+
+            <div class="screen-nav-buttons">
+                <button type="button" class="back-btn" id="qBackBtn">Back</button>
+                <button type="button" class="next-btn" id="qSubmitBtn">Save & Continue</button>
+            </div>
+        </section>
+
+        <!-- screen 4: review -->
+        <section id="screen4" class="screen">
+            <div class="eyebrow">Step 4 of 5</div>
+            <h2>Review Your Application</h2>
+            <p class="review-desc">Please review your information below before generating your official county PDF.</p>
+
+            <div id="reviewContent" class="review-container"></div>
+
+            <div class="screen-nav-buttons">
+                <button type="button" class="back-btn" id="revBackBtn">Back to Questions</button>
+                <button type="button" class="next-btn" id="downloadPdfBtn">Download Official Application PDF</button>
+            </div>
+        </section>
+
+        <!-- screen 5: done -->
+        <section id="screen5" class="screen">
+            <div class="success-box">
+                <div class="eyebrow">Step 5 of 5</div>
+                <h2>Application Generated Successfully!</h2>
+                <p class="success-text">Your PDF has been downloaded to your device. In accordance with our privacy-first policy, <strong>all form data has been permanently wiped from browser memory.</strong></p>
+                
+                <div class="next-steps-card">
+                    <h3>Next Steps for Vendors:</h3>
+                    <ul>
+                        <li>Print and sign your downloaded county PDF form.</li>
+                        <li>Submit your application to the Alameda County Environmental Health department or your event coordinator.</li>
+                    </ul>
+                </div>
+
+                <button type="button" class="next-btn" id="startNewAppBtn">Start a New Application</button>
             </div>
         </section>
     </main>
