@@ -1,4 +1,4 @@
-# MarketKey UI/UX & Design Specification
+# Design Elements
 
 ## 1. Color Palette
 
