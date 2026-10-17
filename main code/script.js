@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (pathCards) pathCards.style.display = 'flex';
             if (agGuidance) agGuidance.style.display = 'none';
         });
-    });
+    }
 });
 //------------------- (insert #2-4), check MarketKey/docs/handoff_notes.md for reference if need clarification
 
@@ -246,6 +246,22 @@ function updatePageText() {
     if (titleEl) titleEl.textContent = t.step2Title;
     if (descEl) descEl.textContent = t.step2Desc;
 
+    const tffKicker = document.querySelector('#tffPathBtn .path-kicker');
+    const tffTitle = document.querySelector('#tffPathBtn h3');
+    const tffDesc = document.querySelector('#tffPathBtn p');
+
+    if (tffKicker) tffKicker.textContent = t.tffKicker;
+    if (tffTitle) tffTitle.textContent = t.tffTitle;
+    if (tffDesc) tffDesc.textContent = t.tffDesc;
+
+    const agKicker = document.querySelector('#agPathBtn .path-kicker');
+    const agTitle = document.querySelector('#agPathBtn h3');
+    const agDesc = document.querySelector('#agPathBtn p');
+
+    if (agKicker) agKicker.textContent = t.agKicker;
+    if (agTitle) agTitle.textContent = t.agTitle;
+    if (agDesc) agDesc.textContent = t.agDesc;
+
     questionnaireQuestions.forEach(function(question) {
         const label = document.querySelector(
             `#applicationForm label[for="${question.id}"]`
@@ -259,21 +275,6 @@ function updatePageText() {
                 prompt + (question.required ? " *" : "");
         }
     });
-}
-
-    const tffKicker = document.querySelector('#tffPathBtn .path-kicker');
-    const tffTitle = document.querySelector('#tffPathBtn h3');
-    const tffDesc = document.querySelector('#tffPathBtn p');
-    if (tffKicker) tffKicker.textContent = t.tffKicker;
-    if (tffTitle) tffTitle.textContent = t.tffTitle;
-    if (tffDesc) tffDesc.textContent = t.tffDesc;
-
-    const agKicker = document.querySelector('#agPathBtn .path-kicker');
-    const agTitle = document.querySelector('#agPathBtn h3');
-    const agDesc = document.querySelector('#agPathBtn p');
-    if (agKicker) agKicker.textContent = t.agKicker;
-    if (agTitle) agTitle.textContent = t.agTitle;
-    if (agDesc) agDesc.textContent = t.agDesc;
 }
 
 let questionnaireQuestions = [];
