@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 appState.formData['todaysDate'] = today;
                 
                 showScreen('screen3');
-                loadQuestionnaire(); // <--- THIS WAS MISSING
+                loadQuestionnaire(); 
             });
         }
 
