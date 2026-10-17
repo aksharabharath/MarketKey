@@ -259,3 +259,72 @@ function updatePageText() {
     if (agTitle) agTitle.textContent = t.agTitle;
     if (agDesc) agDesc.textContent = t.agDesc;
 }
+
+// Stores the question, not answers.
+let questionnaireQuestions = [];
+
+async function loadQuestionnaire() {
+    const form = document.getElementById("applicationForm");
+
+    try {
+        const response = await fetch("./questions.json");
+
+        if (!response.ok) {
+            throw new Error("Could not load questions.json");
+        }
+
+        questionnaireQuestions = await response.json();
+        renderQuestionnaire();
+    } catch (error) {
+        form.textContent =
+            "The questions could not load. Please refresh the page.";
+
+        console.error(error);
+    }
+}
+
+function renderQuestionnaire() {
+    const form = document.getElementById("applicationForm");
+    if (!form) return;
+
+    form.replaceChildren();
+
+    questionnaireQuestions.forEach(function(question) {
+        const container = document.createElement("div");
+        container.className = "question";
+
+        const label = document.createElement("label");
+        label.htmlFor = question.id;
+
+        const prompt =
+            question.prompts[appState.lang] || question.prompts.en;
+
+        label.textContent = prompt + (question.required ? " *" : "");
+
+        const input = document.createElement("input");
+
+        input.id = question.id;
+        input.name = question.id;
+        input.type = question.type;
+        input.required = question.required;
+
+        //PDF available to the team.
+        input.dataset.pdfFieldKey = question.pdfFieldKey;
+
+        // Get previous answers while rebuilding the form.
+        const savedAnswer = appState.formData[question.id];
+
+        if (question.type === "checkbox") {
+            input.checked = savedAnswer === true;
+            container.classList.add("checkbox-question");
+
+            container.append(input, label);
+        } else {
+            input.value = savedAnswer ?? "";
+
+            container.append(label, input);
+        }
+
+        form.appendChild(container);
+    });
+}
