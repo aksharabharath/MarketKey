@@ -51,9 +51,11 @@ function showScreen(screenId){
     targetScreen.classList.add("active");
     const stepNumber = Number(screenId.replace("screen", ""));
     updateStepTracker(stepNumber);
+    
+    updatePageText();
+
     window.scrollTo(0, 0);
 }
-
 
 //2, for UPD stateTracker 
 function updateStepTracker(currentStep) {
@@ -72,12 +74,14 @@ function saveLanguage(langCode) {
     if (!langCode) return;
     appState.lang = langCode;
 
-    // Unhide the header controls once a language is chosen
     const headerControls = document.getElementById('headerControls');
     if (headerControls) {
         headerControls.style.display = 'flex';
     }
+
+    updatePageText();
 }
+
 // 5. PDF and review functions
 function renderReviewScreen() {
     const reviewContainer = document.getElementById('reviewContent');
@@ -154,4 +158,44 @@ async function downloadAndWipe() {
 
     showScreen('screen5');
     updateStepTracker(5);
+}
+
+const uiTranslations = {
+    en: {
+        step2Title: "What type of products are you selling at the market?",
+        step2Desc: "Cooked food and samples use the county form, while whole produce from your own farm often does not.",
+        tffTitle: "Prepared food, hot food, baked goods, samples",
+        agTitle: "Raw produce, fruit, honey grown on my farm"
+    },
+    es: {
+        step2Title: "¿Qué tipo de productos vende en el mercado?",
+        step2Desc: "Los alimentos cocinados y muestras usan el formulario del condado, mientras que los productos agrícolas propios a menudo no.",
+        tffTitle: "Comida preparada, comida caliente, productos horneados, muestras",
+        agTitle: "Productos crudos, fruta, miel cosechada en mi granja"
+    },
+    zh: {
+        step2Title: "您在市场出售什么类型的产品？",
+        step2Desc: "熟食和样品需要使用县级表格，而您自己农场种植的整块农产品通常不需要。",
+        tffTitle: "熟食、热食、烘焙食品、样品",
+        agTitle: "在我农场种植的生鲜农产品、水果、蜂蜜"
+    },
+    hi: {
+        step2Title: "आप बाजार में किस प्रकार के उत्पाद बेच रहे हैं?",
+        step2Desc: "पका हुआ भोजन और नमूने काउंटी फॉर्म का उपयोग करते हैं, जबकि आपके अपने खेत की ताजा उपज अक्सर ऐसा नहीं करती है।",
+        tffTitle: "तैयार भोजन, गर्म भोजन, पके हुए सामान, नमूने",
+        agTitle: "मेरे खेत में उगाई गई कच्ची उपज, फल, शहद"
+    }
+};
+
+function updatePageText() {
+    const lang = appState.lang;
+    const t = uiTranslations[lang];
+    if (!t) return;
+
+    // Update Screen 2 elements safely
+    const titleEl = document.querySelector('#screen2 .triage-title');
+    const descEl = document.querySelector('#screen2 .triage-desc');
+    
+    if (titleEl) titleEl.textContent = t.step2Title;
+    if (descEl) descEl.textContent = t.step2Desc;
 }
