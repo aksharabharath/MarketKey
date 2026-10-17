@@ -242,8 +242,24 @@ function updatePageText() {
 
     const titleEl = document.querySelector('#screen2 .triage-title');
     const descEl = document.querySelector('#screen2 .triage-desc');
+
     if (titleEl) titleEl.textContent = t.step2Title;
     if (descEl) descEl.textContent = t.step2Desc;
+
+    questionnaireQuestions.forEach(function(question) {
+        const label = document.querySelector(
+            `#applicationForm label[for="${question.id}"]`
+        );
+
+        if (label) {
+            const prompt =
+                question.prompts[appState.lang] || question.prompts.en;
+
+            label.textContent =
+                prompt + (question.required ? " *" : "");
+        }
+    });
+}
 
     const tffKicker = document.querySelector('#tffPathBtn .path-kicker');
     const tffTitle = document.querySelector('#tffPathBtn h3');
