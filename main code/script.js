@@ -202,15 +202,28 @@ const uiTranslations = {
         agDesc: "कृषि छूट और प्रत्यक्ष-से-उपभोक्ता नियमों के लिए मार्गदर्शन देखें।"
     }
 };
+
 function updatePageText() {
     const lang = appState.lang;
     const t = uiTranslations[lang];
     if (!t) return;
 
-    // Update Screen 2 elements safely
     const titleEl = document.querySelector('#screen2 .triage-title');
     const descEl = document.querySelector('#screen2 .triage-desc');
-    
     if (titleEl) titleEl.textContent = t.step2Title;
     if (descEl) descEl.textContent = t.step2Desc;
+
+    const tffKicker = document.querySelector('#tffPathBtn .path-kicker');
+    const tffTitle = document.querySelector('#tffPathBtn h3');
+    const tffDesc = document.querySelector('#tffPathBtn p');
+    if (tffKicker) tffKicker.textContent = t.tffKicker;
+    if (tffTitle) tffTitle.textContent = t.tffTitle;
+    if (tffDesc) tffDesc.textContent = t.tffDesc;
+
+    const agKicker = document.querySelector('#agPathBtn .path-kicker');
+    const agTitle = document.querySelector('#agPathBtn h3');
+    const agDesc = document.querySelector('#agPathBtn p');
+    if (agKicker) agKicker.textContent = t.agKicker;
+    if (agTitle) agTitle.textContent = t.agTitle;
+    if (agDesc) agDesc.textContent = t.agDesc;
 }
