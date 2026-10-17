@@ -37,9 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ==========================================
-    // ADD PATH SELECTION LOGIC HERE
-    // ==========================================
     const tffBtn = document.getElementById('tffPathBtn');
     if (tffBtn) {
         tffBtn.addEventListener('click', () => {
@@ -260,7 +257,6 @@ function updatePageText() {
     if (agDesc) agDesc.textContent = t.agDesc;
 }
 
-// Stores the question, not answers.
 let questionnaireQuestions = [];
 
 async function loadQuestionnaire() {
@@ -308,10 +304,8 @@ function renderQuestionnaire() {
         input.type = question.type;
         input.required = question.required;
 
-        //PDF available to the team.
         input.dataset.pdfFieldKey = question.pdfFieldKey;
 
-        // Get previous answers while rebuilding the form.
         const savedAnswer = appState.formData[question.id];
 
         if (question.type === "checkbox") {
