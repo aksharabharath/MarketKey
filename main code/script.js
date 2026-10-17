@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.languageButtons button').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            // Remove active class from all language buttons, then highlight clicked one
             document.querySelectorAll('.languageButtons button').forEach(b => b.classList.remove('active'));
             e.currentTarget.classList.add('active');
     
@@ -25,20 +24,53 @@ document.addEventListener('DOMContentLoaded', () => {
             saveLanguage(selectedLang);
         });
     });
+
     const nextButtons = document.querySelectorAll(".next-btn");
-//next button code- 
     nextButtons.forEach(function(button) {
-    button.addEventListener("click", function() {
-        const currentScreen = button.closest(".screen");
-        const nextScreen = currentScreen.nextElementSibling;
+        button.addEventListener("click", function() {
+            const currentScreen = button.closest(".screen");
+            const nextScreen = currentScreen.nextElementSibling;
 
-        if (nextScreen && nextScreen.classList.contains("screen")) {
-            showScreen(nextScreen.id);
-        }
+            if (nextScreen && nextScreen.classList.contains("screen")) {
+                showScreen(nextScreen.id);
+            }
+        });
     });
-  });
-});
 
+    // ==========================================
+    // ADD PATH SELECTION LOGIC HERE
+    // ==========================================
+    const tffBtn = document.getElementById('tffPathBtn');
+    if (tffBtn) {
+        tffBtn.addEventListener('click', () => {
+            appState.path = 'tff';
+            const today = new Date().toISOString().split('T')[0];
+            appState.formData['todaysDate'] = today;
+            showScreen('screen3');
+        });
+    }
+
+    const agBtn = document.getElementById('agPathBtn');
+    if (agBtn) {
+        agBtn.addEventListener('click', () => {
+            appState.path = 'ag';
+            const pathCards = document.querySelector('.path-cards');
+            const agGuidance = document.getElementById('agGuidanceView');
+            if (pathCards) pathCards.style.display = 'none';
+            if (agGuidance) agGuidance.style.display = 'block';
+        });
+    }
+
+    const agBackBtn = document.getElementById('agBackBtn');
+    if (agBackBtn) {
+        agBackBtn.addEventListener('click', () => {
+            const pathCards = document.querySelector('.path-cards');
+            const agGuidance = document.getElementById('agGuidanceView');
+            if (pathCards) pathCards.style.display = 'flex';
+            if (agGuidance) agGuidance.style.display = 'none';
+        });
+    });
+});
 //------------------- (insert #2-4), check MarketKey/docs/handoff_notes.md for reference if need clarification
 
 //2, for screen switching : 
