@@ -17,6 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.languageButtons button').forEach(btn => {
         btn.addEventListener('click', (e) => {
+            // Remove active class from all language buttons, then highlight clicked one
+            document.querySelectorAll('.languageButtons button').forEach(b => b.classList.remove('active'));
+            e.currentTarget.classList.add('active');
+    
             const selectedLang = e.currentTarget.getAttribute('data-lang');
             saveLanguage(selectedLang);
         });
@@ -64,11 +68,16 @@ function updateStepTracker(currentStep) {
     });
 }
 //2 for savelang 
-function saveLang(langCode) {
-     if (!selectedLang) return;
-    appState.lang = update.langCode;
-}
+function saveLanguage(langCode) {
+    if (!langCode) return;
+    appState.lang = langCode;
 
+    // Unhide the header controls once a language is chosen
+    const headerControls = document.getElementById('headerControls');
+    if (headerControls) {
+        headerControls.style.display = 'flex';
+    }
+}
 // 5. PDF and review functions
 function renderReviewScreen() {
     const reviewContainer = document.getElementById('reviewContent');
