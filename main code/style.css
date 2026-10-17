@@ -57,3 +57,9 @@ button.active, .path-card.active {
     color: #d9641f !important;
     border-color: #d9641f !important;
 }
+
+.languageButtons button.active {
+    background-color: #fdcb7b !important;
+    color: #d9641f !important;
+    border-color: #d9641f !important;
+}
