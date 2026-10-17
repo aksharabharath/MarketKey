@@ -9,6 +9,7 @@ const appState = {
 document.addEventListener('DOMContentLoaded', () => {
     showScreen('screen1');
     updateStepTracker(1);
+    loadQuestionnaire();
     
     const headerControls = document.getElementById('headerControls');
     if (headerControls) {
