@@ -45,3 +45,15 @@ h3{color: #fdcb7b;}
 .path-card h3 { font-family: 'Yeseva One', Georgia, serif; font-size: 24px; margin: 0 0 10px; color: #fdcb7b; }
 .path-card p { font-family: 'Garet', sans-serif; font-size: 16px; margin: 0; opacity: 0.9; line-height: 1.4; }
 #nextBtn { background-color: #d9641f; color: #fdcb7b; border: none; padding: 12px 28px; font-size: 18px; font-weight: bold;  border-radius: 8px; cursor: pointer;  margin-top: 24px;}
+
+
+button:active {
+    transform: scale(0.98);
+    opacity: 0.85;
+}
+
+button.active, .path-card.active {
+    background-color: #fdcb7b !important;
+    color: #d9641f !important;
+    border-color: #d9641f !important;
+}
