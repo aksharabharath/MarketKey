@@ -14,11 +14,11 @@ By translating complex government forms into an intuitive, plain-language questi
 ---
 
 ## Key Features
-* **Zero-Framework Architecture:** Built using pure HTML, CSS (Tailwind), and Vanilla JavaScript for maximum speed and simplicity. No bloated build tools or complex frameworks.
-* **Client-Side PDF Automation:** Leverages `pdf-lib` directly in the browser to map user answers onto the official government PDF template (`tff-application.pdf`) instantly.
-* **Zero-Data-Retention Privacy Policy:** All processing happens entirely in the user's browser memory. No sensitive business or personal data is ever saved to an external database or server.
-* **Multilingual Accessibility:** Designed to support local vendors in multiple languages (English, Spanish, Mandarin).
-* **Instant Deployment:** Hosted seamlessly via Vercel for immediate public accessibility.
+* Built using pure HTML, CSS (Tailwind), and Vanilla JavaScript for maximum speed and simplicity. No bloated build tools or complex frameworks.
+* Leverages `pdf-lib` directly in the browser to map user answers onto the official government PDF template (`tff-application.pdf`) instantly.
+*  All processing happens entirely in the user's browser memory. No sensitive business or personal data is ever saved to an external database or server.
+*  Designed to support local vendors in multiple languages (English, Spanish, Mandarin).
+*  Hosted seamlessly via Vercel for immediate public accessibility.
 
 ---
 
