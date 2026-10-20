@@ -47,66 +47,24 @@ h3{color: #fdcb7b;}
 #nextBtn { background-color: #d9641f; color: #fdcb7b; border: none; padding: 12px 28px; font-size: 18px; font-weight: bold;  border-radius: 8px; cursor: pointer;  margin-top: 24px;}
 
 
-button:active {
-    transform: scale(0.98);
-    opacity: 0.85;
-}
+button:active {transform: scale(0.98); opacity: 0.85;}
+button.active, .path-card.active {background-color: #fdcb7b !important; color: #d9641f !important; border-color: #d9641f !important;}
 
-button.active, .path-card.active {
-    background-color: #fdcb7b !important;
-    color: #d9641f !important;
-    border-color: #d9641f !important;
-}
+.languageButtons button.active {background-color: #fdcb7b !important; color: #d9641f !important; border-color: #d9641f !important;}
 
-.languageButtons button.active {
-    background-color: #fdcb7b !important;
-    color: #d9641f !important;
-    border-color: #d9641f !important;
-}
+#applicationForm {max-width: 700px; margin: 30px auto; text-align: left;}
 
-#applicationForm {
-    max-width: 700px;
-    margin: 30px auto;
-    text-align: left;
-}
+.question {margin-bottom: 24px;}
+.question label {display: block; margin-bottom: 8px; font-size: 17px; font-weight: bold; line-height: 1.5;}
+.question input:not([type="checkbox"]) {width: 100%; padding: 12px; border: 2px solid #d9641f;border-radius: 8px; background-color: #fff8ed;color: #713515;font: inherit;}
+.question input:focus {outline: 3px solid #fdcb7b; outline-offset: 3px;}
 
-.question {
-    margin-bottom: 24px;
-}
+.checkbox-question {display: flex; align-items: flex-start; gap: 12px;}
+.checkbox-question input {width: 20px; height: 20px; margin-top: 4px; flex-shrink: 0; accent-color: #d9641f;}
 
-.question label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 17px;
-    font-weight: bold;
-    line-height: 1.5;
-}
 
-.question input:not([type="checkbox"]) {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #d9641f;
-    border-radius: 8px;
-    background-color: #fff8ed;
-    color: #713515;
-    font: inherit;
-}
+.next-btn { background-color: #d9641f; color: #fdcb7b; border: none; padding: 12px 28px; font-size: 18px; font-weight: bold; font-family: 'League Spartan', sans-serif; border-radius: 8px; cursor: pointer; margin-top: 24px; transition: all 0.2s ease; }
+.next-btn:hover { opacity: 0.9; transform: translateY(-2px); }
 
-.question input:focus {
-    outline: 3px solid #fdcb7b;
-    outline-offset: 3px;
-}
-
-.checkbox-question {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-}
-
-.checkbox-question input {
-    width: 20px;
-    height: 20px;
-    margin-top: 4px;
-    flex-shrink: 0;
-    accent-color: #d9641f;
-}
+.back-btn { background-color: transparent; color: #d9641f; border: 2px solid #d9641f; padding: 10px 24px; font-size: 16px; font-weight: bold; font-family: 'League Spartan', sans-serif; border-radius: 8px; cursor: pointer; margin-top: 24px; margin-right: 12px; transition: all 0.2s ease; }
+.back-btn:hover { background-color: rgba(217, 100, 31, 0.1); }
