@@ -104,10 +104,12 @@
         <section id="screen3" class="screen">
             <div class="eyebrow">Step 3 of 5</div>
             <h2>Temporary Food Facility Application</h2>
-            <div id="liveCounter" class="live-counter">0 of 37 answered</div>
-            
-            <div id="validationAlert" class="validation-alert" style="display: none;">
-                Please fill out all required fields with standard characters before proceeding.
+            <p>Type your answers in English.</p>
+            <div id="liveCounter" class="live-counter" aria-live="polite">
+                Loading questions...
+            </div>
+            <div id="validationAlert" class="validation-alert" style="display: none;" role="alert">
+                Please complete all required fields which have * before clicking next.
             </div>
 
             <form id="applicationForm">
