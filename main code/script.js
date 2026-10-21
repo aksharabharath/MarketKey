@@ -70,7 +70,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextButtons = document.querySelectorAll(".next-btn");
     nextButtons.forEach(function(button) {
         button.addEventListener("click", function(e) {
-            // Skip if this is the submit button on the questionnaire page
+            if (button.id === "pSubmitBtn") return;
+
+            const currentScreen = button.closest(".screen");
+            const nextScreen = currentScreen.nextElementSibling;
+
+            if (nextScreen && nextScreen.classList.contains("screen")) {
+                showScreen(nextScreen.id);
+            }
+        });
+    });
+    nextButtons.forEach(function(button) {
+        button.addEventListener("click", function(e) {
             if (button.id === "pSubmitBtn") return;
 
             const currentScreen = button.closest(".screen");
