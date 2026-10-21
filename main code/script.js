@@ -492,6 +492,23 @@ function validateForm() {
     const validationAlert = document.getElementById("validationAlert");
 
     if (unanswered.length > 0) {
+         unanswered.forEach(function(question) {
+        const label = document.querySelector(
+            `#applicationForm label[for="${question.id}"]`
+        );
+
+        if (label) {
+            const oldAsterisk = label.querySelector(".error-asterisk");
+            if (oldAsterisk) oldAsterisk.remove();
+
+            const asterisk = document.createElement("span");
+            asterisk.className = "error-asterisk";
+            asterisk.textContent = " *";
+            asterisk.style.color = "red";
+
+            label.appendChild(asterisk);
+        }
+             
         if (validationAlert) {
             validationAlert.style.setProperty("display", "block", "important");
             validationAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
