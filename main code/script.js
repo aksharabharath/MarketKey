@@ -438,7 +438,8 @@ function validateForm() {
 
     if (unanswered.length > 0) {
         if (validationAlert) {
-            validationAlert.style.setProperty("display", "block", "important"); // <--- Forces it open
+            validationAlert.style.setProperty("display", "block", "important");
+            validationAlert.scrollIntoView({ behavior: 'smooth', block: 'center' }); // Automatically scrolls the user up to see the warning!
         }
         console.log("Validation failed. Stopping navigation.");
         return;
@@ -447,6 +448,8 @@ function validateForm() {
             validationAlert.style.display = "none";
         }
         console.log("Validation passed! Proceeding to review screen.");
+        renderReviewScreen();
+        showScreen("screen4");
     }
 
     renderReviewScreen();
