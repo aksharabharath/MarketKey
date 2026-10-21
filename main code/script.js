@@ -178,7 +178,7 @@ function renderReviewScreen() {
 
 async function generateCountyPDF() {
     try {
-        const formUrl = '../assets/tff-application.pdf'; 
+        const formUrl = 'assets/tff-application.pdf'; 
         const formBytes = await fetch(formUrl).then(res => res.arrayBuffer());
 
         const pdfDoc = await PDFLib.PDFDocument.load(formBytes);
