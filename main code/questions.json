@@ -407,9 +407,14 @@
   {
     "id": "waterSource",
     "pdfFieldKey": "WHERE WILL YOU OBTAIN CLEAN WATER FOR HANDWASH AND WAREWASH",
-    "type": "text",
+    "type": "select",
     "category": "operations",
     "required": true,
+    "options": [
+      "Event-provided potable water source",
+      "Brought my own 5+ gallon container",
+      "Approved commercial commissary source"
+    ],
     "prompts": {
       "en": "Where will you obtain clean water for handwashing and equipment washing?",
       "es": "¿De dónde obtendrá agua limpia para lavarse las manos y lavar los equipos?",
@@ -420,9 +425,14 @@
   {
     "id": "wasteDisposal",
     "pdfFieldKey": "WHERE WILL YOU DISPOSE OF DIRTY WATER GARBAGE AND USED FRY OIL",
-    "type": "text",
+    "type": "select",
     "category": "operations",
     "required": true,
+    "options": [
+      "Approved event wastewater tank / utility sink",
+      "Sewer disposal connection at event site",
+      "Haul back to approved commercial commissary"
+    ],
     "prompts": {
       "en": "Where will you dispose of dirty wastewater, garbage, and used frying oil?",
       "es": "¿Dónde desechará el agua sucia, la basura y el aceite de cocina usado?",
@@ -433,14 +443,18 @@
   {
     "id": "boothEnclosure",
     "pdfFieldKey": "WILL YOU PROVIDE A FULLY ENCLOSED BOOTH IF NO EXPLAIN WHY IF YES EXPLAIN THE MATERIALS USED",
-    "type": "text",
+    "type": "select",
     "category": "operations",
     "required": true,
+    "options": [
+      "Fully Enclosed Booth (Mesh screening & Vinyl walls)",
+      "Open Air Setup (Exempt / Pre-packaged only)"
+    ],
     "prompts": {
-      "en": "Will you provide a fully enclosed booth? If no, explain why; if yes, list the materials used.",
-      "es": "¿Proporcionará un puesto completamente cerrado? Si no, explique por qué; si sí, indique los materiales usados.",
-      "zh": "您是否会提供一个完全封闭的摊位？如果否，请说明原因；如果是，请列出所使用的材料。",
-      "hi": "क्या आप पूरी तरह से संलग्न बूथ प्रदान करेंगे? यदि नहीं, तो बताएं क्यों; यदि हाँ, तो प्रयुक्त सामग्री की सूची दें।"
+      "en": "Will you provide a fully enclosed booth setup?",
+      "es": "¿Proporcionará una configuración de puesto completamente cerrada?",
+      "zh": "您是否会提供完全封闭的摊位设置？",
+      "hi": "क्या आप पूरी तरह से संलग्न बूथ सेटअप प्रदान करेंगे?"
     }
   },
   {
