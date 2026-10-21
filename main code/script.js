@@ -67,9 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    const nextButtons = document.querySelectorAll(".next-btn:not (pSubmitBtn");
+    const nextButtons = document.querySelectorAll(".next-btn");
     nextButtons.forEach(function(button) {
-        button.addEventListener("click", function() {
+        button.addEventListener("click", function(e) {
+            // Skip if this is the submit button on the questionnaire page
+            if (button.id === "pSubmitBtn") return;
+
             const currentScreen = button.closest(".screen");
             const nextScreen = currentScreen.nextElementSibling;
 
@@ -78,13 +81,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-    const SubmitBtn = document.getElementById("pSubmitBtn");
 
+    const pSubmitBtn = document.getElementById("pSubmitBtn");
     if (pSubmitBtn) {
-    SubmitBtn.addEventListener("click", function() {
-        validateForm();
-    });
-}
+        pSubmitBtn.addEventListener("click", function(e) {
+            e.preventDefault();
+            validateForm();
+        });
+    }
 
     const tffBtn = document.getElementById('tffPathBtn');
         if (tffBtn) {
