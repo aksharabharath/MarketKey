@@ -1,75 +1,20 @@
-/* just shortening a lot of the names so that coding is faster
-first sec is just the basic page and title sliding, we can change it later if needed. */
-body { margin: 0; min-height: 100vh; background-color: #ffebcc; color: #d9641f; font-family: 'Garet', Arial, Helvetica, sans-serif; }
-header { padding: 24px 5%;  background-color: #d9641f; color: #fdcb7b; border-bottom: 1px solid rgba(253, 203, 123, 0.2); } 
-.logo { color: inherit; text-decoration: none; font-size: 24px; font-weight: bold; font-family: 'League Spartan', sans-serif; } /* logo */
-main { width: 100%; min-height: calc(100vh - 77px); padding: 60px 5%;  background-color: #ffebcc; color: #d9641f; text-align: center; }
-.tagline { margin: 12px 0 0; font-weight: bold; font-size: 26px; font-family: 'League Spartan', sans-serif; }
-.languageSelection { margin-top: 40px; }
-.languageSelection h2 { margin: 0 0 28px; font-size: 30px; font-family: 'Yeseva One', Georgia, serif; } /* language section just shortened */
-.languageButtons { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
-.languageButtons button { background-color: #ea7530; color: #fdcb7b; border: none; padding: 12px 24px; font-size: 18px; font-weight: bold; font-family: 'League Spartan', sans-serif; border-radius: 8px; cursor: pointer; }
-.languageButtons button:hover { opacity: 0.9; transform: translateY(-2px); }
-#message { min-height: 24px; font-size: 18px; margin-top: 24px; font-family: 'Garet', sans-serif; } /* message */
-h3{color: #fdcb7b;}
+#applicationForm input:not([type="checkbox"]), #applicationForm select { width: 100%; padding: 12px; box-sizing: border-box; border: 2px solid #d9641f; border-radius: 8px; background-color: #fff8ed; color: #713515; font: inherit; margin-top: 6px; margin-bottom: 16px; }
 
-/* header controls & steps */
-.app-header { display: flex; justify-content: space-between; align-items: center; padding: 24px 5%;  background-color: #d9641f; color: #fdcb7b; border-bottom: 1px solid rgba(253, 203, 123, 0.2); }
-.header-left { display: flex; align-items: center; gap: 16px; }
-.header-right { display: flex; align-items: center; gap: 12px; }
-.start-over-btn { background: none; border: none; color: #fdcb7b; font-family: 'League Spartan', sans-serif; font-size: 16px; cursor: pointer; opacity: 0.8; }
-.start-over-btn:hover { opacity: 1; text-decoration: underline; }
-.lang-switcher { display: flex; gap: 8px; font-family: 'League Spartan', sans-serif; font-size: 14px; }
-.lang-switcher span { cursor: pointer; opacity: 0.6; }
-.lang-switcher span.active { opacity: 1; font-weight: bold; border-bottom: 1px solid #fdcb7b; }
+#applicationForm select { appearance: none; -webkit-appearance: none; -moz-appearance: none; background-image: url("data:image/svg+xml;utf8,<svg fill='%23d9641f' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>"); background-repeat: no-repeat; background-position: right 12px center; cursor: pointer; }
 
-/* 5 step tracker */
-.step-tracker { display: flex; justify-content: center; gap: 12px; margin: 20px 0 40px; font-family: 'League Spartan', sans-serif; font-size: 14px; }
-.step-dot { display: flex; align-items: center; gap: 6px; opacity: 0.5; }
-.step-dot.active { opacity: 1; font-weight: bold; }
-.step-circle { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #d9641f; display: flex; align-items: center; justify-content: center; font-size: 12px; }
-.step-dot.active .step-circle { background-color: #d9641f; color: #fdcb7b; }
+#applicationForm input:focus, #applicationForm select:focus { outline: 3px solid #fdcb7b; outline-offset: 3px; }
 
-/* path cards / triage */
+#applicationForm .checkbox-question { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+
+#applicationForm .checkbox-question input { width: 20px; height: 20px; margin-top: 4px; flex-shrink: 0; accent-color: #d9641f; }
+
+.review-card { background-color: #fff8ed; border: 2px solid rgba(217, 100, 31, 0.3); border-radius: 8px; padding: 16px 20px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px; text-align: left; }
+
+.review-label { font-family: 'League Spartan', sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; color: #b55d22; }
+
+.review-value { font-size: 16px; color: #713515; font-weight: bold; }
+
 .screen { display: none; }
 .screen.active { display: block; }
-.eyebrow { font-family: 'League Spartan', sans-serif; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; opacity: 0.9; }
-.triage-title { font-size: 42px; font-family: 'Yeseva One', Georgia, serif; margin: 0 0 16px; color: #fdcb7b; }
-.triage-desc { font-size: 18px; font-family: 'Garet', sans-serif; max-width: 600px; margin: 0 auto 40px; opacity: 0.9; line-height: 1.5; }
 
-.path-cards { display: flex; flex-direction: column; gap: 20px; max-width: 650px; margin: 0 auto; }
-.path-card { background-color: rgba(253, 203, 123, 0.08); border: 2px solid rgba(253, 203, 123, 0.3); border-radius: 12px; padding: 28px; text-align: left; cursor: pointer; transition: all 0.2s ease; color: inherit; }
-.path-card:hover { border-color: #fdcb7b; background-color: rgba(253, 203, 123, 0.15); transform: translateY(-2px); }
-.path-kicker { font-family: 'League Spartan', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; opacity: 0.8; }
-.path-card h3 { font-family: 'Yeseva One', Georgia, serif; font-size: 24px; margin: 0 0 10px; color: #fdcb7b; }
-.path-card p { font-family: 'Garet', sans-serif; font-size: 16px; margin: 0; opacity: 0.9; line-height: 1.4; }
-#nextBtn { background-color: #d9641f; color: #fdcb7b; border: none; padding: 12px 28px; font-size: 18px; font-weight: bold;  border-radius: 8px; cursor: pointer;  margin-top: 24px;}
-
-html, body {overflow-x: hidden; max-width: 100vw; margin: 0; min-height: 100vh; background-color: #ffebcc; color: #d9641f; font-family: 'Garet', Arial, Helvetica, sans-serif;}
-
-button:active {transform: scale(0.98); opacity: 0.85;}
-button.active, .path-card.active {background-color: #fdcb7b !important; color: #d9641f !important; border-color: #d9641f !important;}
-
-.languageButtons button.active {background-color: #fdcb7b !important; color: #d9641f !important; border-color: #d9641f !important;}
-
-#applicationForm {max-width: 700px; margin: 30px auto; text-align: left;}
-
-.question {margin-bottom: 24px;}
-.question label {display: block; margin-bottom: 8px; font-size: 17px; font-weight: bold; line-height: 1.5;}
-
-.question input:not([type="checkbox"]), .question select { width: 100%; padding: 12px; box-sizing: border-box; border: 2px solid #d9641f; border-radius: 8px; background-color: #fff8ed; color: #713515; font: inherit; }
-.question select { appearance: none; -webkit-appearance: none; -moz-appearance: none; background-image: url("data:image/svg+xml;utf8,<svg fill='%23d9641f' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>"); background-repeat: no-repeat; background-position: right 12px center; cursor: pointer; }
-
-.question input:focus,
-.question select:focus {outline: 3px solid #fdcb7b; outline-offset: 3px;}
-
-.checkbox-question {display: flex; align-items: flex-start; gap: 12px;}
-.checkbox-question input {width: 20px; height: 20px; margin-top: 4px; flex-shrink: 0; accent-color: #d9641f;}
-
-.next-btn { background-color: #d9641f; color: #fdcb7b; border: none; padding: 12px 28px; font-size: 18px; font-weight: bold; font-family: 'League Spartan', sans-serif; border-radius: 8px; cursor: pointer; margin-top: 24px; transition: all 0.2s ease; }
-.next-btn:hover { opacity: 0.9; transform: translateY(-2px); }
-
-.back-btn { background-color: transparent; color: #d9641f; border: 2px solid #d9641f; padding: 10px 24px; font-size: 16px; font-weight: bold; font-family: 'League Spartan', sans-serif; border-radius: 8px; cursor: pointer; margin-top: 24px; margin-right: 12px; transition: all 0.2s ease; }
-.back-btn:hover { background-color: rgba(217, 100, 31, 0.1); }
-
-.validation-alert {background-color: #fde8e8; color: #c53030; border: 2px solid #e53e3e; padding: 14px 20px; border-radius: 8px; font-family: 'League Spartan', sans-serif; font-weight: 600; font-size: 16px; margin-bottom: 24px; text-align: center;}
+.languageButtons button.active { background-color: #fdcb7b !important; color: #d9641f !important; border-color: #d9641f !important; }
