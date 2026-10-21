@@ -46,7 +46,6 @@ h3{color: #fdcb7b;}
 .path-card p { font-family: 'Garet', sans-serif; font-size: 16px; margin: 0; opacity: 0.9; line-height: 1.4; }
 #nextBtn { background-color: #d9641f; color: #fdcb7b; border: none; padding: 12px 28px; font-size: 18px; font-weight: bold;  border-radius: 8px; cursor: pointer;  margin-top: 24px;}
 
-
 button:active {transform: scale(0.98); opacity: 0.85;}
 button.active, .path-card.active {background-color: #fdcb7b !important; color: #d9641f !important; border-color: #d9641f !important;}
 
@@ -62,9 +61,10 @@ button.active, .path-card.active {background-color: #fdcb7b !important; color: #
 .checkbox-question {display: flex; align-items: flex-start; gap: 12px;}
 .checkbox-question input {width: 20px; height: 20px; margin-top: 4px; flex-shrink: 0; accent-color: #d9641f;}
 
-
 .next-btn { background-color: #d9641f; color: #fdcb7b; border: none; padding: 12px 28px; font-size: 18px; font-weight: bold; font-family: 'League Spartan', sans-serif; border-radius: 8px; cursor: pointer; margin-top: 24px; transition: all 0.2s ease; }
 .next-btn:hover { opacity: 0.9; transform: translateY(-2px); }
 
 .back-btn { background-color: transparent; color: #d9641f; border: 2px solid #d9641f; padding: 10px 24px; font-size: 16px; font-weight: bold; font-family: 'League Spartan', sans-serif; border-radius: 8px; cursor: pointer; margin-top: 24px; margin-right: 12px; transition: all 0.2s ease; }
 .back-btn:hover { background-color: rgba(217, 100, 31, 0.1); }
+
+.validation-alert {background-color: #fde8e8; color: #c53030; border: 2px solid #e53e3e; padding: 14px 20px; border-radius: 8px; font-family: 'League Spartan', sans-serif; font-weight: 600; font-size: 16px; margin-bottom: 24px; text-align: center;}
