@@ -266,7 +266,8 @@ const uiTranslations = {
         tffDesc: "Fills out the official Alameda County temporary food facility application directly in your browser.",
         agKicker: "Agricultural route",
         agTitle: "Raw produce, fruit, honey grown on my farm",
-        agDesc: "View guidance for agricultural exemptions and direct-to-consumer rules."
+        agDesc: "View guidance for agricultural exemptions and direct-to-consumer rules.",
+        validationError: "Please fill out all required fields with standard characters before proceeding."
     },
     es: {
         step2Title: "¿Qué tipo de productos vende en el mercado?",
@@ -276,7 +277,8 @@ const uiTranslations = {
         tffDesc: "Llena la solicitud oficial de instalaciones de comida temporal del Condado de Alameda directamente en su navegador.",
         agKicker: "Ruta agrícola",
         agTitle: "Productos crudos, fruta, miel cosechada en mi granja",
-        agDesc: "Vea la guía para exenciones agrícolas y reglas de venta directa al consumidor."
+        agDesc: "Vea la guía para exenciones agrícolas y reglas de venta directa al consumidor.",
+        validationError: "Por favor, complete todos los campos obligatorios antes de continuar."
     },
     zh: {
         step2Title: "您在市场出售什么类型的产品？",
@@ -286,7 +288,8 @@ const uiTranslations = {
         tffDesc: "直接在您的浏览器中填写阿拉amed达县官方临时食品设施申请表。",
         agKicker: "农业路线",
         agTitle: "在我农场种植的生鲜农产品、水果、蜂蜜",
-        agDesc: "查看农业豁免和直销规则指南。"
+        agDesc: "查看农业豁免和直销规则指南。",
+        validationError: "请在继续之前填写所有必填字段。"
     },
     hi: {
         step2Title: "आप बाजार में किस प्रकार के उत्पाद बेच रहे हैं?",
@@ -296,7 +299,8 @@ const uiTranslations = {
         tffDesc: "सीधे अपने ब्राउज़र में आधिकारिक Alameda County अस्थायी खाद्य सुविधा आवेदन भरें।",
         agKicker: "कृषि मार्ग",
         agTitle: "मेरे खेत में उगाई गई कच्ची उपज, फल, शहद",
-        agDesc: "कृषि छूट और प्रत्यक्ष-से-उपभोक्ता नियमों के लिए मार्गदर्शन देखें।"
+        agDesc: "कृषि छूट और प्रत्यक्ष-से-उपभोक्ता नियमों के लिए मार्गदर्शन देखें।",
+        validationError: "कृपया आगे बढ़ने से पहले सभी आवश्यक फ़ील्ड भरें।"
     }
 };
 
@@ -315,6 +319,10 @@ function updatePageText() {
     const tffTitle = document.querySelector('#tffPathBtn h3');
     const tffDesc = document.querySelector('#tffPathBtn p');
 
+    const validationAlertEl = document.getElementById('validationAlert');
+    if (validationAlertEl && t.validationError) {
+        validationAlertEl.textContent = t.validationError;
+    
     if (tffKicker) tffKicker.textContent = t.tffKicker;
     if (tffTitle) tffTitle.textContent = t.tffTitle;
     if (tffDesc) tffDesc.textContent = t.tffDesc;
