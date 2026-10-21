@@ -241,10 +241,14 @@ async function generateCountyPDF() {
 }
 
 async function downloadAndWipe() {
-    const businessName = appState.formData['businessName'] || 'Vendor';
+    const businessName = appState.formData['businessName'] || 
+                         appState.formData['business_name'] || 
+                         appState.formData['companyName'] || 
+                         appState.formData['applicantName'] || 
+                         'Vendor';
     
     const pdfBytes = await generateCountyPDF();
-    if (!pdfBytes) return; // stop if generation failed
+    if (!pdfBytes) return;
 
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
     const blobUrl = URL.createObjectURL(blob);
