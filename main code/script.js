@@ -419,31 +419,42 @@ function renderQuestionnaire() {
         form.appendChild(container);
     });
 }
+
 function validateForm() {
+    console.log("validateForm() was triggered!");
+    
     const form = document.getElementById("applicationForm");
     const unanswered = [];
 
     questionnaireQuestions.forEach(function(question) {
-        if (!question.required) return; // <--- ADDED THIS LINE
+        if (!question.required) return;
 
         const input = form.querySelector(`#${question.id}`);
 
         if (!input) {
+            console.warn(`Missing input in DOM for required question: ${question.id}`);
             unanswered.push(question);
         } else if (input.type === "checkbox" && !input.checked) {
+            console.log(`Unchecked required checkbox: ${question.id}`);
             unanswered.push(question);
         } else if (input.type !== "checkbox" && !input.value.trim()) {
+            console.log(`Empty required text field: ${question.id}`);
             unanswered.push(question);
         }
     });
+
+    console.log("Total unanswered required questions:", unanswered.length);
+    console.log("Unanswered list:", unanswered);
 
     const validationAlert = document.getElementById("validationAlert");
 
     if (unanswered.length > 0) {
         if (validationAlert) validationAlert.style.display = "block";
+        console.log("Validation failed. Stopping navigation.");
         return;
     } else {
         if (validationAlert) validationAlert.style.display = "none";
+        console.log("Validation passed! Proceeding to review screen.");
     }
 
     renderReviewScreen();
