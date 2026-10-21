@@ -411,11 +411,11 @@ function renderQuestionnaire() {
             container.append(label, input);
         }
 
-        input.addEventListener('input', (e) => {
+        const eventType = question.type === 'checkbox' ? 'change' : 'input';
+        input.addEventListener(eventType, (e) => {
             const val = question.type === 'checkbox' ? e.target.checked : e.target.value;
             appState.formData[storageKey] = val;
         });
-
         form.appendChild(container);
     });
 }
@@ -424,6 +424,8 @@ function validateForm() {
     const unanswered = [];
 
     questionnaireQuestions.forEach(function(question) {
+        if (!question.required) return; // <--- ADDED THIS LINE
+
         const input = form.querySelector(`#${question.id}`);
 
         if (!input) {
