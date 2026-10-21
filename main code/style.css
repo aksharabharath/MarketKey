@@ -13,3 +13,6 @@
 .review-label { font-family: 'League Spartan', sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; color: #b55d22; }
 
 .review-value { font-size: 16px; color: #713515; font-weight: bold; }
+
+.screen { display: none; }
+.screen.active { display: block; }
