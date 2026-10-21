@@ -200,15 +200,18 @@ function renderReviewScreen() {
 
 async function generateCountyPDF() {
     try {
-        const formUrl = '/assets/tff-application.pdf'; // <--- Added leading slash here
-        const formBytes = await fetch(formUrl).then(res => {
-            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-            return res.arrayBuffer();
-        });
+        const formUrl = '/assets/tff-application.pdf'; 
+        const response = await fetch(formUrl);
         
+        if (!response.ok) {
+            throw new Error(`Failed to load PDF template (HTTP status ${response.status})`);
+        }
+
+        const formBytes = await response.arrayBuffer();
+
         const pdfDoc = await PDFLib.PDFDocument.load(formBytes);
         const form = pdfDoc.getForm();
-        
+
         for (const [key, value] of Object.entries(appState.formData)) {
             try {
                 const field = form.getField(key);
@@ -225,17 +228,15 @@ async function generateCountyPDF() {
         }
 
         form.flatten();
-
         const pdfBytes = await pdfDoc.save();
         return pdfBytes;
 
     } catch (error) {
         console.error('Error generating PDF locally:', error);
-        alert('Could not generate PDF. Please ensure the local template file is present.');
+        alert(`Could not generate PDF: ${error.message}`); // This will show the exact error reason!
         return null;
     }
 }
-
 async function downloadAndWipe() {
     const businessName = appState.formData['businessName'] || 'Vendor';
     
