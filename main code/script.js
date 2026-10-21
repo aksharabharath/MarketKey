@@ -477,10 +477,10 @@ function validateForm() {
         if (!input) {
             console.warn(`Missing input in DOM for required question: ${question.id}`);
             unanswered.push(question);
+       } else if (input.type === "checkbox" && !input.checked) {
+        console.log(`Unchecked required checkbox: ${question.id}`);
+        unanswered.push(question);
         } else if (input.type !== "checkbox" && !input.value.trim()) {
-    unanswered.push(question);
-        }
-    });
 
     console.log("Total unanswered required questions:", unanswered.length);
     console.log("Unanswered list:", unanswered);
