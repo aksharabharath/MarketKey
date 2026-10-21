@@ -1,6 +1,5 @@
 /* just shortening a lot of the names so that coding is faster
 first sec is just the basic page and title sliding, we can change it later if needed. */
-* { box-sizing: border-box; }
 body { margin: 0; min-height: 100vh; background-color: #ffebcc; color: #d9641f; font-family: 'Garet', Arial, Helvetica, sans-serif; }
 header { padding: 24px 5%;  background-color: #d9641f; color: #fdcb7b; border-bottom: 1px solid rgba(253, 203, 123, 0.2); } 
 .logo { color: inherit; text-decoration: none; font-size: 24px; font-weight: bold; font-family: 'League Spartan', sans-serif; } /* logo */
@@ -55,8 +54,12 @@ button.active, .path-card.active {background-color: #fdcb7b !important; color: #
 
 .question {margin-bottom: 24px;}
 .question label {display: block; margin-bottom: 8px; font-size: 17px; font-weight: bold; line-height: 1.5;}
-.question input:not([type="checkbox"]) {width: 100%; padding: 12px; border: 2px solid #d9641f;border-radius: 8px; background-color: #fff8ed;color: #713515;font: inherit;}
-.question input:focus {outline: 3px solid #fdcb7b; outline-offset: 3px;}
+
+.question input:not([type="checkbox"]), .question select { width: 100%; padding: 12px; box-sizing: border-box; border: 2px solid #d9641f; border-radius: 8px; background-color: #fff8ed; color: #713515; font: inherit; }
+.question select { appearance: none; -webkit-appearance: none; -moz-appearance: none; background-image: url("data:image/svg+xml;utf8,<svg fill='%23d9641f' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>"); background-repeat: no-repeat; background-position: right 12px center; cursor: pointer; }
+
+.question input:focus,
+.question select:focus {outline: 3px solid #fdcb7b; outline-offset: 3px;}
 
 .checkbox-question {display: flex; align-items: flex-start; gap: 12px;}
 .checkbox-question input {width: 20px; height: 20px; margin-top: 4px; flex-shrink: 0; accent-color: #d9641f;}
