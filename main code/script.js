@@ -477,9 +477,8 @@ function validateForm() {
         if (!input) {
             console.warn(`Missing input in DOM for required question: ${question.id}`);
             unanswered.push(question);
-        }} else if (input.type !== "checkbox" && !input.value.trim()) {
+        } else if (input.type !== "checkbox" && !input.value.trim()) {
     unanswered.push(question);
-        }
         }
     });
 
