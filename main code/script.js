@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    const nextButtons = document.querySelectorAll(".next-btn");
+    const nextButtons = document.querySelectorAll(".next-btn:not (pSubmitBtn");
     nextButtons.forEach(function(button) {
         button.addEventListener("click", function() {
             const currentScreen = button.closest(".screen");
@@ -78,6 +78,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+    const SubmitBtn = document.getElementById("pSubmitBtn");
+
+    if (pSubmitBtn) {
+    SubmitBtn.addEventListener("click", function() {
+        validateForm();
+    });
+}
 
     const tffBtn = document.getElementById('tffPathBtn');
         if (tffBtn) {
@@ -385,4 +392,14 @@ function renderQuestionnaire() {
 
         form.appendChild(container);
     });
+}
+function validateForm() {
+    const form = document.getElementById("applicationForm");
+
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+    showScreen("screen4");
+    renderReviewScreen();
 }
