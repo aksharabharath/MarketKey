@@ -421,11 +421,29 @@ function renderQuestionnaire() {
 }
 function validateForm() {
     const form = document.getElementById("applicationForm");
+    const unanswered = [];
 
-    if (!form.checkValidity()) {
-        form.reportValidity();
+    questionnaireQuestions.forEach(function(question) {
+        const input = form.querySelector(`#${question.id}`);
+
+        if (!input) {
+            unanswered.push(question);
+        } else if (input.type === "checkbox" && !input.checked) {
+            unanswered.push(question);
+        } else if (input.type !== "checkbox" && !input.value.trim()) {
+            unanswered.push(question);
+        }
+    });
+
+    const validationAlert = document.getElementById("validationAlert");
+
+    if (unanswered.length > 0) {
+        if (validationAlert) validationAlert.style.display = "block";
         return;
+    } else {
+        if (validationAlert) validationAlert.style.display = "none";
     }
-    showScreen("screen4");
+
     renderReviewScreen();
+    showScreen("screen4");
 }
