@@ -200,12 +200,15 @@ function renderReviewScreen() {
 
 async function generateCountyPDF() {
     try {
-        const formUrl = './assets/tff-application.pdf'; 
-        const formBytes = await fetch(formUrl).then(res => res.arrayBuffer());
-
+        const formUrl = '/assets/tff-application.pdf'; // <--- Added leading slash here
+        const formBytes = await fetch(formUrl).then(res => {
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            return res.arrayBuffer();
+        });
+        
         const pdfDoc = await PDFLib.PDFDocument.load(formBytes);
         const form = pdfDoc.getForm();
-
+        
         for (const [key, value] of Object.entries(appState.formData)) {
             try {
                 const field = form.getField(key);
