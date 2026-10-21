@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="overflow-x-hidden max-w-[100vw] bg-[#ffebcc] text-[#d9641f]">
 
 <head>
     <meta charset="UTF-8">
@@ -8,138 +8,146 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;600;700&family=Yeseva+One&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
 </head>
 
-<body>
+<body class="bg-[#ffebcc] text-[#d9641f] font-sans min-h-screen m-0 overflow-x-hidden max-w-[100vw]">
 
-    <header class="app-header">
-        <a class="logo" href="index.html">MarketKey</a>
-        <div class="header-right" id="headerControls" style="display: none;">
-            <button type="button" class="start-over-btn" id="startOverBtn">Start over</button>
-            <div class="lang-switcher">
-                <span data-lang="en" class="active">EN</span>
-                <span data-lang="es">ES</span>
-                <span data-lang="zh">中文</span>
-                <span data-lang="hi">हिं</span>
+    <!-- Header -->
+    <header class="flex justify-between items-center py-6 px-[5%] bg-[#d9641f] text-[#fdcb7b] border-b border-[#fdcb7b]/25">
+        <a class="text-2xl font-bold font-['League_Spartan'] no-underline text-inherit" href="index.html">MarketKey</a>
+        <div class="flex items-center gap-3" id="headerControls" style="display: none;">
+            <button type="button" class="bg-transparent border-none text-[#fdcb7b] font-['League_Spartan'] text-base cursor-pointer opacity-80 hover:opacity-100 hover:underline" id="startOverBtn">Start over</button>
+            <div class="flex gap-2 font-['League_Spartan'] text-sm lang-switcher">
+                <span data-lang="en" class="cursor-pointer opacity-60 font-bold border-b border-[#fdcb7b] active">EN</span>
+                <span data-lang="es" class="cursor-pointer opacity-60">ES</span>
+                <span data-lang="zh" class="cursor-pointer opacity-60">中文</span>
+                <span data-lang="hi" class="cursor-pointer opacity-60">हिं</span>
             </div>
         </div>
     </header>
 
-    <main>
-        <nav class="step-tracker">
-            <div class="step-dot active" data-step="1">
-                <div class="step-circle">1</div>
+    <main class="w-full min-h-[calc(100vh-77px)] py-[60px] px-[5%] text-center bg-[#ffebcc] text-[#d9641f]">
+        <!-- 5-Step Tracker -->
+        <nav class="flex justify-center gap-3 my-5 font-['League_Spartan'] text-sm step-tracker">
+            <div class="flex items-center gap-1.5 opacity-50 font-bold step-dot active" data-step="1">
+                <div class="w-6 h-6 rounded-full border-2 border-[#d9641f] flex items-center justify-center text-xs step-circle">1</div>
                 <span>Language</span>
             </div>
-            <div class="step-dot" data-step="2">
-                <div class="step-circle">2</div>
+            <div class="flex items-center gap-1.5 opacity-50 step-dot" data-step="2">
+                <div class="w-6 h-6 rounded-full border-2 border-[#d9641f] flex items-center justify-center text-xs step-circle">2</div>
                 <span>Path</span>
             </div>
-            <div class="step-dot" data-step="3">
-                <div class="step-circle">3</div>
+            <div class="flex items-center gap-1.5 opacity-50 step-dot" data-step="3">
+                <div class="w-6 h-6 rounded-full border-2 border-[#d9641f] flex items-center justify-center text-xs step-circle">3</div>
                 <span>Questions</span>
             </div>
-            <div class="step-dot" data-step="4">
-                <div class="step-circle">4</div>
+            <div class="flex items-center gap-1.5 opacity-50 step-dot" data-step="4">
+                <div class="w-6 h-6 rounded-full border-2 border-[#d9641f] flex items-center justify-center text-xs step-circle">4</div>
                 <span>Review</span>
             </div>
-            <div class="step-dot" data-step="5">
-                <div class="step-circle">5</div>
+            <div class="flex items-center gap-1.5 opacity-50 step-dot" data-step="5">
+                <div class="w-6 h-6 rounded-full border-2 border-[#d9641f] flex items-center justify-center text-xs step-circle">5</div>
                 <span>Done</span>
             </div>
         </nav>
 
+        <!-- Screen 1: Language -->
         <section id="screen1" class="screen active">
-            <div class="eyebrow">Fremont vendors · Alameda County</div>
-            <p class="tagline">So that you can get to Selling</p>
+            <div class="font-['League_Spartan'] text-sm uppercase tracking-wider mb-3 opacity-90 eyebrow">Fremont vendors · Alameda County</div>
+            <p class="mt-3 mb-0 font-bold text-[26px] font-['League_Spartan'] tagline">So that you can get to Selling</p>
             
-            <div class="languageSelection">
-                <h2 id="languageHeading">Choose your language</h2>
-                <div class="languageButtons">
-                    <button type="button" data-lang="en" class="active">English</button>
-                    <button type="button" data-lang="es">Español</button>
-                    <button type="button" data-lang="zh">中文</button>
-                    <button type="button" data-lang="hi">हिं</button>
+            <div class="mt-10 languageSelection">
+                <h2 id="languageHeading" class="mt-0 mb-7 text-[30px] font-['Yeseva_One']">Choose your language</h2>
+                <div class="flex justify-center gap-4 flex-wrap languageButtons">
+                    <button type="button" data-lang="en" class="bg-[#ea7530] text-[#fdcb7b] border-none py-3 px-6 text-lg font-bold font-['League_Spartan'] rounded-lg cursor-pointer hover:opacity-90 active:scale-95 active">English</button>
+                    <button type="button" data-lang="es" class="bg-[#ea7530] text-[#fdcb7b] border-none py-3 px-6 text-lg font-bold font-['League_Spartan'] rounded-lg cursor-pointer hover:opacity-90 active:scale-95">Español</button>
+                    <button type="button" data-lang="zh" class="bg-[#ea7530] text-[#fdcb7b] border-none py-3 px-6 text-lg font-bold font-['League_Spartan'] rounded-lg cursor-pointer hover:opacity-90 active:scale-95">中文</button>
+                    <button type="button" data-lang="hi" class="bg-[#ea7530] text-[#fdcb7b] border-none py-3 px-6 text-lg font-bold font-['League_Spartan'] rounded-lg cursor-pointer hover:opacity-90 active:scale-95">हिं</button>
                 </div>
-                <p id="message"></p>  
-                <button type="button" class="next-btn" id="langNextBtn">Next</button>
+                <p id="message" class="min-h-[24px] text-lg mt-6"></p>  
+                <button type="button" class="bg-[#d9641f] text-[#fdcb7b] border-none py-3 px-7 text-lg font-bold font-['League_Spartan'] rounded-lg cursor-pointer mt-6 hover:opacity-90 active:scale-95 next-btn" id="langNextBtn">Next</button>
             </div>
         </section>
 
+        <!-- Screen 2: Path Selection -->
         <section id="screen2" class="screen">
-            <div class="eyebrow">Step 2 of 5</div>
-            <h2 class="triage-title">What type of products are you selling at the market?</h2>
-            <p class="triage-desc">Cooked food and samples use the county form, while whole produce from your own farm often does not.</p>
+            <div class="font-['League_Spartan'] text-sm uppercase tracking-wider mb-3 opacity-90 eyebrow">Step 2 of 5</div>
+            <h2 class="text-[42px] font-['Yeseva_One'] mt-0 mb-4 text-[#fdcb7b] triage-title">What type of products are you selling at the market?</h2>
+            <p class="text-lg max-w-[600px] mx-auto mb-10 opacity-90 leading-relaxed triage-desc">Cooked food and samples use the county form, while whole produce from your own farm often does not.</p>
             
-            <div class="path-cards">
-                <div class="path-card" id="tffPathBtn">
-                    <div class="path-kicker">Temporary food facility</div>
-                    <h3>Prepared food, hot food, baked goods, samples</h3>
-                    <p>Fills out the official Alameda County temporary food facility application directly in your browser.</p>
-                </div>
+            <div class="flex flex-col gap-5 max-w-[650px] mx-auto path-cards">
+                <button type="button" class="bg-[#fdcb7b]/10 border-2 border-[#fdcb7b]/30 rounded-xl p-7 text-left cursor-pointer hover:border-[#fdcb7b] hover:bg-[#fdcb7b]/20 transition path-card" id="tffPathBtn">
+                    <div class="font-['League_Spartan'] text-xs uppercase tracking-wider mb-2 opacity-80 path-kicker">Temporary food facility</div>
+                    <h3 class="font-['Yeseva_One'] text-2xl mt-0 mb-2.5 text-[#fdcb7b]">Prepared food, hot food, baked goods, samples</h3>
+                    <p class="text-base m-0 opacity-90">Fills out the official Alameda County temporary food facility application directly in your browser.</p>
+                </button>
                 
-                <div class="path-card" id="agPathBtn">
-                    <div class="path-kicker">Agricultural route</div>
-                    <h3>Raw produce, fruit, honey grown on my farm</h3>
-                    <p>View guidance for agricultural exemptions and direct-to-consumer rules.</p>
-                </div>
+                <button type="button" class="bg-[#fdcb7b]/10 border-2 border-[#fdcb7b]/30 rounded-xl p-7 text-left cursor-pointer hover:border-[#fdcb7b] hover:bg-[#fdcb7b]/20 transition path-card" id="agPathBtn">
+                    <div class="font-['League_Spartan'] text-xs uppercase tracking-wider mb-2 opacity-80 path-kicker">Agricultural route</div>
+                    <h3 class="font-['Yeseva_One'] text-2xl mt-0 mb-2.5 text-[#fdcb7b]">Raw produce, fruit, honey grown on my farm</h3>
+                    <p class="text-base m-0 opacity-90">View guidance for agricultural exemptions and direct-to-consumer rules.</p>
+                </button>
             </div>
 
-            <div id="agGuidanceView" style="display: none;" class="path-cards" style="text-align: left;">
-                <h3>Agricultural Exemption Guidance</h3>
-                <p>If you are selling only whole, uncut raw produce grown exclusively on your own farm, you generally do not need a TFF permit under California direct-marketing rules.</p>
-                <button type="button" class="back-btn" id="agBackBtn">Back to path selection</button>
+            <div id="agGuidanceView" style="display: none;" class="mt-8 max-w-[650px] mx-auto text-left path-cards">
+                <h3 class="font-['Yeseva_One'] text-2xl text-[#fdcb7b]">Agricultural Exemption Guidance</h3>
+                <p class="text-base opacity-90 mt-2">If you are selling only whole, uncut raw produce grown exclusively on your own farm, you generally do not need a TFF permit under California direct-marketing rules.</p>
+                <button type="button" class="bg-transparent text-[#d9641f] border-2 border-[#d9641f] py-2.5 px-6 text-base font-bold font-['League_Spartan'] rounded-lg cursor-pointer mt-6 back-btn" id="agBackBtn">Back to path selection</button>
             </div>
         </section>
 
+        <!-- Screen 3: Questionnaire -->
         <section id="screen3" class="screen">
-            <div class="eyebrow">Step 3 of 5</div>
-            <h2 class="triage-title">Temporary Food Facility Application</h2>
-            <p class="triage-desc" style="margin-bottom: 12px;">Type your answers in English.</p>
-            <div id="liveCounter" class="eyebrow" style="margin-bottom: 20px;">questions...</div>
+            <div class="font-['League_Spartan'] text-sm uppercase tracking-wider mb-3 opacity-90 eyebrow">Step 3 of 5</div>
+            <h2 class="text-[42px] font-['Yeseva_One'] mt-0 mb-4 text-[#fdcb7b] triage-title">Temporary Food Facility Application</h2>
+            <p class="text-base opacity-90 mb-3 triage-desc">Type your answers in English.</p>
+            <div id="liveCounter" class="font-['League_Spartan'] text-sm mb-5 opacity-80 eyebrow">questions...</div>
             
-            <div id="validationAlert" class="validation-alert" style="display: none;">
+            <div id="validationAlert" class="bg-[#fde8e8] text-[#c53030] border-2 border-[#e53e3e] py-3.5 px-5 rounded-lg font-['League_Spartan'] font-semibold text-base mb-6 text-center validation-alert" style="display: none;">
                 Please complete all required fields which have * before clicking next.
             </div>
 
-            <form id="applicationForm"></form>
+            <form id="applicationForm" class="max-w-[700px] my-[30px] mx-auto text-left"></form>
 
-            <div style="max-width: 700px; margin: 0 auto; text-align: left;">
-                <button type="button" class="back-btn" id="qBackBtn">Back</button>
-                <button type="button" class="next-btn" id="qSubmitBtn">Save & Continue</button>
+            <div class="flex justify-start gap-3 mt-6 max-w-[700px] mx-auto">
+                <button type="button" class="bg-transparent text-[#d9641f] border-2 border-[#d9641f] py-2.5 px-6 text-base font-bold font-['League_Spartan'] rounded-lg cursor-pointer back-btn" id="qBackBtn">Back</button>
+                <button type="button" class="bg-[#d9641f] text-[#fdcb7b] border-none py-3 px-7 text-lg font-bold font-['League_Spartan'] rounded-lg cursor-pointer hover:opacity-90 next-btn" id="qSubmitBtn">Save & Continue</button>
             </div>
         </section>
 
+        <!-- Screen 4: Review -->
         <section id="screen4" class="screen">
-            <div class="eyebrow">Step 4 of 5</div>
-            <h2 class="triage-title">Review Your Application</h2>
-            <p class="triage-desc">Please review your information below before generating your official county PDF.</p>
+            <div class="font-['League_Spartan'] text-sm uppercase tracking-wider mb-3 opacity-90 eyebrow">Step 4 of 5</div>
+            <h2 class="text-[42px] font-['Yeseva_One'] mt-0 mb-4 text-[#fdcb7b] triage-title">Review Your Application</h2>
+            <p class="text-base max-w-[600px] mx-auto mb-10 opacity-90 triage-desc">Please review your information below before generating your official county PDF.</p>
 
-            <div id="reviewContent" style="max-width: 700px; margin: 0 auto;"></div>
+            <div id="reviewContent" class="max-w-[700px] mx-auto"></div>
 
-            <div style="max-width: 700px; margin: 30px auto 0; text-align: left;">
-                <button type="button" class="back-btn" id="revBackBtn">Back to Questions</button>
-                <button type="button" class="next-btn" id="downloadPdfBtn">Download Official Application PDF</button>
+            <div class="flex justify-start gap-3 mt-8 max-w-[700px] mx-auto">
+                <button type="button" class="bg-transparent text-[#d9641f] border-2 border-[#d9641f] py-2.5 px-6 text-base font-bold font-['League_Spartan'] rounded-lg cursor-pointer back-btn" id="revBackBtn">Back to Questions</button>
+                <button type="button" class="bg-[#d9641f] text-[#fdcb7b] border-none py-3 px-7 text-lg font-bold font-['League_Spartan'] rounded-lg cursor-pointer hover:opacity-90 next-btn" id="downloadPdfBtn">Download Official Application PDF</button>
             </div>
         </section>
 
+        <!-- Screen 5: Done -->
         <section id="screen5" class="screen">
-            <div style="max-width: 700px; margin: 0 auto; text-align: center;">
-                <div class="eyebrow">Step 5 of 5</div>
-                <h2 class="triage-title">Application Generated Successfully!</h2>
-                <p class="triage-desc">Your PDF has been downloaded to your device. <strong>All form data has been permanently wiped from browser memory.</strong></p>
+            <div class="max-w-[700px] mx-auto text-center">
+                <div class="font-['League_Spartan'] text-sm uppercase tracking-wider mb-3 opacity-90 eyebrow">Step 5 of 5</div>
+                <h2 class="text-[42px] font-['Yeseva_One'] mt-0 mb-4 text-[#fdcb7b] triage-title">Application Generated Successfully!</h2>
+                <p class="text-base mb-6 opacity-90 triage-desc">Your PDF has been downloaded to your device. <strong>All form data has been permanently wiped from browser memory.</strong></p>
                 
-                <div style="background-color: rgba(253, 203, 123, 0.1); border: 2px solid rgba(217, 100, 31, 0.3); border-radius: 12px; padding: 24px; text-align: left; margin-bottom: 30px;">
-                    <h3 style="margin-top: 0; color: #d9641f; font-family: 'Yeseva One', Georgia, serif;">Next Steps for Vendors:</h3>
-                    <ul style="margin: 0; padding-left: 20px; line-height: 1.6;">
+                <div class="bg-[#fff8ed] border-2 border-[#d9641f]/30 rounded-xl p-6 text-left mb-8 shadow-sm">
+                    <h3 class="font-['Yeseva_One'] text-xl text-[#d9641f] mt-0 mb-3">Next Steps for Vendors:</h3>
+                    <ul class="list-disc pl-5 text-base space-y-2 opacity-90">
                         <li>Print and sign your downloaded county PDF form.</li>
                         <li>Submit your application to the Alameda County Environmental Health department or your event coordinator.</li>
                     </ul>
                 </div>
 
-                <button type="button" class="next-btn" id="startNewAppBtn">Start a New Application</button>
+                <button type="button" class="bg-[#d9641f] text-[#fdcb7b] border-none py-3 px-7 text-lg font-bold font-['League_Spartan'] rounded-lg cursor-pointer hover:opacity-90 next-btn" id="startNewAppBtn">Start a New Application</button>
             </div>
         </section>
     </main>

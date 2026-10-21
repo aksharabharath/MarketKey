@@ -59,9 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     document.querySelectorAll('.languageButtons button').forEach(btn => {
         btn.addEventListener('click', (e) => {
+            // Remove active class from all buttons
             document.querySelectorAll('.languageButtons button').forEach(b => b.classList.remove('active'));
+            // Add active class to the clicked button
             e.currentTarget.classList.add('active');
-    
+
             const selectedLang = e.currentTarget.getAttribute('data-lang');
             saveLanguage(selectedLang);
         });
