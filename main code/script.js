@@ -322,6 +322,7 @@ function updatePageText() {
     const validationAlertEl = document.getElementById('validationAlert');
     if (validationAlertEl && t.validationError) {
         validationAlertEl.textContent = t.validationError;
+    }
     
     if (tffKicker) tffKicker.textContent = t.tffKicker;
     if (tffTitle) tffTitle.textContent = t.tffTitle;
