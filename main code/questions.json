@@ -197,14 +197,14 @@
   {
     "id": "prePackagedQuestion",
     "pdfFieldKey": "DO ALL OF YOUR MENU ITEMS REMAIN IN ORIGINAL FACTORY SEALED PACKAGE OR PREPACKAGED BY YOU AT COMMENCIPAL KITCHEN",
-    "type": "text",
+    "type": "checkbox",
     "category": "menuDetails",
-    "required": true,
+    "required": false,
     "prompts": {
-      "en": "Do all menu items/samples remain factory-sealed or pre-packaged by you at a commercial kitchen?",
-      "es": "¿Todos los artículos del menú permanecen sellados de fábrica o preempaquetados por usted en cocina comercial?",
-      "zh": "您的所有菜单项或样品是否保持原厂密封，或者是由您在商业厨房预先包装好的？",
-      "hi": "क्या आपके सभी मेनू आइटम या नमूने कारखाने से सील बंद रहते हैं या आपके द्वारा कमर्शियल किचन में पैक किए जाते हैं?"
+      "en": "Are all menu items factory-sealed or pre-packaged at an approved commercial kitchen?",
+      "es": "¿Todos los artículos del menú están sellados de fábrica o preempaquetados en cocina comercial?",
+      "zh": "所有菜单项是否都在经批准的商业厨房中原厂密封或预包装？",
+      "hi": "क्या सभी मेनू आइटम कारखाने से सीलबंद हैं या स्वीकृत कमर्शियल किचन में पैक किए गए हैं?"
     }
   },
   {
@@ -483,39 +483,39 @@
   {
     "id": "samplingYN",
     "pdfFieldKey": "SAMPLING Y/N",
-    "type": "text",
+    "type": "checkbox",
     "category": "operations",
     "required": false,
     "prompts": {
       "en": "Will you be offering food samples at your booth?",
       "es": "¿Ofrecerá muestras de comida en su puesto?",
       "zh": "您是否会在摊位提供食品样品？",
-      "hi": "क्या आप अपने बूथ पर खाद्य नमूने (samples) पेश करेंगे?"
+      "hi": "क्या आप अपने बूथ पर खाद्य नमूने पेश करेंगे?"
     }
   },
   {
     "id": "generatorInfo",
     "pdfFieldKey": "Generator Information",
-    "type": "text",
+    "type": "checkbox",
     "category": "operations",
     "required": false,
     "prompts": {
-      "en": "Will you be using a generator? If yes, provide details.",
-      "es": "¿Utilizará un generador? Si es así, proporcione los detalles.",
-      "zh": "您是否会使用发电机？如果是，请提供详细信息。",
-      "hi": "क्या आप जनरेटर का उपयोग करेंगे? यदि हाँ, तो विवरण दें।"
+      "en": "Will you be using a generator?",
+      "es": "¿Utilizará un generador?",
+      "zh": "您是否会使用发电机？",
+      "hi": "क्या आप जनरेटर का उपयोग करेंगे?"
     }
   },
   {
     "id": "sponsorApproval",
     "pdfFieldKey": "Sponsor Approval",
-    "type": "text",
+    "type": "checkbox",
     "category": "compliance",
     "required": false,
     "prompts": {
-      "en": "Has the event sponsor signed off or approved your booth setup?",
-      "es": "¿El patrocinador del evento ha firmado o aprobado la configuración de su puesto?",
-      "zh": "活动赞助商是否已签署或批准您的摊位设置？",
+      "en": "Has the event sponsor approved your booth setup?",
+      "es": "¿El patrocinador del evento ha aprobado la configuración de su puesto?",
+      "zh": "活动赞助商是否已批准您的摊位设置？",
       "hi": "क्या कार्यक्रम प्रायोजक ने आपके बूथ सेटअप को मंजूरी दे दी है?"
     }
   },
