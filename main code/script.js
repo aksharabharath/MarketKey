@@ -389,34 +389,71 @@ function renderQuestionnaire() {
         const prompt = question.prompts[appState.lang] || question.prompts.en;
         label.textContent = prompt + (question.required ? " *" : "");
 
-        const input = document.createElement("input");
-        input.id = question.id;
-        input.name = question.id;
-        input.type = question.type;
-        input.required = question.required;
-        input.dataset.pdfFieldKey = question.pdfFieldKey;
-
+        let input;
         const storageKey = question.pdfFieldKey || question.id;
         const savedAnswer = appState.formData[storageKey];
 
-        if (question.type === "checkbox") {
+        if (question.type === "select") {
+            input = document.createElement("select");
+            input.id = question.id;
+            input.name = question.id;
+            input.required = question.required;
+
+            const defaultOpt = document.createElement("option");
+            defaultOpt.value = "";
+            defaultOpt.textContent = "-- Select an option --";
+            defaultOpt.disabled = true;
+            defaultOpt.selected = !savedAnswer;
+            input.appendChild(defaultOpt);
+
+            question.options.forEach(optText => {
+                const opt = document.createElement("option");
+                opt.value = optText;
+                opt.textContent = optText;
+                if (savedAnswer === optText) opt.selected = true;
+                input.appendChild(opt);
+            });
+
+            container.append(label, input);
+
+        } else if (question.type === "date") {
+            input = document.createElement("input");
+            input.id = question.id;
+            input.name = question.id;
+            input.type = "date";
+            input.required = question.required;
+            input.value = savedAnswer ?? "";
+            container.append(label, input);
+
+        } else if (question.type === "checkbox") {
+            input = document.createElement("input");
+            input.id = question.id;
+            input.name = question.id;
+            input.type = "checkbox";
+            input.required = question.required;
             input.checked = savedAnswer === true;
             container.classList.add("checkbox-question");
             container.append(input, label);
+
         } else {
+            input = document.createElement("input");
+            input.id = question.id;
+            input.name = question.id;
+            input.type = question.type || "text";
+            input.required = question.required;
             input.value = savedAnswer ?? "";
             container.append(label, input);
         }
 
-        const eventType = question.type === 'checkbox' ? 'change' : 'input';
+        const eventType = (question.type === 'checkbox' || question.type === 'select') ? 'change' : 'input';
         input.addEventListener(eventType, (e) => {
             const val = question.type === 'checkbox' ? e.target.checked : e.target.value;
             appState.formData[storageKey] = val;
         });
+
         form.appendChild(container);
     });
 }
-
 function validateForm() {
     console.log("validateForm() was triggered!");
 
