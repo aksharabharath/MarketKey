@@ -93,14 +93,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    const pSubmitBtn = document.getElementById("pSubmitBtn");
-    if (pSubmitBtn) {
-        pSubmitBtn.addEventListener("click", function(e) {
+    const qSubmitBtn = document.getElementById("qSubmitBtn");
+    if (qSubmitBtn) {
+        qSubmitBtn.addEventListener("click", function(e) {
             e.preventDefault();
             validateForm();
         });
     }
-
+    
     const tffBtn = document.getElementById('tffPathBtn');
         if (tffBtn) {
             tffBtn.addEventListener('click', () => {
