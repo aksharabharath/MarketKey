@@ -200,16 +200,18 @@ function renderReviewScreen() {
 
 async function generateCountyPDF() {
     try {
-        const formUrl = '/assets/tff-application.pdf'; 
+        const { PDFDocument } = await import('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.esm.js');
+
+        const formUrl = '/assets/tff-application.pdf';  
         const response = await fetch(formUrl);
-        
+
         if (!response.ok) {
             throw new Error(`Failed to load PDF template (HTTP status ${response.status})`);
         }
 
         const formBytes = await response.arrayBuffer();
 
-        const pdfDoc = await PDFLib.PDFDocument.load(formBytes);
+        const pdfDoc = await PDFDocument.load(formBytes);
         const form = pdfDoc.getForm();
 
         for (const [key, value] of Object.entries(appState.formData)) {
@@ -233,10 +235,11 @@ async function generateCountyPDF() {
 
     } catch (error) {
         console.error('Error generating PDF locally:', error);
-        alert(`Could not generate PDF: ${error.message}`); // This will show the exact error reason!
+        alert(`Could not generate PDF: ${error.message}`);
         return null;
     }
 }
+
 async function downloadAndWipe() {
     const businessName = appState.formData['businessName'] || 'Vendor';
     
