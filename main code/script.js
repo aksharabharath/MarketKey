@@ -437,11 +437,15 @@ function validateForm() {
     const validationAlert = document.getElementById("validationAlert");
 
     if (unanswered.length > 0) {
-        if (validationAlert) validationAlert.style.display = "block";
+        if (validationAlert) {
+            validationAlert.style.setProperty("display", "block", "important"); // <--- Forces it open
+        }
         console.log("Validation failed. Stopping navigation.");
         return;
     } else {
-        if (validationAlert) validationAlert.style.display = "none";
+        if (validationAlert) {
+            validationAlert.style.display = "none";
+        }
         console.log("Validation passed! Proceeding to review screen.");
     }
 
