@@ -356,32 +356,32 @@ function renderQuestionnaire() {
         const label = document.createElement("label");
         label.htmlFor = question.id;
 
-        const prompt =
-            question.prompts[appState.lang] || question.prompts.en;
-
+        const prompt = question.prompts[appState.lang] || question.prompts.en;
         label.textContent = prompt + (question.required ? " *" : "");
 
         const input = document.createElement("input");
-
         input.id = question.id;
         input.name = question.id;
         input.type = question.type;
         input.required = question.required;
-
         input.dataset.pdfFieldKey = question.pdfFieldKey;
 
-        const savedAnswer = appState.formData[question.id];
+        const storageKey = question.pdfFieldKey || question.id;
+        const savedAnswer = appState.formData[storageKey];
 
         if (question.type === "checkbox") {
             input.checked = savedAnswer === true;
             container.classList.add("checkbox-question");
-
             container.append(input, label);
         } else {
             input.value = savedAnswer ?? "";
-
             container.append(label, input);
         }
+
+        input.addEventListener('input', (e) => {
+            const val = question.type === 'checkbox' ? e.target.checked : e.target.value;
+            appState.formData[storageKey] = val;
+        });
 
         form.appendChild(container);
     });
