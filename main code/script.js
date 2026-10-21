@@ -419,7 +419,7 @@ function renderQuestionnaire() {
 
 function validateForm() {
     console.log("validateForm() was triggered!");
-    
+
     const form = document.getElementById("applicationForm");
     const unanswered = [];
 
@@ -448,19 +448,16 @@ function validateForm() {
     if (unanswered.length > 0) {
         if (validationAlert) {
             validationAlert.style.setProperty("display", "block", "important");
-            validationAlert.scrollIntoView({ behavior: 'smooth', block: 'center' }); // Automatically scrolls the user up to see the warning!
+            validationAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
         console.log("Validation failed. Stopping navigation.");
-        return;
+        return; 
     } else {
         if (validationAlert) {
             validationAlert.style.display = "none";
         }
         console.log("Validation passed! Proceeding to review screen.");
         renderReviewScreen();
-        showScreen("screen4");
+        showScreen("screen4"); 
     }
-
-    renderReviewScreen();
-    showScreen("screen4");
 }
