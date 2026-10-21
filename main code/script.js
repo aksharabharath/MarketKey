@@ -20,6 +20,36 @@ document.addEventListener('DOMContentLoaded', () => {
         downloadBtn.addEventListener('click', downloadAndWipe);
     }
 
+    const startOverBtn = document.getElementById('startOverBtn');
+    if (startOverBtn) {
+        startOverBtn.addEventListener('click', () => {
+            if (confirm("Are you sure you want to start over? All entered data will be cleared.")) {
+                appState.formData = {};
+                appState.path = null;
+                showScreen('screen1');
+            }
+        });
+    }
+
+    const qBackBtn = document.getElementById('qBackBtn');
+    if (qBackBtn) {
+        qBackBtn.addEventListener('click', () => showScreen('screen2'));
+    }
+
+    const revBackBtn = document.getElementById('revBackBtn');
+    if (revBackBtn) {
+        revBackBtn.addEventListener('click', () => showScreen('screen3'));
+    }
+
+    const startNewAppBtn = document.getElementById('startNewAppBtn');
+    if (startNewAppBtn) {
+        startNewAppBtn.addEventListener('click', () => {
+            appState.formData = {};
+            appState.path = null;
+            showScreen('screen1');
+        });
+    }
+
     document.querySelectorAll('.lang-switcher span').forEach(span => {
         span.addEventListener('click', (e) => {
             const selectedLang = e.currentTarget.getAttribute('data-lang');
