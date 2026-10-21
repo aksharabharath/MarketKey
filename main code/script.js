@@ -20,6 +20,13 @@ document.addEventListener('DOMContentLoaded', () => {
         downloadBtn.addEventListener('click', downloadAndWipe);
     }
 
+    document.querySelectorAll('.lang-switcher span').forEach(span => {
+        span.addEventListener('click', (e) => {
+            const selectedLang = e.currentTarget.getAttribute('data-lang');
+            saveLanguage(selectedLang);
+        });
+    });
+    
     document.querySelectorAll('.languageButtons button').forEach(btn => {
         btn.addEventListener('click', (e) => {
             document.querySelectorAll('.languageButtons button').forEach(b => b.classList.remove('active'));
@@ -115,9 +122,12 @@ function saveLanguage(langCode) {
         headerControls.style.display = 'flex';
     }
 
+    document.querySelectorAll('.lang-switcher span').forEach(span => {
+        span.classList.toggle('active', span.getAttribute('data-lang') === langCode);
+    });
+
     updatePageText();
 }
-
 // 5. PDF and review functions
 function renderReviewScreen() {
     const reviewContainer = document.getElementById('reviewContent');
