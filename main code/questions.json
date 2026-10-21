@@ -78,16 +78,31 @@
     }
   },
   {
-    "id": "boothCountAndType",
-    "pdfFieldKey": "SUBMIT ONE APPLICATION PER BOOTH. # of Booths. INDICATE INDOOR OR OUTDOOR",
-    "type": "text",
+    "id": "boothCount",
+    "pdfFieldKey": "NUMBER OF BOOTHS",
+    "type": "select",
     "category": "eventDetails",
     "required": true,
+    "options": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
     "prompts": {
-      "en": "How many booths are you operating, and is your setup indoor or outdoor?",
-      "es": "¿Cuántos puestos opera y su instalación es bajo techo o al aire libre?",
-      "zh": "您运营多少个摊位？您的设置是室内还是室外？",
-      "hi": "आप कितने बूथ संचालित कर रहे हैं, और आपका सेटअप इनडोर है या आउटडोर?"
+      "en": "How many booths are you operating?",
+      "es": "¿Cuántos puestos opera?",
+      "zh": "您运营多少个摊位？",
+      "hi": "आप कितने बूथ संचालित कर रहे हैं?"
+    }
+  },
+  {
+    "id": "setupType",
+    "pdfFieldKey": "INDOOR OR OUTDOOR SETUP",
+    "type": "select",
+    "category": "eventDetails",
+    "required": true,
+    "options": ["Indoor", "Outdoor"],
+    "prompts": {
+      "en": "Is your setup indoor or outdoor?",
+      "es": "¿Su instalación es bajo techo o al aire libre?",
+      "zh": "您的设置是室内还是室外？",
+      "hi": "आपका सेटअप इनडोर है या आउटडोर?"
     }
   },
   {
@@ -119,7 +134,7 @@
   {
     "id": "eventDates",
     "pdfFieldKey": "START DATE END DATE",
-    "type": "text",
+    "type": "date",
     "category": "eventDetails",
     "required": true,
     "prompts": {
