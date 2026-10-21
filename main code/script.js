@@ -81,19 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });   
     
-    nextButtons.forEach(function(button) {
-        button.addEventListener("click", function(e) {
-            if (button.id === "pSubmitBtn") return;
-
-            const currentScreen = button.closest(".screen");
-            const nextScreen = currentScreen.nextElementSibling;
-
-            if (nextScreen && nextScreen.classList.contains("screen")) {
-                showScreen(nextScreen.id);
-            }
-        });
-    });
-
     const qSubmitBtn = document.getElementById("qSubmitBtn");
     if (qSubmitBtn) {
         qSubmitBtn.addEventListener("click", function(e) {
