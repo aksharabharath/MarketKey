@@ -15,6 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (headerControls) {
         headerControls.style.display = 'none';
     }
+    const downloadBtn = document.getElementById('downloadPdfBtn');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', downloadAndWipe);
+    }
 
     document.querySelectorAll('.languageButtons button').forEach(btn => {
         btn.addEventListener('click', (e) => {
