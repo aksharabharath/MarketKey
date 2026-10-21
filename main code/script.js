@@ -66,13 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
             saveLanguage(selectedLang);
         });
     });
-    const langNextBtn = document.getElementById("langNextBtn");
-
-    if (langNextBtn) {
-    langNextBtn.addEventListener("click", () => {
-        showScreen("screen2");
-        });
-    }
+  
 
     const nextButtons = document.querySelectorAll(".next-btn");
     nextButtons.forEach(function(button) {
