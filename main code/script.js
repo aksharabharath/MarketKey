@@ -462,7 +462,6 @@ function renderQuestionnaire() {
     updateLiveCounter();
 }
 
-}
 function validateForm() {
     console.log("validateForm() was triggered!");
 
