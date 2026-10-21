@@ -445,14 +445,23 @@ function renderQuestionnaire() {
             container.append(label, input);
         }
 
-        const eventType = (question.type === 'checkbox' || question.type === 'select') ? 'change' : 'input';
-        input.addEventListener(eventType, (e) => {
-            const val = question.type === 'checkbox' ? e.target.checked : e.target.value;
+        const eventType =
+            (question.type === "checkbox" || question.type === "select")
+                ? "change"
+                : "input";
+        input.addEventListener(eventType, function(e) {
+            const val = question.type === "checkbox"
+                ? e.target.checked
+                : e.target.value;
             appState.formData[storageKey] = val;
+            updateLiveCounter();
         });
 
         form.appendChild(container);
     });
+    updateLiveCounter();
+}
+
 }
 function validateForm() {
     console.log("validateForm() was triggered!");
