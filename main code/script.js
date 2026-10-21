@@ -70,7 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextButtons = document.querySelectorAll(".next-btn");
     nextButtons.forEach(function(button) {
         button.addEventListener("click", function(e) {
-            // IGNORE both pSubmitBtn and qSubmitBtn so they use their own custom validation
             if (button.id === "pSubmitBtn" || button.id === "qSubmitBtn") return; 
 
             const currentScreen = button.closest(".screen");
@@ -80,7 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 showScreen(nextScreen.id);
             }
         });
-    });    nextButtons.forEach(function(button) {
+    });   
+    
+    nextButtons.forEach(function(button) {
         button.addEventListener("click", function(e) {
             if (button.id === "pSubmitBtn") return;
 
