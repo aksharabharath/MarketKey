@@ -498,3 +498,29 @@ function validateForm() {
         showScreen("screen4"); 
     }
 }
+
+function updateLiveCounter() {
+    const requiredQuestions = questionnaireQuestions.filter(function(question) {
+        return question.required === true;
+    });
+
+    let answered = 0;
+
+    requiredQuestions.forEach(function(question) {
+        const input = document.getElementById(question.id);
+        if (!input) return;
+
+        if (question.type === "checkbox") {
+            if (input.checked) answered++;
+        } else {
+            if (input.value.trim() !== "") answered++;
+        }
+    });
+
+    const counter = document.getElementById("liveCounter");
+
+    if (counter) {
+        counter.textContent =
+            `${answered} of ${requiredQuestions.length} required questions answered`;
+    }
+}
