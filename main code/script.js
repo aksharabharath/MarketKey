@@ -210,6 +210,7 @@ function saveLanguage(langCode) {
         headerControls.style.display = "flex";
     }
 
+    renderQuestionnaire();
     updatePageText();
 }
 // 5. PDF and review functions
