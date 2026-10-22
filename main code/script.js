@@ -71,8 +71,17 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (appState.currentFormPage < 3) {
             showFormPage(appState.currentFormPage + 1);
         } else {
-            renderReviewScreen();
-            showScreen('screen4');
+            const canvas = get("signature-pad");
+
+                if (canvas) {
+                    appState.formData.applicantSignature =
+                    canvas.toDataURL("image/png");
+
+                    canvas.getContext("2d").clearRect(
+                            0, 0, canvas.width, canvas.height);
+                            }
+                    renderReviewScreen();
+                    showScreen('screen4');
         }
     });
 
@@ -94,6 +103,59 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.path-cards').style.display = 'flex';
         get('agGuidanceView').style.display = 'none';
     });
+    const canvas = get("signature-pad");
+const clearBtn = get("clear-btn");
+
+if (canvas && clearBtn) {
+    const context = canvas.getContext("2d");
+    let painting = false;
+
+    context.lineWidth = 2;
+    context.lineCap = "round";
+    context.lineJoin = "round";
+    context.strokeStyle = "#713515";
+
+    function getPosition(e) {
+        const rect = canvas.getBoundingClientRect();
+
+        return {
+            x: (e.clientX - rect.left) * (canvas.width / rect.width),
+            y: (e.clientY - rect.top) * (canvas.height / rect.height)
+        };
+    }
+
+    canvas.addEventListener("pointerdown", e => {
+        painting = true;
+        canvas.setPointerCapture(e.pointerId);
+
+        const pos = getPosition(e);
+        context.beginPath();
+        context.moveTo(pos.x, pos.y);
+    });
+
+    canvas.addEventListener("pointermove", e => {
+        if (!painting) return;
+
+        const pos = getPosition(e);
+        context.lineTo(pos.x, pos.y);
+        context.stroke();
+        context.beginPath();
+        context.moveTo(pos.x, pos.y);
+    });
+    
+    function stopPainting() {
+        painting = false;
+        context.beginPath();
+    }
+    
+    canvas.addEventListener("pointerup", stopPainting);
+    canvas.addEventListener("pointercancel", stopPainting);
+
+    clearBtn.addEventListener("click", () => {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        delete appState.formData.applicantSignature;
+    });
+}
 });
 //------------------- (insert #2-4), check MarketKey/docs/handoff_notes.md for reference if need clarification
 
@@ -304,6 +366,7 @@ function renderReviewScreen() {
     const sections = {};
     for (const [key, value] of reviewValues) {
         if (key === "FANumber" || key === "faNumber") continue;
+        if (key.toLowerCase() === "applicantsignature") continue;
         if (!includeCommissary && key.toLowerCase().includes('commissary')) continue;
         const category = getReviewCategory(key);
         if (!sections[category]) sections[category] = [];
@@ -492,6 +555,7 @@ async function generateCountyPDF() {
 
         for (const [key, value] of Object.entries(data)) {
             if (key === "FANumber" || key === "faNumber") continue;
+            if (key.toLowerCase() === "applicantsignature") continue;
             if (key === "startDate" || key === "StartDate") {
                 fieldValues.set("START DATE END DATE", `${value} - ${data.endDate || data.EndDate || ""}`.trim());
             } else if (key === "startTime" || key === "StartTime") {
@@ -566,22 +630,23 @@ async function generateCountyPDF() {
         checkQuizAnswers(data, fieldsByExactName, fieldsByName);
 
         const signature = data.applicantSignature || data.ApplicantSignature;
-        if (signature) {
-            const signatureField = fieldsByExactName.get("Applicant Signature");
-            const widget = signatureField?.acroField.getWidgets()[0];
+        if (signature && signature.startsWith("data:image/png;base64,")) {
+            const signatureField = fieldsByExactName.get("Your Signature");
+             const widget = signatureField?.acroField.getWidgets()[0];
+
             if (widget) {
                 const pageRef = widget.P();
-                const page = pdfDoc.getPages().find(item => item.ref === pageRef) ||
-                    pdfDoc.getPages()[5];
+                const page = pdfDoc.getPages().find(item => item.ref === pageRef)
+                    || pdfDoc.getPages()[5];
+
                 const rect = widget.getRectangle();
-                const font = await pdfDoc.embedFont(StandardFonts.HelveticaOblique);
-                page.drawText(String(signature), {
+                const signatureImage = await pdfDoc.embedPng(signature);
+
+                page.drawImage(signatureImage, {
                     x: rect.x + 2,
-                    y: rect.y + 5,
-                    size: 9,
-                    font,
-                    color: rgb(0, 0, 0),
-                    maxWidth: rect.width - 4
+                    y: rect.y + 2,
+                    width: rect.width - 4,
+                    height: rect.height - 4
                 });
             }
         }
