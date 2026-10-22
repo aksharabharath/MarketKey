@@ -436,8 +436,33 @@ function checkQuizAnswers(data, fieldsByExactName, fieldsByName) {
         const field = candidates
             .map(name => fieldsByExactName.get(name) || fieldsByName.get(normalizePdfFieldName(name)))
             .find(item => item && typeof item.check === "function");
-        if (field) field.check();
+        if (field) {
+            try {
+                field.check();
+            } catch (error) {
+                console.warn(`Could not check quiz field ${key}: ${error.message}`);
+            }
+        }
     });
+}
+
+function writePdfField(field, value, name) {
+    try {
+        if (typeof field.select === "function") {
+            field.select(String(value));
+        } else if (typeof field.check === "function") {
+            if (value === true || value === "true" || value === "Yes") field.check();
+        } else if (typeof field.setText === "function") {
+            try {
+                if (typeof field.setFontSize === "function") field.setFontSize(9);
+            } catch {
+                // Legacy fields without /DA retain their existing appearance.
+            }
+            field.setText(String(value));
+        }
+    } catch (error) {
+        console.warn(`Could not fill PDF field ${name}: ${error.message}`);
+    }
 }
 
 async function generateCountyPDF() {
@@ -536,14 +561,7 @@ async function generateCountyPDF() {
             const field = fieldsByExactName.get(fieldName) ||
                 fieldsByName.get(normalizePdfFieldName(fieldName));
             if (!field || value === "" || value === null || value === undefined) continue;
-            if (typeof field.select === "function") {
-                field.select(String(value));
-            } else if (typeof field.check === "function") {
-                if (value === true || value === "true" || value === "Yes") field.check();
-            } else if (typeof field.setText === "function") {
-                if (typeof field.setFontSize === "function") field.setFontSize(9);
-                field.setText(String(value));
-            }
+            writePdfField(field, value, fieldName);
         }
         checkQuizAnswers(data, fieldsByExactName, fieldsByName);
 
