@@ -2,6 +2,7 @@
 const appState = {
     lang: 'en',
     currentStep: 1,
+    currentFormPage: 1,
     path: null,
     formData: {}
 };
@@ -33,7 +34,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const qBackBtn = document.getElementById('qBackBtn');
     if (qBackBtn) {
-        qBackBtn.addEventListener('click', () => showScreen('screen2'));
+        qBackBtn.addEventListener('click', () => {
+            if (appState.currentFormPage > 1) {
+                showFormPage(appState.currentFormPage - 1);
+            } else {
+                showScreen('screen2');
+            }
+        });
     }
 
     const revBackBtn = document.getElementById('revBackBtn');
@@ -88,7 +95,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (qSubmitBtn) {
         qSubmitBtn.addEventListener("click", function(e) {
             e.preventDefault();
-            validateForm();
+            if (!validateForm()) return;
+
+            if (appState.currentFormPage < 3) {
+                showFormPage(appState.currentFormPage + 1);
+            } else {
+                renderReviewScreen();
+                showScreen("screen4");
+            }
         });
     }
     
@@ -96,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (tffBtn) {
             tffBtn.addEventListener('click', () => {
                 appState.path = 'tff';
+                showFormPage(1);
                 const today = new Date().toISOString().split('T')[0];
                 appState.formData['todaysDate'] = today;
                 
@@ -154,6 +169,18 @@ function updateStepTracker(currentStep) {
             step.classList.remove("active");
         }
     });
+}
+
+function showFormPage(pageNumber) {
+    document.querySelectorAll('[id^="formPage"]').forEach(page => {
+        page.style.display = 'none';
+    });
+
+    const page = document.getElementById(`formPage${pageNumber}`);
+    if (!page) return;
+
+    page.style.display = 'block';
+    appState.currentFormPage = pageNumber;
 }
 //2 for savelang 
 function saveLanguage(langCode) {
@@ -437,7 +464,9 @@ function renderQuestionnaire() {
 
     form.replaceChildren();
 
-    questionnaireQuestions.forEach(function(question) {
+    questionnaireQuestions
+        .filter(question => question.phase !== 4 && question.phase !== 7)
+        .forEach(function(question) {
         const container = document.createElement("div");
         container.className = "question";
 
@@ -516,53 +545,37 @@ function renderQuestionnaire() {
         });
 
         form.appendChild(container);
-    });
+        });
     updateLiveCounter();
 }
 
 function validateForm() {
-    console.log("validateForm() was triggered!");
+    const page = document.getElementById(`formPage${appState.currentFormPage}`);
+    if (!page) return false;
 
-    const form = document.getElementById("applicationForm");
-    const unanswered = [];
+    const requiredInputs = Array.from(
+        page.querySelectorAll('input[required], select[required], textarea[required]')
+    );
+    if (appState.currentFormPage === 2) {
+        requiredInputs.push(...page.querySelectorAll('input[name$="Initials"]'));
+    }
 
-    questionnaireQuestions.forEach(function(question) {
-        if (!question.required) return;
-
-        const input = form.querySelector(`#${question.id}`);
-
-        if (!input) {
-            console.warn(`Missing input in DOM for required question: ${question.id}`);
-            unanswered.push(question);
-        } else if (input.type === "checkbox" && !input.checked) {
-            console.log(`Unchecked required checkbox: ${question.id}`);
-            unanswered.push(question);
-        } else if (input.type !== "checkbox" && !input.value.trim()) {
-            console.log(`Empty required text field: ${question.id}`);
-            unanswered.push(question);
-        }
+    const unanswered = requiredInputs.filter(input => {
+        if (input.type === "checkbox") return !input.checked;
+        return !input.value.trim();
     });
-
-    console.log("Total unanswered required questions:", unanswered.length);
-    console.log("Unanswered list:", unanswered);
-
     const validationAlert = document.getElementById("validationAlert");
 
     if (unanswered.length > 0) {
         if (validationAlert) {
             validationAlert.style.setProperty("display", "block", "important");
-            validationAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-        console.log("Validation failed. Stopping navigation.");
-        return; 
-    } else {
-        if (validationAlert) {
-            validationAlert.style.display = "none";
-        }
-        console.log("Validation passed! Proceeding to review screen.");
-        renderReviewScreen();
-        showScreen("screen4"); 
+        unanswered[0].focus();
+        return false;
     }
+
+    if (validationAlert) validationAlert.style.display = "none";
+    return true;
 }
 
 function updateLiveCounter() {
