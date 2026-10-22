@@ -624,7 +624,8 @@ async function generateCountyPDF() {
         );
         fieldValues.set(
             "Print Name",
-            data.applicantName || data.PrintName || data.printName || ""
+            data.ownerName || data.OwnerName || data.applicantName ||
+            data.PrintName || data.printName || ""
         );
         let handwashItems = ["quiz17a", "quiz17b", "quiz17c", "quiz17d"]
             .map(key => data[key])
