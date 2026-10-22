@@ -137,12 +137,138 @@
 
             <div id="formPage3" style="display: none;">
                 <h2 class="text-[36px] font-['Yeseva_One'] mt-0 mb-4 text-[#fdcb7b]">Food Safety Quiz</h2>
-                <p class="text-base opacity-90 mb-6">Complete the food safety quiz information.</p>
+                <p class="text-base opacity-90 mb-6">Complete the official Alameda County food safety quiz.</p>
                 <div class="max-w-[700px] my-[30px] mx-auto text-left">
                     <label for="quizBoothName">Booth Name</label>
                     <input id="quizBoothName" name="quizBoothName" type="text" class="w-full mb-5">
                     <label for="quizEventInfo">Event Name and Date(s)</label>
-                    <input id="quizEventInfo" name="quizEventInfo" type="text" class="w-full">
+                    <input id="quizEventInfo" name="quizEventInfo" type="text" class="w-full mb-6">
+
+                    <ol class="space-y-5">
+                        <li>
+                            <label for="quiz1">Potentially hazardous foods (PHF) require temperature control to prevent the growth of bacteria. Which food is not a PHF?</label>
+                            <select id="quiz1" name="quiz1" required class="w-full">
+                                <option value="">Select an answer</option>
+                                <option>Cooked rice</option><option>Grilled chicken</option><option>Cut melon</option><option>Packaged potato chips</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="quiz2">All cold PHF should be kept at or below _____ degrees Fahrenheit.</label>
+                            <select id="quiz2" name="quiz2" required class="w-full">
+                                <option value="">Select an answer</option>
+                                <option>0</option><option>31</option><option>45</option><option>70</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="quiz3">All hot PHF should be served immediately to the customer or be held at or above _____ degrees Fahrenheit.</label>
+                            <select id="quiz3" name="quiz3" required class="w-full">
+                                <option value="">Select an answer</option>
+                                <option>41</option><option>70</option><option>100</option><option>135</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="quiz4">True or False. Food stored and prepared at home may be served or sold to the public.</label>
+                            <select id="quiz4" name="quiz4" required class="w-full">
+                                <option value="">Select an answer</option><option>True</option><option>False</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="quiz5">Which of the following are effective means of ensuring food remains at a proper temperature during hot holding? (Sterno is not allowed. Electric, butane, or propane are okay.)</label>
+                            <select id="quiz5" name="quiz5" required class="w-full">
+                                <option value="">Select an answer</option>
+                                <option>Cook food properly prior to placement into hot holding</option><option>Use two food pans, inserting one inside another, to prevent burning</option><option>Preheat the steam-table prior to using it with hot food</option><option>Tightly cover food pans and stir food frequently</option><option>All of the above</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="quiz6">True or False. You are required to have an accurate probe-type thermometer available in your booth if you are handling foods that require temperature control.</label>
+                            <select id="quiz6" name="quiz6" required class="w-full">
+                                <option value="">Select an answer</option><option>True</option><option>False</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="quiz7">All food preparation should be performed _____ the booth.</label>
+                            <select id="quiz7" name="quiz7" required class="w-full">
+                                <option value="">Select an answer</option><option>Inside</option><option>Outside</option><option>Anywhere near the booth</option><option>Both at home and at the booth</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="quiz8">True or False. After barbecuing foods on a grill located outside of your booth you may serve the barbecued foods directly to customers outside of the booth.</label>
+                            <select id="quiz8" name="quiz8" required class="w-full">
+                                <option value="">Select an answer</option><option>True</option><option>False</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="quiz9">What should you do with any leftover hot food at the end of each day?</label>
+                            <select id="quiz9" name="quiz9" required class="w-full">
+                                <option value="">Select an answer</option><option>Throw it away.</option><option>Cover it, refrigerate it and re-use it the next day of the event.</option><option>Cover it, keep it at room temperature and re-use it the next day of the event.</option><option>Use it as an ingredient for another dish to sell to customers the next day of the event.</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="quiz10">How should self-serve condiments be available to customers?</label>
+                            <select id="quiz10" name="quiz10" required class="w-full">
+                                <option value="">Select an answer</option><option>In squeeze bottles</option><option>In containers with a hinged lid</option><option>In individual packets</option><option>Any of the above</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="quiz11">The following tasks should be assigned to different workers in your food booth: handling money, preparing ready-to-eat food, handling raw meat and poultry. Why?</label>
+                            <input id="quiz11" name="quiz11" type="text" required class="w-full">
+                        </li>
+                        <li>
+                            <label for="quiz12">True or False. A person in charge shall be present in the booth during all hours of operation.</label>
+                            <select id="quiz12" name="quiz12" required class="w-full">
+                                <option value="">Select an answer</option><option>True</option><option>False</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="quiz13">When should a food handler wash his or her hands?</label>
+                            <select id="quiz13" name="quiz13" required class="w-full">
+                                <option value="">Select an answer</option><option>After touching his or her face</option><option>After touching money</option><option>After using the restroom</option><option>All of the above</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="quiz14">True or False. Food handlers are required to minimize bare hand contact with ready-to-eat foods by wearing gloves, using utensils, or using other implements to handle food.</label>
+                            <select id="quiz14" name="quiz14" required class="w-full">
+                                <option value="">Select an answer</option><option>True</option><option>False</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="quiz15">A utensil washing station is not required in your booth if:</label>
+                            <select id="quiz15" name="quiz15" required class="w-full">
+                                <option value="">Select an answer</option><option>Only packaged food is sold</option><option>Unpackaged food is prepared in your booth</option><option>Utensils are used</option><option>Equipment is used</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="quiz16">Utensil wash stations should have at least 3 buckets: one for soapy water, one for rinsing, and one for sanitizing. When using chlorine bleach as a sanitizer, how much should be used?</label>
+                            <select id="quiz16" name="quiz16" required class="w-full">
+                                <option value="">Select an answer</option><option>1/4 teaspoon per 2 gallons of fresh, potable water</option><option>1/2 teaspoon per 2 gallons of fresh, potable water</option><option>1 teaspoon per 2 gallons of fresh, potable water</option><option>1 tablespoon per each gallon of fresh, potable water</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>What 4 items are important to have at your booth’s hand wash station?</label>
+                            <input id="quiz17a" name="quiz17a" type="text" required placeholder="1" class="w-full mb-2">
+                            <input id="quiz17b" name="quiz17b" type="text" required placeholder="2" class="w-full mb-2">
+                            <input id="quiz17c" name="quiz17c" type="text" required placeholder="3" class="w-full mb-2">
+                            <input id="quiz17d" name="quiz17d" type="text" required placeholder="4" class="w-full">
+                        </li>
+                        <li>
+                            <label for="quiz18">True or False. Food booths with unpackaged food are required to supply warm water (at least 100°F) for hand washing purposes.</label>
+                            <select id="quiz18" name="quiz18" required class="w-full">
+                                <option value="">Select an answer</option><option>True</option><option>False</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="quiz19">In your booth, at least _____ gallons of water is required for hand washing and at least _____ gallons of water total is required for food preparation and utensil washing.</label>
+                            <select id="quiz19" name="quiz19" required class="w-full">
+                                <option value="">Select an answer</option><option>1; 5</option><option>5; 5</option><option>5; 10</option><option>5; 25</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="quiz20">True or False. Wash water and other liquid waste (ice melt, etc.) may be drained into a leak-proof container and then disposed of onto the ground or into storm drains.</label>
+                            <select id="quiz20" name="quiz20" required class="w-full">
+                                <option value="">Select an answer</option><option>True</option><option>False</option>
+                            </select>
+                        </li>
+                    </ol>
                 </div>
             </div>
 
