@@ -501,7 +501,7 @@ function updatePageText() {
 
     questionnaireQuestions.forEach(function(question) {
         const label = document.querySelector(
-            `#applicationForm label[for="${question.id}"], #commissaryForm label[for="${question.id}"]`
+            `#applicationForm label[for="${question.id}"], #commercialKitchenForm label[for="${question.id}"], #commissaryForm label[for="${question.id}"], #finalSignatureForm label[for="${question.id}"]`
         );
 
         if (label) {
@@ -538,18 +538,26 @@ async function loadQuestionnaire() {
 
 function renderQuestionnaire() {
     const form = document.getElementById("applicationForm");
+    const commercialKitchenForm = document.getElementById("commercialKitchenForm");
     const commissaryForm = document.getElementById("commissaryForm");
-    if (!form || !commissaryForm) return;
+    const finalSignatureForm = document.getElementById("finalSignatureForm");
+    if (!form || !commercialKitchenForm || !commissaryForm || !finalSignatureForm) return;
 
     form.replaceChildren();
+    commercialKitchenForm.replaceChildren();
     commissaryForm.replaceChildren();
+    finalSignatureForm.replaceChildren();
 
     questionnaireQuestions.forEach(function(question) {
-        const targetForm = question.phase >= 5 && question.phase <= 6
-            ? commissaryForm
-            : question.phase <= 3
-                ? form
-                : null;
+        const targetForm = question.id === "originalPackageCheck"
+            ? commercialKitchenForm
+            : question.phase === 5
+                ? commissaryForm
+                : question.phase === 6
+                    ? finalSignatureForm
+                    : question.phase <= 3
+                        ? form
+                        : null;
         if (!targetForm) return;
 
         const container = document.createElement("div");
