@@ -3,6 +3,7 @@ const appState = {
     lang: 'en',
     currentStep: 1,
     currentFormPage: 1,
+    skipCommissary: false,
     path: null,
     formData: {}
 };
@@ -28,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (confirm("Are you sure you want to start over? All entered data will be cleared.")) {
                 appState.formData = {};
                 appState.path = null;
+                appState.skipCommissary = false;
                 showScreen('screen1');
             }
         });
@@ -36,6 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const qBackBtn = document.getElementById('qBackBtn');
     if (qBackBtn) {
         qBackBtn.addEventListener('click', () => {
+            if (appState.currentFormPage === 3 && appState.skipCommissary) {
+                showFormPage(1);
+                return;
+            }
             if (appState.currentFormPage > 1) {
                 showFormPage(appState.currentFormPage - 1);
             } else {
@@ -54,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         startNewAppBtn.addEventListener('click', () => {
             appState.formData = {};
             appState.path = null;
+            appState.skipCommissary = false;
             showScreen('screen1');
         });
     }
@@ -98,7 +105,11 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             if (!validateForm()) return;
 
-            if (appState.currentFormPage < 3) {
+            if (appState.currentFormPage === 1) {
+                const kitchenAnswer = document.getElementById('originalPackageCheck')?.value;
+                appState.skipCommissary = kitchenAnswer === 'No';
+                showFormPage(appState.skipCommissary ? 3 : 2);
+            } else if (appState.currentFormPage < 3) {
                 showFormPage(appState.currentFormPage + 1);
             } else {
                 renderReviewScreen();
@@ -111,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (tffBtn) {
             tffBtn.addEventListener('click', () => {
                 appState.path = 'tff';
+                appState.skipCommissary = false;
                 showFormPage(1);
                 const today = new Date().toISOString().split('T')[0];
                 appState.formData['todaysDate'] = today;
@@ -659,7 +671,7 @@ function validateForm() {
     const requiredInputs = Array.from(
         page.querySelectorAll('input[required], select[required], textarea[required]')
     );
-    if (appState.currentFormPage === 2) {
+    if (appState.currentFormPage === 3) {
         requiredInputs.push(...page.querySelectorAll('input[name$="Initials"]'));
     }
 
