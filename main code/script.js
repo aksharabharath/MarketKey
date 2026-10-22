@@ -751,8 +751,7 @@ async function generateCountyPDF() {
 
         const signature = data.applicantSignature || data.ApplicantSignature;
         if (signature && signature.startsWith("data:image/png;base64,")) {
-            const signatureField = fieldsByExactName.get("Your Signature");
-             const widget = signatureField?.acroField.getWidgets()[0];
+            const signatureField = fieldsByExactName.get("Applicant Signature");             const widget = signatureField?.acroField.getWidgets()[0];
 
             if (widget) {
                 const pageRef = widget.P();
