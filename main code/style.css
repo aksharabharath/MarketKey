@@ -8,6 +8,56 @@
 
 #applicationForm .checkbox-question input { width: 20px; height: 20px; margin-top: 4px; flex-shrink: 0; accent-color: #d9641f; }
 
+.form-page { width: min(100%, 960px); margin: 0 auto; }
+
+.form-section-card {
+    background: #fff8ed;
+    border: 2px solid rgba(217, 100, 31, 0.2);
+    border-radius: 16px;
+    padding: clamp(18px, 3vw, 32px);
+    box-shadow: 0 8px 24px rgba(113, 53, 21, 0.08);
+}
+
+#formPage2 label, #formPage3 label {
+    display: block;
+    margin-bottom: 7px;
+    color: #713515;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+#formPage2 input:not([type="checkbox"]), #formPage2 select,
+#formPage3 input:not([type="checkbox"]), #formPage3 select, #formPage3 textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px 12px;
+    margin-bottom: 16px;
+    border: 2px solid rgba(217, 100, 31, 0.45);
+    border-radius: 8px;
+    background: #fff;
+    color: #713515;
+    font: inherit;
+}
+
+#formPage2 input:focus, #formPage2 select:focus,
+#formPage3 input:focus, #formPage3 select:focus, #formPage3 textarea:focus {
+    outline: 3px solid #fdcb7b;
+    outline-offset: 2px;
+}
+
+#formPage3 .flex.items-center.gap-3 {
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(217, 100, 31, 0.12);
+    line-height: 1.45;
+}
+
+#formPage3 .flex.items-center.gap-3 input {
+    width: 64px;
+    flex: 0 0 64px;
+    margin: 0;
+}
+
 .review-card { background-color: #fff8ed; border: 2px solid rgba(217, 100, 31, 0.3); border-radius: 8px; padding: 16px 20px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px; text-align: left; }
 
 .review-label { font-family: 'League Spartan', sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; color: #b55d22; }
