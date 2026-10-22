@@ -350,6 +350,8 @@ const pdfFieldAliases = {
     sponsorContactPhone: "CONTACT PHONE",
     sponsorEmail: "SPONSOR EMAIL",
     originalPackageCheck: "YES OR NO",
+    generatorInfo: "Generator Information",
+    samplingDetails: "SAMPLING Y/N",
     waterSource: "WHERE WILL YOU OBTAIN CLEAN WATER FOR HANDWASH AND WAREWASH",
     wasteDisposal: "WHERE WILL YOU DISPOSE OF DIRTY WATER GARBAGE AND USED FRY OIL",
     boothEnclosure: "WILL YOU PROVIDE A FULLY ENCLOSED BOOTH IF NO EXPLAIN WHY IF YES EXPLAIN THE MATERIALS USED",
@@ -368,6 +370,8 @@ const pdfFieldAliases = {
     commissarySignerName: "Print Authorized Signer Name",
     commissarySignerPhone: "Phone",
     commissarySignerDate: "Date_2",
+    commissaryServicesList: "services",
+    commissaryNoExplanation: "NO ANSWER EXPLAINED",
     outOfCountyInfo: "CITY/COUNTY",
     checkHandwashInitials: "1",
     checkUtensilWashInitials: "2",
@@ -449,8 +453,20 @@ async function generateCountyPDF() {
                 try {
                     JSON.parse(value).forEach((row, index) => {
                         const number = index + 1;
-                        fieldValues.set(`MENU ITEM #${number}`, row.menuItem || "");
+                        const item = row.ingredientsSource
+                            ? `${row.menuItem || ""} (${row.ingredientsSource})`
+                            : row.menuItem || "";
+                        fieldValues.set(`MENU ITEM #${number}`, item);
                         fieldValues.set(`EQUIPMENT ${number}`, row.equipmentUsed || "");
+                        const location = (row.preparationLocation || "").toLowerCase();
+                        fieldValues.set(
+                            `PREPPED BEFORE EVENT ${number}`,
+                            location.includes("before") ? row.preparationLocation : ""
+                        );
+                        fieldValues.set(
+                            `PREPPED AT EVENT ${number}`,
+                            location.includes("before") ? "" : row.preparationLocation || ""
+                        );
                     });
                 } catch {
                     console.warn("Could not parse menu table data");
