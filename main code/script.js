@@ -895,3 +895,70 @@ function updateLiveCounter() {
             `${answered} of ${requiredQuestions.length} required questions answered`;
     }
 }
+
+function fillTestData() {
+    if (!questionnaireQuestions.length) {
+        loadQuestionnaire().then(fillTestData);
+        return;
+    }
+
+    const today = new Date();
+    const date = today.toISOString().split('T')[0];
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    const endDate = tomorrow.toISOString().split('T')[0];
+
+    appState.path = 'tff';
+    appState.skipCommissary = false;
+    appState.formData.todaysDate = date;
+
+    const setField = (input, value) => {
+        if (!input) return;
+        if (input.type === 'checkbox') {
+            input.checked = Boolean(value);
+        } else {
+            input.value = value;
+        }
+        input.dispatchEvent(new Event(input.type === 'checkbox' || input.tagName === 'SELECT' ? 'change' : 'input', { bubbles: true }));
+    };
+
+    questionnaireQuestions.forEach(question => {
+        if (question.id === 'faNumber') return;
+        const input = get(question.id);
+        if (!input) return;
+
+        if (question.type === 'date') {
+            setField(input, question.id === 'endDate' ? endDate : date);
+        } else if (question.type === 'select') {
+            setField(input, question.id === 'originalPackageCheck' ? 'Yes' : input.options[1]?.value || '');
+        } else if (question.type === 'checkbox') {
+            setField(input, true);
+        } else if (question.type !== 'table-builder') {
+            setField(input, `Test ${question.id}`);
+        }
+    });
+
+    const table = get('menuTableBuilderTable');
+    if (table) {
+        const fields = table.querySelectorAll('tbody input');
+        ['Test Tacos', 'Fresh ingredients', 'Commercial kitchen', 'Griddle']
+            .forEach((value, index) => setField(fields[index], value));
+    }
+
+    setField(get('applicationDate'), date);
+    setField(get('applicantPhone'), '510-555-0142');
+    document.querySelectorAll('[id$="Initials"]').forEach(input => setField(input, 'TS'));
+
+    document.querySelectorAll('#formPage3 select').forEach(select => {
+        setField(select, select.options[1]?.value || '');
+    });
+    document.querySelectorAll('#formPage3 input[type="text"]').forEach(input => {
+        if (!input.value) setField(input, 'Test response');
+    });
+
+    showFormPage(1);
+    showScreen('screen3');
+    updateLiveCounter();
+}
+
+window.fillTestData = fillTestData;
