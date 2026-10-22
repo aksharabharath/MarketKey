@@ -360,6 +360,7 @@ const pdfFieldAliases = {
     reusableUtensils: "WILL YOU OR SPONSOR PROVIDE RESUABLE PLATEWARE ETC?",
     customerContainers: "WHAT ARE YOUR OPERATING PROCEDURES FOR ACCEPTING CUSTOMER OWNED RE USEABLE CONTAINERS SUCH AS CUPS MUGS PLATES ETC HOW WILL YOU ENSURE THE CONTAINERS WILL NOT CREATE A CONTAMINATION ISSUE INSIDE YOUR BOOTH OR WITH YOUR EMPLOYEES TFF OPERATORS ARE NOT ALLOWED TO PROVIDE MULTI USE UTENSILS FOR CUSTOMERS WITH OUT DEPARTMENT APPROVAL",
     printName: "Print Name",
+    applicantName: "Print Name",
     applicantSignatureDate: "Date",
     quizBoothName: "booth name",
     quizEventInfo: "Event Name and Dates",
@@ -477,6 +478,39 @@ async function generateCountyPDF() {
                 fieldValues.set(alias, value);
             }
         }
+
+        fieldValues.set(
+            "booth name",
+            data.boothName || data.BoothName || data.quizBoothName || ""
+        );
+        fieldValues.set(
+            "Event Name and Dates",
+            `${data.eventName || data.EventName || ""} ` +
+            `${data.startDate || data.StartDate || ""} - ` +
+            `${data.endDate || data.EndDate || ""}`.trim()
+        );
+        fieldValues.set(
+            "Print Name",
+            data.applicantName || data.PrintName || data.printName || ""
+        );
+        Object.entries({
+            "1": "checkHandwashInitials",
+            "2": "checkUtensilWashInitials",
+            "3": "checkTaskDelegationInitials",
+            "4": "checkPrepInsideInitials",
+            "5": "checkOutdoorCookingInitials",
+            "6": "checkThermometerInitials",
+            "7": "checkColdHoldingInitials",
+            "8": "checkHotHoldingInitials",
+            "9": "checkPermitDisplayInitials",
+            "10": "checkTrashContainersInitials",
+            "11": "checkCondimentsInitials",
+            "12": "checkContaminationProtectionInitials",
+            "13 1": "checkBoothWallsInitials",
+            "13 2": "checkUtilityLocationsInitials"
+        }).forEach(([pdfName, key]) => {
+            if (data[key] !== undefined) fieldValues.set(pdfName, String(data[key]));
+        });
 
         for (const [fieldName, value] of fieldValues) {
             const field = fieldsByExactName.get(fieldName) ||
@@ -937,6 +971,36 @@ function fillPage1() {
     return whenQuestionsReady(() => {
         const { startDate, endDate } = testDates();
         appState.skipCommissary = false;
+        const values = {
+            ownerName: 'Alex Rivera',
+            sponsorApproval: 'Yes',
+            businessName: 'Rivera Fresh Foods',
+            numberOfBooths: '2',
+            indoorOutdoor: 'Outdoor',
+            boothName: 'Rivera Fresh Foods',
+            emailAddress: 'alex.rivera@example.com',
+            businessAddress: '123 Market Street, Fremont, CA 94538',
+            mailingAddress: '123 Market Street, Fremont, CA 94538',
+            phoneNumbers: '510-555-0142',
+            eventName: 'Fremont Sunday Market',
+            eventAddress: '400 Capitol Avenue, Fremont, CA',
+            startDate,
+            endDate,
+            startTime: '9:00 AM',
+            endTime: '3:00 PM',
+            eventSponsorName: 'Fremont Market Association',
+            sponsorContactPhone: '510-555-0198',
+            sponsorEmail: 'events@fremontmarket.example',
+            originalPackageCheck: 'Yes',
+            generatorInfo: 'Honda EU2200i, 1800 watts',
+            samplingDetails: 'Fruit samples served in single-use cups',
+            waterSource: 'Event-provided potable water station',
+            wasteDisposal: 'Event grey-water tank and refuse bins',
+            boothEnclosure: 'Four walls, overhead cover, and pass-through window',
+            transportSanitation: 'Covered, sanitized containers in a clean vehicle',
+            reusableUtensils: 'No reusable utensils',
+            customerContainers: 'Customer containers stay separate from food and staff equipment'
+        };
         questionnaireQuestions
             .filter(question => question.phase <= 3 && question.id !== 'faNumber')
             .forEach(question => {
@@ -948,13 +1012,13 @@ function fillPage1() {
                         ? 'Yes'
                         : input?.options[1]?.value || '');
                 } else if (question.type !== 'table-builder') {
-                    setTestField(input, `Test ${question.id}`);
+                    setTestField(input, values[question.id] || `Sample ${question.id}`);
                 }
             });
 
         setTestField(get('applicationDate'), startDate);
         const fields = get('menuTableBuilderTable')?.querySelectorAll('tbody input') || [];
-        ['Test Tacos', 'Fresh ingredients', 'Commercial kitchen', 'Griddle']
+        ['Chicken tacos', 'Fresh produce and tortillas', 'Commercial kitchen', 'Flat-top griddle']
             .forEach((value, index) => setTestField(fields[index], value));
         finishTestPage(1);
     });
