@@ -390,6 +390,89 @@ function renderReviewScreen() {
     }
 }
 
+const pdfFieldAliases = {
+    ownerName: "OWNER NAME",
+    sponsorApproval: "Sponsor Approval",
+    businessName: "BUSINESS NAME",
+    numberOfBooths: "# OF BOOTHS",
+    indoorOutdoor: "INDICATE INDOOR OR OUTDOOR",
+    boothName: "NAME OF THE BOOTH",
+    emailAddress: "EMAIL ADDRESS",
+    businessAddress: "BUSINESS ADDRESS WITH CITY STATE AND ZIP CODE",
+    mailingAddress: "MAILING ADDRESS IF DIFFERNET FROM BUSINESS ADDRESS",
+    phoneNumbers: "BUSINESS AND CELL PHONE",
+    todaysDate: "today's date",
+    eventName: "NAME OF THE EVENT",
+    eventAddress: "ADDRESS OF THE EVENT",
+    eventSponsorName: "EVENT SPONSOR NAME",
+    sponsorContactPhone: "CONTACT PHONE",
+    sponsorEmail: "SPONSOR EMAIL",
+    originalPackageCheck: "YES OR NO",
+    waterSource: "WHERE WILL YOU OBTAIN CLEAN WATER FOR HANDWASH AND WAREWASH",
+    wasteDisposal: "WHERE WILL YOU DISPOSE OF DIRTY WATER GARBAGE AND USED FRY OIL",
+    boothEnclosure: "WILL YOU PROVIDE A FULLY ENCLOSED BOOTH IF NO EXPLAIN WHY IF YES EXPLAIN THE MATERIALS USED",
+    transportSanitation: "HOW WILL YOU TRANSPORT UTENSILS?",
+    reusableUtensils: "WILL YOU OR SPONSOR PROVIDE RESUABLE PLATEWARE ETC?",
+    customerContainers: "WHAT ARE YOUR OPERATING PROCEDURES FOR ACCEPTING CUSTOMER OWNED RE USEABLE CONTAINERS SUCH AS CUPS MUGS PLATES ETC HOW WILL YOU ENSURE THE CONTAINERS WILL NOT CREATE A CONTAMINATION ISSUE INSIDE YOUR BOOTH OR WITH YOUR EMPLOYEES TFF OPERATORS ARE NOT ALLOWED TO PROVIDE MULTI USE UTENSILS FOR CUSTOMERS WITH OUT DEPARTMENT APPROVAL",
+    printName: "Print Name",
+    applicantSignatureDate: "Date",
+    quizBoothName: "booth name",
+    quizEventInfo: "Event Name and Dates",
+    applicantPhone: "phone number",
+    commissaryName: "Commissary  Commercial Kitchen",
+    commissaryOwnerName: "Owner Name",
+    commissaryAddress: "Street Address",
+    commissaryPhones: "Phone",
+    commissarySignerName: "Print Authorized Signer Name",
+    commissarySignerPhone: "Phone",
+    commissarySignerDate: "Date_2",
+    outOfCountyInfo: "CITY/COUNTY",
+    checkHandwashInitials: "1",
+    checkUtensilWashInitials: "2",
+    checkTaskDelegationInitials: "3",
+    checkPrepInsideInitials: "4",
+    checkOutdoorCookingInitials: "5",
+    checkThermometerInitials: "6",
+    checkColdHoldingInitials: "7",
+    checkHotHoldingInitials: "8",
+    checkPermitDisplayInitials: "9",
+    checkTrashContainersInitials: "10",
+    checkCondimentsInitials: "11",
+    checkContaminationProtectionInitials: "12",
+    checkBoothWallsInitials: "13 1",
+    checkUtilityLocationsInitials: "13 2"
+};
+
+function normalizePdfFieldName(name) {
+    return String(name).toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+function collectFormData() {
+    const data = { ...appState.formData };
+    questionnaireQuestions.forEach(question => {
+        if (question.id === "faNumber") return;
+        const input = document.getElementById(question.id);
+        if (input) {
+            data[question.pdfFieldKey || question.id] =
+                input.type === "checkbox" ? input.checked : input.value;
+        }
+    });
+
+    document.querySelectorAll(
+        '#formPage1 input, #formPage1 select, #formPage1 textarea, ' +
+        '#formPage2 input, #formPage2 select, #formPage2 textarea, ' +
+        '#formPage3 input, #formPage3 select, #formPage3 textarea'
+    ).forEach(input => {
+        if (input.closest('#menuTableBuilderTable')) return;
+        const question = questionnaireQuestions.find(item => item.id === input.id);
+        const key = question?.pdfFieldKey || input.name || input.id;
+        if (key !== "FANumber" && key !== "faNumber") {
+            data[key] = input.type === "checkbox" ? input.checked : input.value;
+        }
+    });
+    return data;
+}
+
 async function generateCountyPDF() {
     try {
         const { PDFDocument } = await import('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.esm.js');
@@ -405,19 +488,47 @@ async function generateCountyPDF() {
 
         const pdfDoc = await PDFDocument.load(formBytes);
         const form = pdfDoc.getForm();
+        const fieldsByExactName = new Map(
+            form.getFields().map(field => [field.getName(), field])
+        );
+        const fieldsByName = new Map(
+            form.getFields().map(field => [normalizePdfFieldName(field.getName()), field])
+        );
+        const data = collectFormData();
+        const fieldValues = new Map();
 
-        for (const [key, value] of Object.entries(appState.formData)) {
-            try {
-                const field = form.getField(key);
-                if (field) {
-                    if (typeof value === 'boolean' && value) {
-                        field.check();
-                    } else if (typeof value === 'string') {
-                        field.setText(value);
-                    }
+        for (const [key, value] of Object.entries(data)) {
+            if (key === "FANumber" || key === "faNumber") continue;
+            if (key === "startDate" || key === "StartDate") {
+                fieldValues.set("START DATE END DATE", `${value} - ${data.endDate || data.EndDate || ""}`.trim());
+            } else if (key === "startTime" || key === "StartTime") {
+                fieldValues.set("START TIME END TIME", `${value} - ${data.endTime || data.EndTime || ""}`.trim());
+            } else if (key === "menuTableBuilder" || key === "MenuTableBuilder") {
+                try {
+                    JSON.parse(value).forEach((row, index) => {
+                        const number = index + 1;
+                        fieldValues.set(`MENU ITEM #${number}`, row.menuItem || "");
+                        fieldValues.set(`EQUIPMENT ${number}`, row.equipmentUsed || "");
+                    });
+                } catch {
+                    console.warn("Could not parse menu table data");
                 }
-            } catch (err) {
-                console.warn(`Field not found on PDF template: ${key}`);
+            } else if (key !== "endDate" && key !== "EndDate" && key !== "endTime" && key !== "EndTime") {
+                const alias = pdfFieldAliases[key] || pdfFieldAliases[key.charAt(0).toLowerCase() + key.slice(1)] || key;
+                fieldValues.set(alias, value);
+            }
+        }
+
+        for (const [fieldName, value] of fieldValues) {
+            const field = fieldsByExactName.get(fieldName) ||
+                fieldsByName.get(normalizePdfFieldName(fieldName));
+            if (!field || value === "" || value === null || value === undefined) continue;
+            if (typeof field.select === "function") {
+                field.select(String(value));
+            } else if (typeof field.check === "function") {
+                if (value === true || value === "true" || value === "Yes") field.check();
+            } else if (typeof field.setText === "function") {
+                field.setText(String(value));
             }
         }
 
