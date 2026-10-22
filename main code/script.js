@@ -331,9 +331,24 @@ function getReviewCategory(key) {
     return "Business Information";
 }
 
+function reviewValue(value, translations) {
+    if (typeof value === "boolean") return value ? translations.yes : translations.no;
+    if (!value) return translations.notAnswered;
+    if (typeof value === "string" && /^[\[{]/.test(value.trim())) {
+        try {
+            const parsed = JSON.parse(value);
+            if (Array.isArray(parsed)) return parsed;
+        } catch {
+            return value;
+        }
+    }
+    return value;
+}
+
 function renderReviewScreen() {
     const reviewContainer = document.getElementById('reviewContent');
     if (!reviewContainer) return;
+    const translations = uiTranslations[appState.lang] || uiTranslations.en;
 
     reviewContainer.innerHTML = '';
     reviewContainer.className = 'max-w-[1000px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 text-left';
@@ -379,18 +394,47 @@ function renderReviewScreen() {
 
         const heading = document.createElement('h3');
         heading.className = "font-['Yeseva_One'] text-xl text-[#d9641f] mt-0 mb-3";
-        heading.textContent = category;
+        heading.textContent = translations.reviewCategories[category] || category;
         section.appendChild(heading);
 
+        const entryGrid = document.createElement('dl');
+        entryGrid.className = 'grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-2';
         entries.forEach(({ key, value }) => {
             const card = document.createElement('div');
-            card.className = 'review-card border-b border-[#d9641f]/10 py-2 last:border-b-0';
-            card.innerHTML = `
-                <span class="review-label">${formatKeyToLabel(key)}</span>
-                <span class="review-value">${value ? value : 'Not answered'}</span>
-            `;
-            section.appendChild(card);
+            card.className = 'border-b border-[#d9641f]/10 py-2';
+
+            const label = document.createElement('dt');
+            label.className = 'review-label';
+            label.textContent = formatKeyToLabel(key);
+            card.appendChild(label);
+
+            const displayValue = reviewValue(value, translations);
+            if (Array.isArray(displayValue)) {
+                const list = document.createElement('ul');
+                list.className = 'list-disc pl-4 text-sm text-[#713515]';
+                displayValue.forEach(row => {
+                    const item = document.createElement('li');
+                    item.textContent = [
+                        row.menuItem,
+                        row.preppedBeforeEvent,
+                        row.preppedAtEventOnly,
+                        row.hotColdTransport,
+                        row.servedHotColdReheated,
+                        row.transportEquipment,
+                        row.cookingServingEquipment
+                    ].filter(Boolean).join(' · ') || translations.notAnswered;
+                    list.appendChild(item);
+                });
+                card.appendChild(list);
+            } else {
+                const valueText = document.createElement('dd');
+                valueText.className = 'text-sm font-semibold text-[#713515] break-words';
+                valueText.textContent = String(displayValue);
+                card.appendChild(valueText);
+            }
+            entryGrid.appendChild(card);
         });
+        section.appendChild(entryGrid);
 
         reviewContainer.appendChild(section);
     }
@@ -484,21 +528,52 @@ function collectFormData() {
     return data;
 }
 
-function checkQuizAnswers(data, fieldsByExactName, fieldsByName) {
-    Object.keys(data).filter(key => /^quiz\d+$/.test(key)).forEach(key => {
+function checkQuizAnswers(data, fieldsByExactName, fieldsByName, quizCheckboxes = []) {
+    const optionCounts = [4, 4, 4, 2, 5, 2, 4, 2, 4, 4, 0, 2, 4, 2, 4, 4, 0, 2, 4, 2];
+    Object.keys(data).filter(key => /^quiz\d+$/i.test(key)).forEach(key => {
         const select = document.getElementById(key);
-        const optionIndex = select?.selectedIndex - 1;
+        const answer = String(data[key] ?? "");
+        let optionIndex = select ? select.selectedIndex - 1 : -1;
+        if (optionIndex < 0 && /^[a-d](?:[\s.)]|$)/i.test(answer)) {
+            optionIndex = answer.toLowerCase().charCodeAt(0) - 97;
+        }
+        if (optionIndex < 0 && select) {
+            optionIndex = [...select.options].findIndex(option =>
+                normalizePdfFieldName(option.value) === normalizePdfFieldName(answer)
+            ) - 1;
+        }
         if (optionIndex < 0) return;
 
-        const number = key.slice(4);
+        const number = key.match(/\d+/)[0];
         const letter = String.fromCharCode(97 + optionIndex);
         const candidates = [
             `Quiz${number}${letter}`, `Quiz ${number} ${letter}`,
             `${number}${letter}`, `${number} ${letter}`, `${number}.${letter}`
         ];
-        const field = candidates
+        let field = candidates
             .map(name => fieldsByExactName.get(name) || fieldsByName.get(normalizePdfFieldName(name)))
             .find(item => item && typeof item.check === "function");
+        if (!field) {
+            const answerName = normalizePdfFieldName(answer.replace(/^[a-d][\s.)-]*/i, ""));
+            field = [...fieldsByExactName.values()].find(item => {
+                if (typeof item.check !== "function") return false;
+                const name = normalizePdfFieldName(item.getName());
+                const questionMatches = name.includes(`quiz${number}`) ||
+                    name.includes(`q${number}`) ||
+                    name.startsWith(`${number}option`);
+                const optionMatches = name.endsWith(letter) ||
+                    name.includes(`option${optionIndex + 1}`) ||
+                    name.endsWith(String(optionIndex + 1)) ||
+                    (answerName.length > 2 && name.includes(answerName));
+                return questionMatches && optionMatches;
+            });
+        }
+        if (!field && quizCheckboxes.length) {
+            const questionIndex = Number(number) - 1;
+            const offset = optionCounts.slice(0, questionIndex)
+                .reduce((total, count) => total + count, 0);
+            field = quizCheckboxes[offset + optionIndex];
+        }
         if (field) {
             try {
                 field.check();
@@ -516,12 +591,22 @@ function writePdfField(field, value, name) {
         } else if (typeof field.check === "function") {
             if (value === true || value === "true" || value === "Yes") field.check();
         } else if (typeof field.setText === "function") {
+            const isMenuField = /^(MENU ITEM|PREPPED|BROUGHT|SERVED|EQUIPMENT|ELECTRIC)/i.test(name);
+            const maxLength = /^MENU ITEM/i.test(name) ? 55 : 32;
+            let text = String(value).replace(/\s+/g, " ").trim();
+            if (isMenuField && text.length > maxLength) {
+                text = `${text.slice(0, maxLength - 1).trimEnd()}…`;
+            }
             try {
-                if (typeof field.setFontSize === "function") field.setFontSize(9);
+                if (isMenuField && typeof field.setFontSize === "function") {
+                    field.setFontSize(7);
+                } else if (typeof field.setFontSize === "function") {
+                    field.setFontSize(8);
+                }
             } catch {
                 // Legacy fields without /DA retain their existing appearance.
             }
-            field.setText(String(value));
+            field.setText(text);
         }
     } catch (error) {
         console.warn(`Could not fill PDF field ${name}: ${error.message}`);
@@ -562,22 +647,38 @@ async function generateCountyPDF() {
                 fieldValues.set("START TIME END TIME", `${value} - ${data.endTime || data.EndTime || ""}`.trim());
             } else if (key === "menuTableBuilder" || key === "MenuTableBuilder") {
                 try {
-                    JSON.parse(value).forEach((row, index) => {
+                    const menuFieldPrefixes = [
+                        "MENU ITEM #",
+                        "PREPPED BEFORE EVENT ",
+                        "PREPPED AT EVENT ",
+                        "BROUGHT HOT OR COLD ",
+                        "SERVED HOT OR COLD ",
+                        "EQUIPMENT ",
+                        "ELECTRIC "
+                    ];
+                    JSON.parse(value).slice(0, 6).forEach((row, index) => {
+                        row = row || {};
                         const number = index + 1;
-                        const item = row.ingredientsSource
-                            ? `${row.menuItem || ""} (${row.ingredientsSource})`
-                            : row.menuItem || "";
-                        fieldValues.set(`MENU ITEM #${number}`, item);
-                        fieldValues.set(`EQUIPMENT ${number}`, row.equipmentUsed || "");
-                        const location = (row.preparationLocation || "").toLowerCase();
-                        fieldValues.set(
-                            `PREPPED BEFORE EVENT ${number}`,
-                            location.includes("before") ? row.preparationLocation : ""
-                        );
-                        fieldValues.set(
-                            `PREPPED AT EVENT ${number}`,
-                            location.includes("before") ? "" : row.preparationLocation || ""
-                        );
+                        const location = row.preparationLocation || "";
+                        const values = [
+                            row.ingredientsSource
+                                ? `${row.menuItem || ""} (${row.ingredientsSource})`
+                                : row.menuItem || "",
+                            row.preppedBeforeEvent ??
+                                (location.toLowerCase().includes("before") ? location : ""),
+                            row.preppedAtEventOnly ??
+                                (location && !location.toLowerCase().includes("before") ? location : ""),
+                            row.hotColdTransport,
+                            row.servedHotColdReheated,
+                            row.transportEquipment,
+                            row.cookingServingEquipment || row.equipmentUsed
+                        ];
+                        values.forEach((cellValue, columnIndex) => {
+                            fieldValues.set(
+                                `${menuFieldPrefixes[columnIndex]}${number}`,
+                                cellValue ?? ""
+                            );
+                        });
                     });
                 } catch {
                     console.warn("Could not parse menu table data");
@@ -600,8 +701,24 @@ async function generateCountyPDF() {
         );
         fieldValues.set(
             "Print Name",
-            data.applicantName || data.PrintName || data.printName || ""
+            data.ownerName || data.OwnerName || data.applicantName ||
+            data.PrintName || data.printName || ""
         );
+        let handwashItems = ["quiz17a", "quiz17b", "quiz17c", "quiz17d"]
+            .map(key => data[key])
+            .filter(Boolean)
+            .map(String);
+        if (!handwashItems.length && data.quiz17) {
+            try {
+                const parsed = JSON.parse(data.quiz17);
+                handwashItems = Array.isArray(parsed) ? parsed.map(String) : [];
+            } catch {
+                handwashItems = String(data.quiz17).split(/\r?\n|[•;]/);
+            }
+        }
+        handwashItems.slice(0, 4).forEach((item, index) => {
+            fieldValues.set(["one", "two", "three", "four"][index], item.trim());
+        });
         Object.entries({
             "1": "checkHandwashInitials",
             "2": "checkUtensilWashInitials",
@@ -627,7 +744,10 @@ async function generateCountyPDF() {
             if (!field || value === "" || value === null || value === undefined) continue;
             writePdfField(field, value, fieldName);
         }
-        checkQuizAnswers(data, fieldsByExactName, fieldsByName);
+        const quizCheckboxes = form.getFields()
+            .filter(field => typeof field.check === "function" && /^check box/i.test(field.getName()))
+            .slice(0, 59);
+        checkQuizAnswers(data, fieldsByExactName, fieldsByName, quizCheckboxes);
 
         const signature = data.applicantSignature || data.ApplicantSignature;
         if (signature && signature.startsWith("data:image/png;base64,")) {
@@ -702,7 +822,26 @@ const uiTranslations = {
         agKicker: "Agricultural route",
         agTitle: "Raw produce, fruit, honey grown on my farm",
         agDesc: "View guidance for agricultural exemptions and direct-to-consumer rules.",
-        validationError: "Please fill out all required fields with standard characters before proceeding."
+        validationError: "Please fill out all required fields with standard characters before proceeding.",
+        startOver: "Start over",
+        answersEnglish: "Type your answers in English.",
+        stepLabels: ["Language", "Path", "Questions", "Review", "Done"],
+        stepCounter: step => `STEP ${step} OF 5`,
+        reviewTitle: "Review Your Application",
+        reviewDesc: "Please review your information below before generating your official county PDF.",
+        reviewBack: "Back to Questions",
+        reviewDownload: "Download Official Application PDF",
+        yes: "Yes",
+        no: "No",
+        notAnswered: "Not answered",
+        reviewCategories: {
+            "Business Information": "Business Information",
+            "Event Logistics": "Event Logistics",
+            "Operations": "Operations",
+            "Checklists & Signatures": "Checklists & Signatures",
+            "Quiz Results": "Quiz Results",
+            "Commissary Agreement": "Commissary Agreement"
+        }
     },
     es: {
         step2Title: "¿Qué tipo de productos vende en el mercado?",
@@ -713,7 +852,26 @@ const uiTranslations = {
         agKicker: "Ruta agrícola",
         agTitle: "Productos crudos, fruta, miel cosechada en mi granja",
         agDesc: "Vea la guía para exenciones agrícolas y reglas de venta directa al consumidor.",
-        validationError: "Por favor, complete todos los campos obligatorios antes de continuar."
+        validationError: "Por favor, complete todos los campos obligatorios antes de continuar.",
+        startOver: "Comenzar de nuevo",
+        answersEnglish: "Escriba sus respuestas en inglés.",
+        stepLabels: ["Idioma", "Ruta", "Preguntas", "Revisión", "Listo"],
+        stepCounter: step => `PASO ${step} DE 5`,
+        reviewTitle: "Revise su solicitud",
+        reviewDesc: "Revise la información a continuación antes de generar el PDF oficial del condado.",
+        reviewBack: "Volver a las preguntas",
+        reviewDownload: "Descargar la solicitud oficial en PDF",
+        yes: "Sí",
+        no: "No",
+        notAnswered: "Sin respuesta",
+        reviewCategories: {
+            "Business Information": "Información del negocio",
+            "Event Logistics": "Detalles del evento",
+            "Operations": "Operaciones",
+            "Checklists & Signatures": "Listas de verificación y firmas",
+            "Quiz Results": "Resultados del cuestionario",
+            "Commissary Agreement": "Acuerdo de cocina/comisariato"
+        }
     },
     zh: {
         step2Title: "您在市场出售什么类型的产品？",
@@ -724,7 +882,26 @@ const uiTranslations = {
         agKicker: "农业路线",
         agTitle: "在我农场种植的生鲜农产品、水果、蜂蜜",
         agDesc: "查看农业豁免和直销规则指南。",
-        validationError: "请在继续之前填写所有必填字段。"
+        startOver: "重新开始",
+        answersEnglish: "请用英文填写您的答案。",
+        stepLabels: ["语言", "路径", "问题", "审核", "完成"],
+        stepCounter: step => `第 ${step} 步，共 5 步`,
+        validationError: "请在继续之前填写所有必填字段。",
+        reviewTitle: "查看您的申请",
+        reviewDesc: "生成县官方 PDF 前，请查看以下信息。",
+        reviewBack: "返回问题",
+        reviewDownload: "下载官方申请 PDF",
+        yes: "是",
+        no: "否",
+        notAnswered: "未回答",
+        reviewCategories: {
+            "Business Information": "企业信息",
+            "Event Logistics": "活动详情",
+            "Operations": "运营信息",
+            "Checklists & Signatures": "检查清单与签名",
+            "Quiz Results": "测验结果",
+            "Commissary Agreement": "共享厨房协议"
+        }
     },
     hi: {
         step2Title: "आप बाजार में किस प्रकार के उत्पाद बेच रहे हैं?",
@@ -735,7 +912,26 @@ const uiTranslations = {
         agKicker: "कृषि मार्ग",
         agTitle: "मेरे खेत में उगाई गई कच्ची उपज, फल, शहद",
         agDesc: "कृषि छूट और प्रत्यक्ष-से-उपभोक्ता नियमों के लिए मार्गदर्शन देखें।",
-        validationError: "कृपया आगे बढ़ने से पहले सभी आवश्यक फ़ील्ड भरें।"
+        validationError: "कृपया आगे बढ़ने से पहले सभी आवश्यक फ़ील्ड भरें।",
+        startOver: "फिर से शुरू करें",
+        answersEnglish: "अपने उत्तर अंग्रेज़ी में लिखें।",
+        stepLabels: ["भाषा", "मार्ग", "प्रश्न", "समीक्षा", "पूर्ण"],
+        stepCounter: step => `चरण ${step} / 5`,
+        reviewTitle: "अपने आवेदन की समीक्षा करें",
+        reviewDesc: "आधिकारिक काउंटी PDF बनाने से पहले नीचे दी गई जानकारी की समीक्षा करें।",
+        reviewBack: "प्रश्नों पर वापस जाएँ",
+        reviewDownload: "आधिकारिक आवेदन PDF डाउनलोड करें",
+        yes: "हाँ",
+        no: "नहीं",
+        notAnswered: "उत्तर नहीं दिया गया",
+        reviewCategories: {
+            "Business Information": "व्यवसाय की जानकारी",
+            "Event Logistics": "कार्यक्रम का विवरण",
+            "Operations": "संचालन",
+            "Checklists & Signatures": "जाँच सूची और हस्ताक्षर",
+            "Quiz Results": "प्रश्नोत्तरी के परिणाम",
+            "Commissary Agreement": "साझा रसोई समझौता"
+        }
     }
 };
 
@@ -743,6 +939,16 @@ function updatePageText() {
     const lang = appState.lang;
     const t = uiTranslations[lang];
     if (!t) return;
+
+    const startOver = document.getElementById("startOverBtn");
+    if (startOver) startOver.textContent = t.startOver;
+    document.querySelectorAll(".step-tracker .step-dot span").forEach((label, index) => {
+        label.textContent = t.stepLabels[index];
+    });
+    document.querySelectorAll("[data-step-counter]").forEach(counter => {
+        counter.textContent = t.stepCounter(counter.dataset.stepCounter);
+    });
+
 
     const titleEl = document.querySelector('#screen2 .triage-title');
     const descEl = document.querySelector('#screen2 .triage-desc');
@@ -771,6 +977,19 @@ function updatePageText() {
     if (agTitle) agTitle.textContent = t.agTitle;
     if (agDesc) agDesc.textContent = t.agDesc;
 
+    const reviewTitle = document.querySelector('#screen4 .triage-title');
+    const reviewDesc = document.querySelector('#screen4 .triage-desc');
+    const reviewBack = document.getElementById('revBackBtn');
+    const reviewDownload = document.getElementById('downloadPdfBtn');
+    if (reviewTitle) reviewTitle.textContent = t.reviewTitle;
+    if (reviewDesc) reviewDesc.textContent = t.reviewDesc;
+    if (reviewBack) reviewBack.textContent = t.reviewBack;
+    if (reviewDownload) reviewDownload.textContent = t.reviewDownload;
+
+    const answersBanner = document.querySelector("#formPage1 .triage-desc");
+    if (answersBanner) answersBanner.textContent = t.answersEnglish;
+
+
     questionnaireQuestions.forEach(function(question) {
         if (question.id === "faNumber") return;
 
@@ -786,6 +1005,8 @@ function updatePageText() {
                 prompt + (question.required ? " *" : "");
         }
     });
+
+    renderReviewScreen();
 }
 
 let questionnaireQuestions = [];
@@ -897,9 +1118,12 @@ function renderQuestionnaire() {
                 <thead>
                     <tr>
                         <th scope="col" class="p-2 text-left">Menu Item</th>
-                        <th scope="col" class="p-2 text-left">Ingredients/Source</th>
-                        <th scope="col" class="p-2 text-left">Preparation Location</th>
-                        <th scope="col" class="p-2 text-left">Equipment Used</th>
+                        <th scope="col" class="p-2 text-left">Prepped Before Event</th>
+                        <th scope="col" class="p-2 text-left">Prepped at Event Only</th>
+                        <th scope="col" class="p-2 text-left">Hot/Cold Transport</th>
+                        <th scope="col" class="p-2 text-left">Served Hot/Cold/Reheated</th>
+                        <th scope="col" class="p-2 text-left">Transport Equipment</th>
+                        <th scope="col" class="p-2 text-left">Cooking/Serving Equipment</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -919,7 +1143,11 @@ function renderQuestionnaire() {
 
             const addRow = values => {
                 const row = table.tBodies[0].insertRow();
-                ["menuItem", "ingredientsSource", "preparationLocation", "equipmentUsed"]
+                [
+                    "menuItem", "preppedBeforeEvent", "preppedAtEventOnly",
+                    "hotColdTransport", "servedHotColdReheated",
+                    "transportEquipment", "cookingServingEquipment"
+                ]
                     .forEach(column => {
                         const cell = row.insertCell();
                         cell.className = "p-2 align-top";
@@ -927,7 +1155,12 @@ function renderQuestionnaire() {
                         field.type = "text";
                         field.dataset.column = column;
                         field.name = `${question.id}[${table.tBodies[0].rows.length - 1}][${column}]`;
-                        field.value = values[column] ?? "";
+                        field.value = values[column] ??
+                            (column === "preppedBeforeEvent" && values.preparationLocation?.toLowerCase().includes("before")
+                                ? values.preparationLocation
+                                : column === "preppedAtEventOnly" && values.preparationLocation?.toLowerCase().includes("before") === false
+                                    ? values.preparationLocation
+                                    : column === "cookingServingEquipment" ? values.equipmentUsed : "");
                         field.required = question.required;
                         field.className = "w-full";
                         field.setAttribute("aria-label", column.replace(/([A-Z])/g, " $1"));
