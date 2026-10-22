@@ -157,17 +157,64 @@ function updateStepTracker(currentStep) {
 }
 //2 for savelang 
 function saveLanguage(langCode) {
-    if (!langCode) return;
+    const languages = {
+        en: {
+            heading: "Choose your language",
+            message: "English selected.",
+            next: "Next"
+        },
+        es: {
+            heading: "Elija su idioma",
+            message: "Español seleccionado.",
+            next: "Siguiente"
+        },
+        zh: {
+            heading: "请选择您的语言",
+            message: "已选择中文。",
+            next: "下一步"
+        },
+        hi: {
+            heading: "अपनी भाषा चुनें",
+            message: "हिंदी चुनी गई है।",
+            next: "अगला"
+        }
+    };
+
+    const selected = languages[langCode];
+    if (!selected) return;
+
+    // Save the chosen language.
     appState.lang = langCode;
+    document.documentElement.lang = langCode;
 
-    const headerControls = document.getElementById('headerControls');
-    if (headerControls) {
-        headerControls.style.display = 'flex';
-    }
+    // Update the first page.
+    document.getElementById("languageHeading").textContent =
+        selected.heading;
 
-    document.querySelectorAll('.lang-switcher span').forEach(span => {
-        span.classList.toggle('active', span.getAttribute('data-lang') === langCode);
+    document.getElementById("message").textContent =
+        selected.message;
+
+    document.getElementById("langNextBtn").textContent =
+        selected.next;
+
+    // Highlight the selected language button.
+    document.querySelectorAll(".languageButtons button").forEach(button => {
+        const isSelected = button.dataset.lang === langCode;
+
+        button.classList.toggle("active", isSelected);
+        button.setAttribute("aria-pressed", String(isSelected));
     });
+
+    // Update the header language selection.
+    document.querySelectorAll(".lang-switcher span").forEach(span => {
+        span.classList.toggle("active", span.dataset.lang === langCode);
+    });
+
+    const headerControls = document.getElementById("headerControls");
+
+    if (headerControls) {
+        headerControls.style.display = "flex";
+    }
 
     updatePageText();
 }
