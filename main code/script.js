@@ -691,6 +691,7 @@ function renderQuestionnaire() {
 function prefillAutoDates() {
     const today = new Date().toISOString().split('T')[0];
     document.querySelectorAll('input.auto-date').forEach(input => {
+        if (input.id === 'startDate' || input.id === 'endDate') return;
         if (!input.value) input.value = today;
     });
 }
