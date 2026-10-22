@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.lang-switcher span').forEach(span => {
         span.addEventListener('click', (e) => {
             const selectedLang = e.currentTarget.getAttribute('data-lang');
-            (selectedLang);
+            saveLanguage(selectedLang);
         });
     });
     
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.currentTarget.classList.add('active');
 
             const selectedLang = e.currentTarget.getAttribute('data-lang');
-            (selectedLang);
+            saveLanguage(selectedLang);
         });
     });
   
