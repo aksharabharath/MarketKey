@@ -462,20 +462,44 @@ function collectFormData() {
 }
 
 function checkQuizAnswers(data, fieldsByExactName, fieldsByName) {
-    Object.keys(data).filter(key => /^quiz\d+$/.test(key)).forEach(key => {
+    Object.keys(data).filter(key => /^quiz\d+$/i.test(key)).forEach(key => {
         const select = document.getElementById(key);
-        const optionIndex = select?.selectedIndex - 1;
+        const answer = String(data[key] ?? "");
+        let optionIndex = select ? select.selectedIndex - 1 : -1;
+        if (optionIndex < 0 && /^[a-d](?:[\s.)]|$)/i.test(answer)) {
+            optionIndex = answer.toLowerCase().charCodeAt(0) - 97;
+        }
+        if (optionIndex < 0 && select) {
+            optionIndex = [...select.options].findIndex(option =>
+                normalizePdfFieldName(option.value) === normalizePdfFieldName(answer)
+            ) - 1;
+        }
         if (optionIndex < 0) return;
 
-        const number = key.slice(4);
+        const number = key.match(/\d+/)[0];
         const letter = String.fromCharCode(97 + optionIndex);
         const candidates = [
             `Quiz${number}${letter}`, `Quiz ${number} ${letter}`,
             `${number}${letter}`, `${number} ${letter}`, `${number}.${letter}`
         ];
-        const field = candidates
+        let field = candidates
             .map(name => fieldsByExactName.get(name) || fieldsByName.get(normalizePdfFieldName(name)))
             .find(item => item && typeof item.check === "function");
+        if (!field) {
+            const answerName = normalizePdfFieldName(answer.replace(/^[a-d][\s.)-]*/i, ""));
+            field = [...fieldsByExactName.values()].find(item => {
+                if (typeof item.check !== "function") return false;
+                const name = normalizePdfFieldName(item.getName());
+                const questionMatches = name.includes(`quiz${number}`) ||
+                    name.includes(`q${number}`) ||
+                    name.startsWith(`${number}option`);
+                const optionMatches = name.endsWith(letter) ||
+                    name.includes(`option${optionIndex + 1}`) ||
+                    name.endsWith(String(optionIndex + 1)) ||
+                    (answerName.length > 2 && name.includes(answerName));
+                return questionMatches && optionMatches;
+            });
+        }
         if (field) {
             try {
                 field.check();
