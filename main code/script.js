@@ -269,9 +269,9 @@ function getReviewCategory(key) {
     return "Business Information";
 }
 
-function reviewValue(value) {
-    if (typeof value === "boolean") return value ? "Yes" : "No";
-    if (!value) return "Not answered";
+function reviewValue(value, translations) {
+    if (typeof value === "boolean") return value ? translations.yes : translations.no;
+    if (!value) return translations.notAnswered;
     if (typeof value === "string" && /^[\[{]/.test(value.trim())) {
         try {
             const parsed = JSON.parse(value);
@@ -286,6 +286,7 @@ function reviewValue(value) {
 function renderReviewScreen() {
     const reviewContainer = document.getElementById('reviewContent');
     if (!reviewContainer) return;
+    const translations = uiTranslations[appState.lang] || uiTranslations.en;
 
     reviewContainer.innerHTML = '';
     reviewContainer.className = 'max-w-[1000px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 text-left';
@@ -330,7 +331,7 @@ function renderReviewScreen() {
 
         const heading = document.createElement('h3');
         heading.className = "font-['Yeseva_One'] text-xl text-[#d9641f] mt-0 mb-3";
-        heading.textContent = category;
+        heading.textContent = translations.reviewCategories[category] || category;
         section.appendChild(heading);
 
         const entryGrid = document.createElement('dl');
@@ -344,7 +345,7 @@ function renderReviewScreen() {
             label.textContent = formatKeyToLabel(key);
             card.appendChild(label);
 
-            const displayValue = reviewValue(value);
+            const displayValue = reviewValue(value, translations);
             if (Array.isArray(displayValue)) {
                 const list = document.createElement('ul');
                 list.className = 'list-disc pl-4 text-sm text-[#713515]';
@@ -355,7 +356,7 @@ function renderReviewScreen() {
                         row.ingredientsSource,
                         row.preparationLocation,
                         row.equipmentUsed
-                    ].filter(Boolean).join(' · ') || 'Not answered';
+                    ].filter(Boolean).join(' · ') || translations.notAnswered;
                     list.appendChild(item);
                 });
                 card.appendChild(list);
@@ -701,7 +702,22 @@ const uiTranslations = {
         agKicker: "Agricultural route",
         agTitle: "Raw produce, fruit, honey grown on my farm",
         agDesc: "View guidance for agricultural exemptions and direct-to-consumer rules.",
-        validationError: "Please fill out all required fields with standard characters before proceeding."
+        validationError: "Please fill out all required fields with standard characters before proceeding.",
+        reviewTitle: "Review Your Application",
+        reviewDesc: "Please review your information below before generating your official county PDF.",
+        reviewBack: "Back to Questions",
+        reviewDownload: "Download Official Application PDF",
+        yes: "Yes",
+        no: "No",
+        notAnswered: "Not answered",
+        reviewCategories: {
+            "Business Information": "Business Information",
+            "Event Logistics": "Event Logistics",
+            "Operations": "Operations",
+            "Checklists & Signatures": "Checklists & Signatures",
+            "Quiz Results": "Quiz Results",
+            "Commissary Agreement": "Commissary Agreement"
+        }
     },
     es: {
         step2Title: "¿Qué tipo de productos vende en el mercado?",
@@ -712,7 +728,22 @@ const uiTranslations = {
         agKicker: "Ruta agrícola",
         agTitle: "Productos crudos, fruta, miel cosechada en mi granja",
         agDesc: "Vea la guía para exenciones agrícolas y reglas de venta directa al consumidor.",
-        validationError: "Por favor, complete todos los campos obligatorios antes de continuar."
+        validationError: "Por favor, complete todos los campos obligatorios antes de continuar.",
+        reviewTitle: "Revise su solicitud",
+        reviewDesc: "Revise la información a continuación antes de generar el PDF oficial del condado.",
+        reviewBack: "Volver a las preguntas",
+        reviewDownload: "Descargar la solicitud oficial en PDF",
+        yes: "Sí",
+        no: "No",
+        notAnswered: "Sin respuesta",
+        reviewCategories: {
+            "Business Information": "Información del negocio",
+            "Event Logistics": "Detalles del evento",
+            "Operations": "Operaciones",
+            "Checklists & Signatures": "Listas de verificación y firmas",
+            "Quiz Results": "Resultados del cuestionario",
+            "Commissary Agreement": "Acuerdo de cocina/comisariato"
+        }
     },
     zh: {
         step2Title: "您在市场出售什么类型的产品？",
@@ -723,7 +754,22 @@ const uiTranslations = {
         agKicker: "农业路线",
         agTitle: "在我农场种植的生鲜农产品、水果、蜂蜜",
         agDesc: "查看农业豁免和直销规则指南。",
-        validationError: "请在继续之前填写所有必填字段。"
+        validationError: "请在继续之前填写所有必填字段。",
+        reviewTitle: "查看您的申请",
+        reviewDesc: "生成县官方 PDF 前，请查看以下信息。",
+        reviewBack: "返回问题",
+        reviewDownload: "下载官方申请 PDF",
+        yes: "是",
+        no: "否",
+        notAnswered: "未回答",
+        reviewCategories: {
+            "Business Information": "企业信息",
+            "Event Logistics": "活动详情",
+            "Operations": "运营信息",
+            "Checklists & Signatures": "检查清单与签名",
+            "Quiz Results": "测验结果",
+            "Commissary Agreement": "共享厨房协议"
+        }
     },
     hi: {
         step2Title: "आप बाजार में किस प्रकार के उत्पाद बेच रहे हैं?",
@@ -734,7 +780,22 @@ const uiTranslations = {
         agKicker: "कृषि मार्ग",
         agTitle: "मेरे खेत में उगाई गई कच्ची उपज, फल, शहद",
         agDesc: "कृषि छूट और प्रत्यक्ष-से-उपभोक्ता नियमों के लिए मार्गदर्शन देखें।",
-        validationError: "कृपया आगे बढ़ने से पहले सभी आवश्यक फ़ील्ड भरें।"
+        validationError: "कृपया आगे बढ़ने से पहले सभी आवश्यक फ़ील्ड भरें।",
+        reviewTitle: "अपने आवेदन की समीक्षा करें",
+        reviewDesc: "आधिकारिक काउंटी PDF बनाने से पहले नीचे दी गई जानकारी की समीक्षा करें।",
+        reviewBack: "प्रश्नों पर वापस जाएँ",
+        reviewDownload: "आधिकारिक आवेदन PDF डाउनलोड करें",
+        yes: "हाँ",
+        no: "नहीं",
+        notAnswered: "उत्तर नहीं दिया गया",
+        reviewCategories: {
+            "Business Information": "व्यवसाय की जानकारी",
+            "Event Logistics": "कार्यक्रम का विवरण",
+            "Operations": "संचालन",
+            "Checklists & Signatures": "जाँच सूची और हस्ताक्षर",
+            "Quiz Results": "प्रश्नोत्तरी के परिणाम",
+            "Commissary Agreement": "साझा रसोई समझौता"
+        }
     }
 };
 
@@ -770,6 +831,15 @@ function updatePageText() {
     if (agTitle) agTitle.textContent = t.agTitle;
     if (agDesc) agDesc.textContent = t.agDesc;
 
+    const reviewTitle = document.querySelector('#screen4 .triage-title');
+    const reviewDesc = document.querySelector('#screen4 .triage-desc');
+    const reviewBack = document.getElementById('revBackBtn');
+    const reviewDownload = document.getElementById('downloadPdfBtn');
+    if (reviewTitle) reviewTitle.textContent = t.reviewTitle;
+    if (reviewDesc) reviewDesc.textContent = t.reviewDesc;
+    if (reviewBack) reviewBack.textContent = t.reviewBack;
+    if (reviewDownload) reviewDownload.textContent = t.reviewDownload;
+
     questionnaireQuestions.forEach(function(question) {
         if (question.id === "faNumber") return;
 
@@ -785,6 +855,8 @@ function updatePageText() {
                 prompt + (question.required ? " *" : "");
         }
     });
+
+    renderReviewScreen();
 }
 
 let questionnaireQuestions = [];
