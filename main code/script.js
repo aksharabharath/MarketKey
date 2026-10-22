@@ -175,6 +175,7 @@ function showFormPage(pageNumber) {
     document.querySelectorAll('[id^="formPage"]').forEach(page => {
         page.classList.add('hidden');
         page.style.display = 'none';
+        page.setAttribute('aria-hidden', 'true');
     });
 
     const page = document.getElementById(`formPage${pageNumber}`);
@@ -182,6 +183,7 @@ function showFormPage(pageNumber) {
 
     page.classList.remove('hidden');
     page.style.display = 'block';
+    page.setAttribute('aria-hidden', 'false');
     appState.currentFormPage = pageNumber;
 }
 //2 for savelang 
@@ -499,7 +501,7 @@ function updatePageText() {
 
     questionnaireQuestions.forEach(function(question) {
         const label = document.querySelector(
-            `#applicationForm label[for="${question.id}"]`
+            `#applicationForm label[for="${question.id}"], #commissaryForm label[for="${question.id}"]`
         );
 
         if (label) {
@@ -536,13 +538,20 @@ async function loadQuestionnaire() {
 
 function renderQuestionnaire() {
     const form = document.getElementById("applicationForm");
-    if (!form) return;
+    const commissaryForm = document.getElementById("commissaryForm");
+    if (!form || !commissaryForm) return;
 
     form.replaceChildren();
+    commissaryForm.replaceChildren();
 
-    questionnaireQuestions
-        .filter(question => question.phase !== 4 && question.phase !== 7)
-        .forEach(function(question) {
+    questionnaireQuestions.forEach(function(question) {
+        const targetForm = question.phase >= 5 && question.phase <= 6
+            ? commissaryForm
+            : question.phase <= 3
+                ? form
+                : null;
+        if (!targetForm) return;
+
         const container = document.createElement("div");
         container.className = "question";
 
@@ -620,7 +629,7 @@ function renderQuestionnaire() {
             updateLiveCounter();
         });
 
-        form.appendChild(container);
+        targetForm.appendChild(container);
         });
     updateLiveCounter();
 }
