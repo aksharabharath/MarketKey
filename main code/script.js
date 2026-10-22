@@ -269,6 +269,20 @@ function getReviewCategory(key) {
     return "Business Information";
 }
 
+function reviewValue(value) {
+    if (typeof value === "boolean") return value ? "Yes" : "No";
+    if (!value) return "Not answered";
+    if (typeof value === "string" && /^[\[{]/.test(value.trim())) {
+        try {
+            const parsed = JSON.parse(value);
+            if (Array.isArray(parsed)) return parsed;
+        } catch {
+            return value;
+        }
+    }
+    return value;
+}
+
 function renderReviewScreen() {
     const reviewContainer = document.getElementById('reviewContent');
     if (!reviewContainer) return;
@@ -319,15 +333,41 @@ function renderReviewScreen() {
         heading.textContent = category;
         section.appendChild(heading);
 
+        const entryGrid = document.createElement('dl');
+        entryGrid.className = 'grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-2';
         entries.forEach(({ key, value }) => {
             const card = document.createElement('div');
-            card.className = 'review-card border-b border-[#d9641f]/10 py-2 last:border-b-0';
-            card.innerHTML = `
-                <span class="review-label">${formatKeyToLabel(key)}</span>
-                <span class="review-value">${value ? value : 'Not answered'}</span>
-            `;
-            section.appendChild(card);
+            card.className = 'border-b border-[#d9641f]/10 py-2';
+
+            const label = document.createElement('dt');
+            label.className = 'review-label';
+            label.textContent = formatKeyToLabel(key);
+            card.appendChild(label);
+
+            const displayValue = reviewValue(value);
+            if (Array.isArray(displayValue)) {
+                const list = document.createElement('ul');
+                list.className = 'list-disc pl-4 text-sm text-[#713515]';
+                displayValue.forEach(row => {
+                    const item = document.createElement('li');
+                    item.textContent = [
+                        row.menuItem,
+                        row.ingredientsSource,
+                        row.preparationLocation,
+                        row.equipmentUsed
+                    ].filter(Boolean).join(' · ') || 'Not answered';
+                    list.appendChild(item);
+                });
+                card.appendChild(list);
+            } else {
+                const valueText = document.createElement('dd');
+                valueText.className = 'text-sm font-semibold text-[#713515] break-words';
+                valueText.textContent = String(displayValue);
+                card.appendChild(valueText);
+            }
+            entryGrid.appendChild(card);
         });
+        section.appendChild(entryGrid);
 
         reviewContainer.appendChild(section);
     }
