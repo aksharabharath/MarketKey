@@ -349,6 +349,7 @@ function renderReviewScreen() {
         '#formPage2 input, #formPage2 select, #formPage2 textarea, ' +
         '#formPage3 input, #formPage3 select, #formPage3 textarea'
     ).forEach(input => {
+        if (input.closest('#menuTableBuilderTable')) return;
         const question = questionnaireQuestions.find(item => item.id === input.id);
         const key = question?.pdfFieldKey || input.name || input.id;
         if (key) {
@@ -649,6 +650,79 @@ function renderQuestionnaire() {
             input.required = question.required;
             input.value = savedAnswer ?? "";
             container.append(label, input);
+
+        } else if (question.type === "table-builder") {
+            input = document.createElement("input");
+            input.id = question.id;
+            input.name = question.id;
+            input.type = "hidden";
+            input.value = savedAnswer ?? "";
+
+            const table = document.createElement("table");
+            table.id = `${question.id}Table`;
+            table.className = "w-full border-collapse text-sm mt-3";
+            table.innerHTML = `
+                <caption class="sr-only">Menu items and equipment details</caption>
+                <thead>
+                    <tr>
+                        <th scope="col" class="p-2 text-left">Menu Item</th>
+                        <th scope="col" class="p-2 text-left">Ingredients/Source</th>
+                        <th scope="col" class="p-2 text-left">Preparation Location</th>
+                        <th scope="col" class="p-2 text-left">Equipment Used</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            `;
+
+            const syncRows = () => {
+                const rows = [...table.tBodies[0].rows].map(row =>
+                    [...row.querySelectorAll("input")].reduce((values, field) => {
+                        values[field.dataset.column] = field.value;
+                        return values;
+                    }, {})
+                );
+                input.value = JSON.stringify(rows);
+                appState.formData[storageKey] = input.value;
+                updateLiveCounter();
+            };
+
+            const addRow = values => {
+                const row = table.tBodies[0].insertRow();
+                ["menuItem", "ingredientsSource", "preparationLocation", "equipmentUsed"]
+                    .forEach(column => {
+                        const cell = row.insertCell();
+                        cell.className = "p-2 align-top";
+                        const field = document.createElement("input");
+                        field.type = "text";
+                        field.dataset.column = column;
+                        field.name = `${question.id}[${table.tBodies[0].rows.length - 1}][${column}]`;
+                        field.value = values[column] ?? "";
+                        field.required = question.required;
+                        field.className = "w-full";
+                        field.setAttribute("aria-label", column.replace(/([A-Z])/g, " $1"));
+                        field.addEventListener("input", syncRows);
+                        cell.appendChild(field);
+                    });
+            };
+
+            let savedRows = [];
+            try {
+                savedRows = savedAnswer ? JSON.parse(savedAnswer) : [];
+            } catch {
+                savedRows = [];
+            }
+            (Array.isArray(savedRows) && savedRows.length ? savedRows : [{}]).forEach(addRow);
+            syncRows();
+
+            const addButton = document.createElement("button");
+            addButton.type = "button";
+            addButton.className = "mt-3 bg-transparent text-[#d9641f] border-2 border-[#d9641f] py-2 px-4 font-bold rounded-lg";
+            addButton.textContent = "Add Row";
+            addButton.addEventListener("click", () => {
+                addRow({});
+                syncRows();
+            });
+            container.append(label, table, addButton, input);
 
         } else if (question.type === "checkbox") {
             input = document.createElement("input");
