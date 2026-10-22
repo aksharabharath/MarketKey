@@ -575,12 +575,19 @@ async function generateCountyPDF() {
                 try {
                     JSON.parse(value).forEach((row, index) => {
                         const number = index + 1;
+                        const location = row.preparationLocation || "";
                         const item = row.ingredientsSource
                             ? `${row.menuItem || ""} (${row.ingredientsSource})`
                             : row.menuItem || "";
                         fieldValues.set(`MENU ITEM #${number}`, item);
-                        fieldValues.set(`PREPPED BEFORE EVENT ${number}`, row.preppedBeforeEvent || "");
-                        fieldValues.set(`PREPPED AT EVENT ${number}`, row.preppedAtEventOnly || "");
+                        fieldValues.set(
+                            `PREPPED BEFORE EVENT ${number}`,
+                            row.preppedBeforeEvent ?? (location.toLowerCase().includes("before") ? location : "")
+                        );
+                        fieldValues.set(
+                            `PREPPED AT EVENT ${number}`,
+                            row.preppedAtEventOnly ?? (location && !location.toLowerCase().includes("before") ? location : "")
+                        );
                         fieldValues.set(`BROUGHT HOT OR COLD ${number}`, row.hotColdTransport || "");
                         fieldValues.set(`SERVED HOT OR COLD ${number}`, row.servedHotColdReheated || "");
                         fieldValues.set(`EQUIPMENT ${number}`, row.transportEquipment || "");
@@ -635,7 +642,7 @@ async function generateCountyPDF() {
             writePdfField(field, value, fieldName);
         }
         const quizCheckboxes = form.getFields()
-            .filter(field => typeof field.check === "function")
+            .filter(field => typeof field.check === "function" && /^check box/i.test(field.getName()))
             .slice(0, 59);
         checkQuizAnswers(data, fieldsByExactName, fieldsByName, quizCheckboxes);
 
