@@ -313,6 +313,7 @@ function formatKeyToLabel(key) {
 function getReviewCategory(key) {
     const normalizedKey = key.toLowerCase();
     if (normalizedKey.includes("quiz")) return "Quiz Results";
+    if (normalizedKey.includes("commissary")) return "Commissary Agreement";
     if (/check|signature|printname|signer/.test(normalizedKey)) {
         return "Checklists & Signatures";
     }
@@ -332,8 +333,31 @@ function renderReviewScreen() {
     reviewContainer.innerHTML = '';
     reviewContainer.className = 'max-w-[1000px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 text-left';
 
+    const reviewValues = new Map(Object.entries(appState.formData));
+    questionnaireQuestions.forEach(question => {
+        const input = document.getElementById(question.id);
+        if (!input) return;
+        reviewValues.set(
+            question.pdfFieldKey || question.id,
+            input.type === 'checkbox' ? input.checked : input.value
+        );
+    });
+    document.querySelectorAll(
+        '#formPage1 input, #formPage1 select, #formPage1 textarea, ' +
+        '#formPage2 input, #formPage2 select, #formPage2 textarea, ' +
+        '#formPage3 input, #formPage3 select, #formPage3 textarea'
+    ).forEach(input => {
+        const question = questionnaireQuestions.find(item => item.id === input.id);
+        const key = question?.pdfFieldKey || input.name || input.id;
+        if (key) {
+            reviewValues.set(key, input.type === 'checkbox' ? input.checked : input.value);
+        }
+    });
+
+    const includeCommissary = reviewValues.get('OriginalPackageCheck') === 'Yes';
     const sections = {};
-    for (const [key, value] of Object.entries(appState.formData)) {
+    for (const [key, value] of reviewValues) {
+        if (!includeCommissary && key.toLowerCase().includes('commissary')) continue;
         const category = getReviewCategory(key);
         if (!sections[category]) sections[category] = [];
         sections[category].push({ key, value });
