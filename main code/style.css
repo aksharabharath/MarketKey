@@ -43,6 +43,7 @@
 
 #signature-pad:focus {
     outline: 3px solid #fdcb7b; outline-offset: 2px;
+    touch-action: none; 
 }
 
 #signature-pad:focus-visible {
