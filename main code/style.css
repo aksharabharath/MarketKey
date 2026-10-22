@@ -32,6 +32,7 @@
 .tagline { letter-spacing: 0.01em; }
 .hero-subtitle {
     margin: 10px auto 0;
+    max-width: 620px;
     color: #8b6248;
     font-size: 16px;
     line-height: 1.5;
@@ -52,6 +53,13 @@
     box-shadow: 0 6px 16px rgba(113, 53, 21, 0.08);
     transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
 }
+.languageButtons button span {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.78em;
+    font-weight: 600;
+    opacity: 0.78;
+}
 .languageButtons button:hover,
 .languageButtons button:focus-visible {
     transform: translateY(-2px);
@@ -65,6 +73,31 @@
     transition: opacity 160ms ease;
 }
 .step-dot.active { opacity: 1; }
+
+.trust-microcopy {
+    margin: 18px 0 0;
+    color: #8b6248;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+}
+.primary-cta {
+    display: block;
+    width: min(100%, 320px);
+    margin: 14px auto 0;
+    padding: 16px 28px;
+    box-shadow: 0 8px 18px rgba(113, 53, 21, 0.16);
+    transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+.primary-cta:hover,
+.primary-cta:focus-visible {
+    background-color: #b95018;
+    box-shadow: 0 12px 24px rgba(113, 53, 21, 0.22);
+    transform: translateY(-2px);
+}
+.primary-cta:active {
+    transform: translateY(0);
+    box-shadow: 0 5px 12px rgba(113, 53, 21, 0.16);
+}
 
 
 
