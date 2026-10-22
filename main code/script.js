@@ -2,128 +2,98 @@
 const appState = {
     lang: 'en',
     currentStep: 1,
+    currentFormPage: 1,
+    skipCommissary: false,
     path: null,
     formData: {}
 };
+
+const get = id => document.getElementById(id);
+const listen = (id, event, handler) => get(id)?.addEventListener(event, handler);
+
+function resetApp() {
+    appState.formData = {};
+    appState.path = null;
+    appState.skipCommissary = false;
+    showScreen('screen1');
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     showScreen('screen1');
     updateStepTracker(1);
     loadQuestionnaire();
-    
-    const headerControls = document.getElementById('headerControls');
-    if (headerControls) {
-        headerControls.style.display = 'none';
-    }
-    const downloadBtn = document.getElementById('downloadPdfBtn');
-    if (downloadBtn) {
-        downloadBtn.addEventListener('click', downloadAndWipe);
-    }
+    prefillAutoDates();
+    if (get('headerControls')) get('headerControls').style.display = 'none';
 
-    const startOverBtn = document.getElementById('startOverBtn');
-    if (startOverBtn) {
-        startOverBtn.addEventListener('click', () => {
-            if (confirm("Are you sure you want to start over? All entered data will be cleared.")) {
-                appState.formData = {};
-                appState.path = null;
-                showScreen('screen1');
-            }
-        });
-    }
+    listen('downloadPdfBtn', 'click', downloadAndWipe);
+    listen('startOverBtn', 'click', () => {
+        if (confirm('Are you sure you want to start over? All entered data will be cleared.')) resetApp();
+    });
+    listen('startNewAppBtn', 'click', resetApp);
+    listen('revBackBtn', 'click', () => showScreen('screen3'));
 
-    const qBackBtn = document.getElementById('qBackBtn');
-    if (qBackBtn) {
-        qBackBtn.addEventListener('click', () => showScreen('screen2'));
-    }
-
-    const revBackBtn = document.getElementById('revBackBtn');
-    if (revBackBtn) {
-        revBackBtn.addEventListener('click', () => showScreen('screen3'));
-    }
-
-    const startNewAppBtn = document.getElementById('startNewAppBtn');
-    if (startNewAppBtn) {
-        startNewAppBtn.addEventListener('click', () => {
-            appState.formData = {};
-            appState.path = null;
-            showScreen('screen1');
-        });
-    }
+    listen('qBackBtn', 'click', () => {
+        if (appState.currentFormPage === 3 && appState.skipCommissary) {
+            showFormPage(1);
+        } else if (appState.currentFormPage > 1) {
+            showFormPage(appState.currentFormPage - 1);
+        } else {
+            showScreen('screen2');
+        }
+    });
 
     document.querySelectorAll('.lang-switcher span').forEach(span => {
-        span.addEventListener('click', (e) => {
-            const selectedLang = e.currentTarget.getAttribute('data-lang');
-            saveLanguage(selectedLang);
+        span.addEventListener('click', () => saveLanguage(span.dataset.lang));
+    });
+    document.querySelectorAll('.languageButtons button').forEach(button => {
+        button.addEventListener('click', () => {
+            document.querySelectorAll('.languageButtons button')
+                .forEach(item => item.classList.toggle('active', item === button));
+            saveLanguage(button.dataset.lang);
         });
     });
-    
-    document.querySelectorAll('.languageButtons button').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            // Remove active class from all buttons
-            document.querySelectorAll('.languageButtons button').forEach(b => b.classList.remove('active'));
-            // Add active class to the clicked button
-            e.currentTarget.classList.add('active');
 
-            const selectedLang = e.currentTarget.getAttribute('data-lang');
-            saveLanguage(selectedLang);
+    document.querySelectorAll('.next-btn').forEach(button => {
+        button.addEventListener('click', event => {
+            if (button.id === 'pSubmitBtn' || button.id === 'qSubmitBtn') return;
+            const next = button.closest('.screen')?.nextElementSibling;
+            if (next?.classList.contains('screen')) showScreen(next.id);
         });
     });
-  
 
-    const nextButtons = document.querySelectorAll(".next-btn");
-    nextButtons.forEach(function(button) {
-        button.addEventListener("click", function(e) {
-            if (button.id === "pSubmitBtn" || button.id === "qSubmitBtn") return; 
+    listen('qSubmitBtn', 'click', event => {
+        event.preventDefault();
+        if (!validateForm()) return;
 
-            const currentScreen = button.closest(".screen");
-            const nextScreen = currentScreen.nextElementSibling;
-
-            if (nextScreen && nextScreen.classList.contains("screen")) {
-                showScreen(nextScreen.id);
-            }
-        });
-    });   
-    
-    const qSubmitBtn = document.getElementById("qSubmitBtn");
-    if (qSubmitBtn) {
-        qSubmitBtn.addEventListener("click", function(e) {
-            e.preventDefault();
-            validateForm();
-        });
-    }
-    
-    const tffBtn = document.getElementById('tffPathBtn');
-        if (tffBtn) {
-            tffBtn.addEventListener('click', () => {
-                appState.path = 'tff';
-                const today = new Date().toISOString().split('T')[0];
-                appState.formData['todaysDate'] = today;
-                
-                showScreen('screen3');
-                loadQuestionnaire(); 
-            });
+        if (appState.currentFormPage === 1) {
+            appState.skipCommissary = get('originalPackageCheck')?.value === 'No';
+            showFormPage(appState.skipCommissary ? 3 : 2);
+        } else if (appState.currentFormPage < 3) {
+            showFormPage(appState.currentFormPage + 1);
+        } else {
+            renderReviewScreen();
+            showScreen('screen4');
         }
+    });
 
-    const agBtn = document.getElementById('agPathBtn');
-    if (agBtn) {
-        agBtn.addEventListener('click', () => {
-            appState.path = 'ag';
-            const pathCards = document.querySelector('.path-cards');
-            const agGuidance = document.getElementById('agGuidanceView');
-            if (pathCards) pathCards.style.display = 'none';
-            if (agGuidance) agGuidance.style.display = 'block';
-        });
-    }
+    listen('tffPathBtn', 'click', () => {
+        appState.path = 'tff';
+        appState.skipCommissary = false;
+        appState.formData.todaysDate = new Date().toISOString().split('T')[0];
+        showFormPage(1);
+        showScreen('screen3');
+        loadQuestionnaire();
+    });
 
-    const agBackBtn = document.getElementById('agBackBtn');
-    if (agBackBtn) {
-        agBackBtn.addEventListener('click', () => {
-            const pathCards = document.querySelector('.path-cards');
-            const agGuidance = document.getElementById('agGuidanceView');
-            if (pathCards) pathCards.style.display = 'flex';
-            if (agGuidance) agGuidance.style.display = 'none';
-        });
-    }
+    listen('agPathBtn', 'click', () => {
+        appState.path = 'ag';
+        document.querySelector('.path-cards').style.display = 'none';
+        get('agGuidanceView').style.display = 'block';
+    });
+    listen('agBackBtn', 'click', () => {
+        document.querySelector('.path-cards').style.display = 'flex';
+        get('agGuidanceView').style.display = 'none';
+    });
 });
 //------------------- (insert #2-4), check MarketKey/docs/handoff_notes.md for reference if need clarification
 
@@ -154,6 +124,22 @@ function updateStepTracker(currentStep) {
             step.classList.remove("active");
         }
     });
+}
+
+function showFormPage(pageNumber) {
+    document.querySelectorAll('[id^="formPage"]').forEach(page => {
+        page.classList.add('hidden');
+        page.style.display = 'none';
+        page.setAttribute('aria-hidden', 'true');
+    });
+
+    const page = document.getElementById(`formPage${pageNumber}`);
+    if (!page) return;
+
+    page.classList.remove('hidden');
+    page.style.display = 'block';
+    page.setAttribute('aria-hidden', 'false');
+    appState.currentFormPage = pageNumber;
 }
 //2 for savelang 
 function saveLanguage(langCode) {
@@ -227,28 +213,213 @@ function saveLanguage(langCode) {
     updatePageText();
 }
 // 5. PDF and review functions
+function formatKeyToLabel(key) {
+    const text = String(key)
+        .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+        .replace(/[_-]+/g, " ")
+        .trim();
+    const knownWords = [
+        "contamination", "protection", "containers", "thermometer",
+        "delegation", "disposal", "transport", "sanitation", "reusable",
+        "business", "sponsor", "contact", "original", "package", "generator",
+        "sampling", "details", "outdoor", "cooking", "condiments", "utility",
+        "locations", "hand", "wash", "utensil", "task", "prep", "inside",
+        "cold", "holding", "permit", "trash", "booth", "walls", "hot",
+        "water", "source", "waste", "customer", "commissary", "services",
+        "explanation", "signer", "applicant", "signature", "number", "name",
+        "event", "address", "phone", "email", "owner", "date", "print",
+        "check", "quiz"
+    ];
+    const words = text === text.toUpperCase()
+        ? (() => {
+            const result = [];
+            let remaining = text.toLowerCase();
+            while (remaining) {
+                const word = knownWords.find(candidate => remaining.startsWith(candidate));
+                if (!word) {
+                    result.push(remaining);
+                    break;
+                }
+                result.push(word);
+                remaining = remaining.slice(word.length);
+            }
+            return result;
+        })()
+        : text.split(/\s+/);
+
+    return words
+        .join(" ")
+        .replace(/\b\w/g, letter => letter.toUpperCase());
+}
+
+function getReviewCategory(key) {
+    const normalizedKey = key.toLowerCase();
+    if (normalizedKey.includes("quiz")) return "Quiz Results";
+    if (normalizedKey.includes("commissary")) return "Commissary Agreement";
+    if (/check|signature|printname|signer/.test(normalizedKey)) {
+        return "Checklists & Signatures";
+    }
+    if (/event|start|end|eventsponsor|sponsorcontact|sponsoremail/.test(normalizedKey)) {
+        return "Event Logistics";
+    }
+    if (/original|generator|sampling|water|waste|enclosure|transport|reusable|customer|menu|commissary|outofcounty/.test(normalizedKey)) {
+        return "Operations";
+    }
+    return "Business Information";
+}
+
 function renderReviewScreen() {
     const reviewContainer = document.getElementById('reviewContent');
     if (!reviewContainer) return;
 
     reviewContainer.innerHTML = '';
+    reviewContainer.className = 'max-w-[1000px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 text-left';
 
-    for (const [key, value] of Object.entries(appState.formData)) {
-        const card = document.createElement('div');
-        card.className = 'review-card';
-        card.innerHTML = `
-            <span class="review-label">${key}</span>
-            <span class="review-value">${value ? value : 'Not answered'}</span>
-        `;
-        reviewContainer.appendChild(card);
+    const reviewValues = new Map(Object.entries(appState.formData));
+    questionnaireQuestions.forEach(question => {
+        if (question.id === "faNumber") return;
+
+        const input = document.getElementById(question.id);
+        if (!input) return;
+        reviewValues.set(
+            question.pdfFieldKey || question.id,
+            input.type === 'checkbox' ? input.checked : input.value
+        );
+    });
+    document.querySelectorAll(
+        '#formPage1 input, #formPage1 select, #formPage1 textarea, ' +
+        '#formPage2 input, #formPage2 select, #formPage2 textarea, ' +
+        '#formPage3 input, #formPage3 select, #formPage3 textarea'
+    ).forEach(input => {
+        if (input.closest('#menuTableBuilderTable')) return;
+        const question = questionnaireQuestions.find(item => item.id === input.id);
+        const key = question?.pdfFieldKey || input.name || input.id;
+        if (key) {
+            reviewValues.set(key, input.type === 'checkbox' ? input.checked : input.value);
+        }
+    });
+
+    const includeCommissary = reviewValues.get('OriginalPackageCheck') === 'Yes';
+    const sections = {};
+    for (const [key, value] of reviewValues) {
+        if (key === "FANumber" || key === "faNumber") continue;
+        if (!includeCommissary && key.toLowerCase().includes('commissary')) continue;
+        const category = getReviewCategory(key);
+        if (!sections[category]) sections[category] = [];
+        sections[category].push({ key, value });
     }
+
+    for (const [category, entries] of Object.entries(sections)) {
+        const section = document.createElement('section');
+        section.className = 'bg-[#fff8ed] border-2 border-[#d9641f]/20 rounded-xl p-5 shadow-sm';
+
+        const heading = document.createElement('h3');
+        heading.className = "font-['Yeseva_One'] text-xl text-[#d9641f] mt-0 mb-3";
+        heading.textContent = category;
+        section.appendChild(heading);
+
+        entries.forEach(({ key, value }) => {
+            const card = document.createElement('div');
+            card.className = 'review-card border-b border-[#d9641f]/10 py-2 last:border-b-0';
+            card.innerHTML = `
+                <span class="review-label">${formatKeyToLabel(key)}</span>
+                <span class="review-value">${value ? value : 'Not answered'}</span>
+            `;
+            section.appendChild(card);
+        });
+
+        reviewContainer.appendChild(section);
+    }
+}
+
+const pdfFieldAliases = {
+    ownerName: "OWNER NAME",
+    sponsorApproval: "Sponsor Approval",
+    businessName: "BUSINESS NAME",
+    numberOfBooths: "# OF BOOTHS",
+    indoorOutdoor: "INDICATE INDOOR OR OUTDOOR",
+    boothName: "NAME OF THE BOOTH",
+    emailAddress: "EMAIL ADDRESS",
+    businessAddress: "BUSINESS ADDRESS WITH CITY STATE AND ZIP CODE",
+    mailingAddress: "MAILING ADDRESS IF DIFFERNET FROM BUSINESS ADDRESS",
+    phoneNumbers: "BUSINESS AND CELL PHONE",
+    todaysDate: "today's date",
+    eventName: "NAME OF THE EVENT",
+    eventAddress: "ADDRESS OF THE EVENT",
+    eventSponsorName: "EVENT SPONSOR NAME",
+    sponsorContactPhone: "CONTACT PHONE",
+    sponsorEmail: "SPONSOR EMAIL",
+    originalPackageCheck: "YES OR NO",
+    waterSource: "WHERE WILL YOU OBTAIN CLEAN WATER FOR HANDWASH AND WAREWASH",
+    wasteDisposal: "WHERE WILL YOU DISPOSE OF DIRTY WATER GARBAGE AND USED FRY OIL",
+    boothEnclosure: "WILL YOU PROVIDE A FULLY ENCLOSED BOOTH IF NO EXPLAIN WHY IF YES EXPLAIN THE MATERIALS USED",
+    transportSanitation: "HOW WILL YOU TRANSPORT UTENSILS?",
+    reusableUtensils: "WILL YOU OR SPONSOR PROVIDE RESUABLE PLATEWARE ETC?",
+    customerContainers: "WHAT ARE YOUR OPERATING PROCEDURES FOR ACCEPTING CUSTOMER OWNED RE USEABLE CONTAINERS SUCH AS CUPS MUGS PLATES ETC HOW WILL YOU ENSURE THE CONTAINERS WILL NOT CREATE A CONTAMINATION ISSUE INSIDE YOUR BOOTH OR WITH YOUR EMPLOYEES TFF OPERATORS ARE NOT ALLOWED TO PROVIDE MULTI USE UTENSILS FOR CUSTOMERS WITH OUT DEPARTMENT APPROVAL",
+    printName: "Print Name",
+    applicantSignatureDate: "Date",
+    quizBoothName: "booth name",
+    quizEventInfo: "Event Name and Dates",
+    applicantPhone: "phone number",
+    commissaryName: "Commissary  Commercial Kitchen",
+    commissaryOwnerName: "Owner Name",
+    commissaryAddress: "Street Address",
+    commissaryPhones: "Phone",
+    commissarySignerName: "Print Authorized Signer Name",
+    commissarySignerPhone: "Phone",
+    commissarySignerDate: "Date_2",
+    outOfCountyInfo: "CITY/COUNTY",
+    checkHandwashInitials: "1",
+    checkUtensilWashInitials: "2",
+    checkTaskDelegationInitials: "3",
+    checkPrepInsideInitials: "4",
+    checkOutdoorCookingInitials: "5",
+    checkThermometerInitials: "6",
+    checkColdHoldingInitials: "7",
+    checkHotHoldingInitials: "8",
+    checkPermitDisplayInitials: "9",
+    checkTrashContainersInitials: "10",
+    checkCondimentsInitials: "11",
+    checkContaminationProtectionInitials: "12",
+    checkBoothWallsInitials: "13 1",
+    checkUtilityLocationsInitials: "13 2"
+};
+
+function normalizePdfFieldName(name) {
+    return String(name).toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+function collectFormData() {
+    const data = { ...appState.formData };
+    questionnaireQuestions.forEach(question => {
+        if (question.id === "faNumber") return;
+        const input = document.getElementById(question.id);
+        if (input) {
+            data[question.pdfFieldKey || question.id] =
+                input.type === "checkbox" ? input.checked : input.value;
+        }
+    });
+
+    document.querySelectorAll(
+        '#formPage1 input, #formPage1 select, #formPage1 textarea, ' +
+        '#formPage2 input, #formPage2 select, #formPage2 textarea, ' +
+        '#formPage3 input, #formPage3 select, #formPage3 textarea'
+    ).forEach(input => {
+        if (input.closest('#menuTableBuilderTable')) return;
+        const question = questionnaireQuestions.find(item => item.id === input.id);
+        const key = question?.pdfFieldKey || input.name || input.id;
+        if (key !== "FANumber" && key !== "faNumber") {
+            data[key] = input.type === "checkbox" ? input.checked : input.value;
+        }
+    });
+    return data;
 }
 
 async function generateCountyPDF() {
     try {
         const { PDFDocument } = await import('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.esm.js');
 
-        const formUrl = '/assets/tff-application.pdf';  
+        const formUrl = './assets/tff-application.pdf';
         const response = await fetch(formUrl);
 
         if (!response.ok) {
@@ -259,19 +430,47 @@ async function generateCountyPDF() {
 
         const pdfDoc = await PDFDocument.load(formBytes);
         const form = pdfDoc.getForm();
+        const fieldsByExactName = new Map(
+            form.getFields().map(field => [field.getName(), field])
+        );
+        const fieldsByName = new Map(
+            form.getFields().map(field => [normalizePdfFieldName(field.getName()), field])
+        );
+        const data = collectFormData();
+        const fieldValues = new Map();
 
-        for (const [key, value] of Object.entries(appState.formData)) {
-            try {
-                const field = form.getField(key);
-                if (field) {
-                    if (typeof value === 'boolean' && value) {
-                        field.check();
-                    } else if (typeof value === 'string') {
-                        field.setText(value);
-                    }
+        for (const [key, value] of Object.entries(data)) {
+            if (key === "FANumber" || key === "faNumber") continue;
+            if (key === "startDate" || key === "StartDate") {
+                fieldValues.set("START DATE END DATE", `${value} - ${data.endDate || data.EndDate || ""}`.trim());
+            } else if (key === "startTime" || key === "StartTime") {
+                fieldValues.set("START TIME END TIME", `${value} - ${data.endTime || data.EndTime || ""}`.trim());
+            } else if (key === "menuTableBuilder" || key === "MenuTableBuilder") {
+                try {
+                    JSON.parse(value).forEach((row, index) => {
+                        const number = index + 1;
+                        fieldValues.set(`MENU ITEM #${number}`, row.menuItem || "");
+                        fieldValues.set(`EQUIPMENT ${number}`, row.equipmentUsed || "");
+                    });
+                } catch {
+                    console.warn("Could not parse menu table data");
                 }
-            } catch (err) {
-                console.warn(`Field not found on PDF template: ${key}`);
+            } else if (key !== "endDate" && key !== "EndDate" && key !== "endTime" && key !== "EndTime") {
+                const alias = pdfFieldAliases[key] || pdfFieldAliases[key.charAt(0).toLowerCase() + key.slice(1)] || key;
+                fieldValues.set(alias, value);
+            }
+        }
+
+        for (const [fieldName, value] of fieldValues) {
+            const field = fieldsByExactName.get(fieldName) ||
+                fieldsByName.get(normalizePdfFieldName(fieldName));
+            if (!field || value === "" || value === null || value === undefined) continue;
+            if (typeof field.select === "function") {
+                field.select(String(value));
+            } else if (typeof field.check === "function") {
+                if (value === true || value === "true" || value === "Yes") field.check();
+            } else if (typeof field.setText === "function") {
+                field.setText(String(value));
             }
         }
 
@@ -287,7 +486,8 @@ async function generateCountyPDF() {
 }
 
 async function downloadAndWipe() {
-    const businessName = appState.formData['businessName'] || 
+    const businessName = appState.formData['BusinessName'] ||
+                         appState.formData['businessName'] ||
                          appState.formData['business_name'] || 
                          appState.formData['companyName'] || 
                          appState.formData['applicantName'] || 
@@ -395,8 +595,10 @@ function updatePageText() {
     if (agDesc) agDesc.textContent = t.agDesc;
 
     questionnaireQuestions.forEach(function(question) {
+        if (question.id === "faNumber") return;
+
         const label = document.querySelector(
-            `#applicationForm label[for="${question.id}"]`
+            `#applicationForm label[for="${question.id}"], #commercialKitchenForm label[for="${question.id}"], #commissaryForm label[for="${question.id}"], #finalSignatureForm label[for="${question.id}"]`
         );
 
         if (label) {
@@ -433,11 +635,30 @@ async function loadQuestionnaire() {
 
 function renderQuestionnaire() {
     const form = document.getElementById("applicationForm");
-    if (!form) return;
+    const commercialKitchenForm = document.getElementById("commercialKitchenForm");
+    const commissaryForm = document.getElementById("commissaryForm");
+    const finalSignatureForm = document.getElementById("finalSignatureForm");
+    if (!form || !commercialKitchenForm || !commissaryForm || !finalSignatureForm) return;
 
     form.replaceChildren();
+    commercialKitchenForm.replaceChildren();
+    commissaryForm.replaceChildren();
+    finalSignatureForm.replaceChildren();
 
     questionnaireQuestions.forEach(function(question) {
+        if (question.id === "faNumber") return;
+
+        const targetForm = question.id === "originalPackageCheck"
+            ? commercialKitchenForm
+            : question.phase === 5
+                ? commissaryForm
+                : question.phase === 6
+                    ? finalSignatureForm
+                    : question.phase <= 3
+                        ? form
+                        : null;
+        if (!targetForm) return;
+
         const container = document.createElement("div");
         container.className = "question";
 
@@ -479,9 +700,83 @@ function renderQuestionnaire() {
             input.id = question.id;
             input.name = question.id;
             input.type = "date";
+            input.classList.add("auto-date");
             input.required = question.required;
             input.value = savedAnswer ?? "";
             container.append(label, input);
+
+        } else if (question.type === "table-builder") {
+            input = document.createElement("input");
+            input.id = question.id;
+            input.name = question.id;
+            input.type = "hidden";
+            input.value = savedAnswer ?? "";
+
+            const table = document.createElement("table");
+            table.id = `${question.id}Table`;
+            table.className = "w-full border-collapse text-sm mt-3";
+            table.innerHTML = `
+                <caption class="sr-only">Menu items and equipment details</caption>
+                <thead>
+                    <tr>
+                        <th scope="col" class="p-2 text-left">Menu Item</th>
+                        <th scope="col" class="p-2 text-left">Ingredients/Source</th>
+                        <th scope="col" class="p-2 text-left">Preparation Location</th>
+                        <th scope="col" class="p-2 text-left">Equipment Used</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            `;
+
+            const syncRows = () => {
+                const rows = [...table.tBodies[0].rows].map(row =>
+                    [...row.querySelectorAll("input")].reduce((values, field) => {
+                        values[field.dataset.column] = field.value;
+                        return values;
+                    }, {})
+                );
+                input.value = JSON.stringify(rows);
+                appState.formData[storageKey] = input.value;
+                updateLiveCounter();
+            };
+
+            const addRow = values => {
+                const row = table.tBodies[0].insertRow();
+                ["menuItem", "ingredientsSource", "preparationLocation", "equipmentUsed"]
+                    .forEach(column => {
+                        const cell = row.insertCell();
+                        cell.className = "p-2 align-top";
+                        const field = document.createElement("input");
+                        field.type = "text";
+                        field.dataset.column = column;
+                        field.name = `${question.id}[${table.tBodies[0].rows.length - 1}][${column}]`;
+                        field.value = values[column] ?? "";
+                        field.required = question.required;
+                        field.className = "w-full";
+                        field.setAttribute("aria-label", column.replace(/([A-Z])/g, " $1"));
+                        field.addEventListener("input", syncRows);
+                        cell.appendChild(field);
+                    });
+            };
+
+            let savedRows = [];
+            try {
+                savedRows = savedAnswer ? JSON.parse(savedAnswer) : [];
+            } catch {
+                savedRows = [];
+            }
+            (Array.isArray(savedRows) && savedRows.length ? savedRows : [{}]).forEach(addRow);
+            syncRows();
+
+            const addButton = document.createElement("button");
+            addButton.type = "button";
+            addButton.className = "mt-3 bg-transparent text-[#d9641f] border-2 border-[#d9641f] py-2 px-4 font-bold rounded-lg";
+            addButton.textContent = "Add Row";
+            addButton.addEventListener("click", () => {
+                addRow({});
+                syncRows();
+            });
+            container.append(label, table, addButton, input);
 
         } else if (question.type === "checkbox") {
             input = document.createElement("input");
@@ -515,54 +810,47 @@ function renderQuestionnaire() {
             updateLiveCounter();
         });
 
-        form.appendChild(container);
-    });
+        targetForm.appendChild(container);
+        });
+    prefillAutoDates();
     updateLiveCounter();
 }
 
-function validateForm() {
-    console.log("validateForm() was triggered!");
-
-    const form = document.getElementById("applicationForm");
-    const unanswered = [];
-
-    questionnaireQuestions.forEach(function(question) {
-        if (!question.required) return;
-
-        const input = form.querySelector(`#${question.id}`);
-
-        if (!input) {
-            console.warn(`Missing input in DOM for required question: ${question.id}`);
-            unanswered.push(question);
-        } else if (input.type === "checkbox" && !input.checked) {
-            console.log(`Unchecked required checkbox: ${question.id}`);
-            unanswered.push(question);
-        } else if (input.type !== "checkbox" && !input.value.trim()) {
-            console.log(`Empty required text field: ${question.id}`);
-            unanswered.push(question);
-        }
+function prefillAutoDates() {
+    const today = new Date().toISOString().split('T')[0];
+    document.querySelectorAll('input.auto-date').forEach(input => {
+        if (input.id === 'startDate' || input.id === 'endDate') return;
+        if (!input.value) input.value = today;
     });
+}
 
-    console.log("Total unanswered required questions:", unanswered.length);
-    console.log("Unanswered list:", unanswered);
+function validateForm() {
+    const page = document.getElementById(`formPage${appState.currentFormPage}`);
+    if (!page) return false;
 
+    const requiredInputs = Array.from(
+        page.querySelectorAll('input[required], select[required], textarea[required]')
+    );
+    if (appState.currentFormPage === 3) {
+        requiredInputs.push(...page.querySelectorAll('input[name$="Initials"]'));
+    }
+
+    const unanswered = requiredInputs.filter(input => {
+        if (input.type === "checkbox") return !input.checked;
+        return !input.value.trim();
+    });
     const validationAlert = document.getElementById("validationAlert");
 
     if (unanswered.length > 0) {
         if (validationAlert) {
             validationAlert.style.setProperty("display", "block", "important");
-            validationAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-        console.log("Validation failed. Stopping navigation.");
-        return; 
-    } else {
-        if (validationAlert) {
-            validationAlert.style.display = "none";
-        }
-        console.log("Validation passed! Proceeding to review screen.");
-        renderReviewScreen();
-        showScreen("screen4"); 
+        unanswered[0].focus();
+        return false;
     }
+
+    if (validationAlert) validationAlert.style.display = "none";
+    return true;
 }
 
 function updateLiveCounter() {
