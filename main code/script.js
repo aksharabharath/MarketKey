@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.lang-switcher span').forEach(span => {
         span.addEventListener('click', (e) => {
             const selectedLang = e.currentTarget.getAttribute('data-lang');
-            saveLanguage(selectedLang);
+            (selectedLang);
         });
     });
     
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.currentTarget.classList.add('active');
 
             const selectedLang = e.currentTarget.getAttribute('data-lang');
-            saveLanguage(selectedLang);
+            (selectedLang);
         });
     });
   
@@ -207,7 +207,15 @@ function saveLanguage(langCode) {
 
     // Update the header language selection.
     document.querySelectorAll(".lang-switcher span").forEach(span => {
-        span.classList.toggle("active", span.dataset.lang === langCode);
+        const isSelected = span.dataset.lang === langCode;
+
+        span.classList.toggle("active", isSelected);
+
+        span.style.opacity = isSelected ? "1" : "0.6";
+        span.style.fontWeight = isSelected ? "700" : "400";
+        span.style.borderBottom = isSelected
+        ? "1px solid currentColor"
+        : "none";
     });
 
     const headerControls = document.getElementById("headerControls");
