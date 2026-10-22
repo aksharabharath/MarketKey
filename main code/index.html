@@ -101,16 +101,50 @@
 
         <!-- Screen 3: Questionnaire -->
         <section id="screen3" class="screen">
-            <div class="font-['League_Spartan'] text-sm uppercase tracking-wider mb-3 opacity-90 eyebrow">Step 3 of 5</div>
-            <h2 class="text-[42px] font-['Yeseva_One'] mt-0 mb-4 text-[#fdcb7b] triage-title">Temporary Food Facility Application</h2>
-            <p class="text-base opacity-90 mb-3 triage-desc">Type your answers in English.</p>
-            <div id="liveCounter" class="font-['League_Spartan'] text-sm mb-5 opacity-80 eyebrow">questions...</div>
-            
-            <div id="validationAlert" class="bg-[#fde8e8] text-[#c53030] border-2 border-[#e53e3e] py-3.5 px-5 rounded-lg font-['League_Spartan'] font-semibold text-base mb-6 text-center validation-alert" style="display: none;">
-                Please complete all required fields which have * before clicking next.
+            <div id="formPage1">
+                <div class="font-['League_Spartan'] text-sm uppercase tracking-wider mb-3 opacity-90 eyebrow">Step 3 of 5</div>
+                <h2 class="text-[42px] font-['Yeseva_One'] mt-0 mb-4 text-[#fdcb7b] triage-title">Temporary Food Facility Application</h2>
+                <p class="text-base opacity-90 mb-3 triage-desc">Type your answers in English.</p>
+                <div id="liveCounter" class="font-['League_Spartan'] text-sm mb-5 opacity-80 eyebrow">questions...</div>
+
+                <div id="validationAlert" class="bg-[#fde8e8] text-[#c53030] border-2 border-[#e53e3e] py-3.5 px-5 rounded-lg font-['League_Spartan'] font-semibold text-base mb-6 text-center validation-alert" style="display: none;">
+                    Please complete all required fields which have * before clicking next.
+                </div>
+
+                <form id="applicationForm" class="max-w-[700px] my-[30px] mx-auto text-left"></form>
             </div>
 
-            <form id="applicationForm" class="max-w-[700px] my-[30px] mx-auto text-left"></form>
+            <div id="formPage2" style="display: none;">
+                <h2 class="text-[36px] font-['Yeseva_One'] mt-0 mb-4 text-[#fdcb7b]">Self-Inspection Checklist</h2>
+                <p class="text-base opacity-90 mb-6">Initial each item after confirming it is ready for operation.</p>
+                <div class="max-w-[700px] my-[30px] mx-auto text-left">
+                    <div class="flex items-center gap-3 mb-3"><span class="flex-1">1. Hand-wash station set up first: 100°F water, free-flow spigot, catch bucket, soap, and paper towels.</span><input id="checkHandwashInitials" name="checkHandwashInitials" type="text" maxlength="3" aria-label="Hand-wash station initials" class="w-14 text-center" placeholder="Init."></div>
+                    <div class="flex items-center gap-3 mb-3"><span class="flex-1">2. Utensil wash station set up with wash, rinse, and sanitizer buckets.</span><input id="checkUtensilWashInitials" name="checkUtensilWashInitials" type="text" maxlength="3" aria-label="Utensil wash initials" class="w-14 text-center" placeholder="Init."></div>
+                    <div class="flex items-center gap-3 mb-3"><span class="flex-1">3. Tasks delegated to prevent cross-contamination and maintain a clean prep area.</span><input id="checkTaskDelegationInitials" name="checkTaskDelegationInitials" type="text" maxlength="3" aria-label="Task delegation initials" class="w-14 text-center" placeholder="Init."></div>
+                    <div class="flex items-center gap-3 mb-3"><span class="flex-1">4. All food preparation is done inside the booth.</span><input id="checkPrepInsideInitials" name="checkPrepInsideInitials" type="text" maxlength="3" aria-label="Food preparation initials" class="w-14 text-center" placeholder="Init."></div>
+                    <div class="flex items-center gap-3 mb-3"><span class="flex-1">5. Food cooked outdoors is served to customers from inside the booth.</span><input id="checkOutdoorCookingInitials" name="checkOutdoorCookingInitials" type="text" maxlength="3" aria-label="Outdoor cooking initials" class="w-14 text-center" placeholder="Init."></div>
+                    <div class="flex items-center gap-3 mb-3"><span class="flex-1">6. A thermometer is available to measure food temperatures.</span><input id="checkThermometerInitials" name="checkThermometerInitials" type="text" maxlength="3" aria-label="Thermometer initials" class="w-14 text-center" placeholder="Init."></div>
+                    <div class="flex items-center gap-3 mb-3"><span class="flex-1">7. Cold foods are well iced and below 45°F.</span><input id="checkColdHoldingInitials" name="checkColdHoldingInitials" type="text" maxlength="3" aria-label="Cold holding initials" class="w-14 text-center" placeholder="Init."></div>
+                    <div class="flex items-center gap-3 mb-3"><span class="flex-1">8. Hot foods are served directly, held at or above 135°F, or discarded at day’s end.</span><input id="checkHotHoldingInitials" name="checkHotHoldingInitials" type="text" maxlength="3" aria-label="Hot holding initials" class="w-14 text-center" placeholder="Init."></div>
+                    <div class="flex items-center gap-3 mb-3"><span class="flex-1">9. The health permit is prominently displayed in public view.</span><input id="checkPermitDisplayInitials" name="checkPermitDisplayInitials" type="text" maxlength="3" aria-label="Health permit initials" class="w-14 text-center" placeholder="Init."></div>
+                    <div class="flex items-center gap-3 mb-3"><span class="flex-1">10. Trash containers are available inside the booth.</span><input id="checkTrashContainersInitials" name="checkTrashContainersInitials" type="text" maxlength="3" aria-label="Trash container initials" class="w-14 text-center" placeholder="Init."></div>
+                    <div class="flex items-center gap-3 mb-3"><span class="flex-1">11. Self-service condiments are protected with suitable containers or packets.</span><input id="checkCondimentsInitials" name="checkCondimentsInitials" type="text" maxlength="3" aria-label="Condiments initials" class="w-14 text-center" placeholder="Init."></div>
+                    <div class="flex items-center gap-3 mb-3"><span class="flex-1">12. Open food is protected from coughs and sneezes, and workers are healthy.</span><input id="checkContaminationProtectionInitials" name="checkContaminationProtectionInitials" type="text" maxlength="3" aria-label="Contamination protection initials" class="w-14 text-center" placeholder="Init."></div>
+                    <div class="flex items-center gap-3 mb-3"><span class="flex-1">13. All four booth walls are in place unless all food is pre-packaged.</span><input id="checkBoothWallsInitials" name="checkBoothWallsInitials" type="text" maxlength="3" aria-label="Booth walls initials" class="w-14 text-center" placeholder="Init."></div>
+                    <div class="flex items-center gap-3 mb-3"><span class="flex-1">14. The locations of clean water, grey water, and fry oil disposal sites are known.</span><input id="checkUtilityLocationsInitials" name="checkUtilityLocationsInitials" type="text" maxlength="3" aria-label="Utility locations initials" class="w-14 text-center" placeholder="Init."></div>
+                </div>
+            </div>
+
+            <div id="formPage3" style="display: none;">
+                <h2 class="text-[36px] font-['Yeseva_One'] mt-0 mb-4 text-[#fdcb7b]">Food Safety Quiz</h2>
+                <p class="text-base opacity-90 mb-6">Complete the food safety quiz information.</p>
+                <div class="max-w-[700px] my-[30px] mx-auto text-left">
+                    <label for="quizBoothName">Booth Name</label>
+                    <input id="quizBoothName" name="quizBoothName" type="text" class="w-full mb-5">
+                    <label for="quizEventInfo">Event Name and Date(s)</label>
+                    <input id="quizEventInfo" name="quizEventInfo" type="text" class="w-full">
+                </div>
+            </div>
 
             <div class="flex justify-start gap-3 mt-6 max-w-[700px] mx-auto">
                 <button type="button" class="bg-transparent text-[#d9641f] border-2 border-[#d9641f] py-2.5 px-6 text-base font-bold font-['League_Spartan'] rounded-lg cursor-pointer back-btn" id="qBackBtn">Back</button>
