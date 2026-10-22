@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     showScreen('screen1');
     updateStepTracker(1);
     loadQuestionnaire();
+    prefillAutoDates();
     
     const headerControls = document.getElementById('headerControls');
     if (headerControls) {
@@ -601,6 +602,7 @@ function renderQuestionnaire() {
             input.id = question.id;
             input.name = question.id;
             input.type = "date";
+            input.classList.add("auto-date");
             input.required = question.required;
             input.value = savedAnswer ?? "";
             container.append(label, input);
@@ -639,7 +641,15 @@ function renderQuestionnaire() {
 
         targetForm.appendChild(container);
         });
+    prefillAutoDates();
     updateLiveCounter();
+}
+
+function prefillAutoDates() {
+    const today = new Date().toISOString().split('T')[0];
+    document.querySelectorAll('input.auto-date').forEach(input => {
+        if (!input.value) input.value = today;
+    });
 }
 
 function validateForm() {
