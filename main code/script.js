@@ -1012,7 +1012,7 @@ function fillPage1() {
                         ? 'Yes'
                         : input?.options[1]?.value || '');
                 } else if (question.type !== 'table-builder') {
-                    setTestField(input, values[question.id] || `Sample ${question.id}`);
+                    setTestField(input, values[question.id] || 'Sample response');
                 }
             });
 
