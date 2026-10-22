@@ -528,12 +528,22 @@ function writePdfField(field, value, name) {
         } else if (typeof field.check === "function") {
             if (value === true || value === "true" || value === "Yes") field.check();
         } else if (typeof field.setText === "function") {
+            const isMenuField = /^(MENU ITEM|PREPPED|BROUGHT|SERVED|EQUIPMENT|ELECTRIC)/i.test(name);
+            const maxLength = /^MENU ITEM/i.test(name) ? 55 : 32;
+            let text = String(value).replace(/\s+/g, " ").trim();
+            if (isMenuField && text.length > maxLength) {
+                text = `${text.slice(0, maxLength - 1).trimEnd()}…`;
+            }
             try {
-                if (typeof field.setFontSize === "function") field.setFontSize(8);
+                if (isMenuField && typeof field.setFontSize === "function") {
+                    field.setFontSize(7);
+                } else if (typeof field.setFontSize === "function") {
+                    field.setFontSize(8);
+                }
             } catch {
                 // Legacy fields without /DA retain their existing appearance.
             }
-            field.setText(String(value));
+            field.setText(text);
         }
     } catch (error) {
         console.warn(`Could not fill PDF field ${name}: ${error.message}`);
