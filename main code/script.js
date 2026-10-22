@@ -896,71 +896,101 @@ function updateLiveCounter() {
     }
 }
 
-function fillTestData() {
-    if (!questionnaireQuestions.length) {
-        loadQuestionnaire().then(() => {
-            if (questionnaireQuestions.length) fillTestData();
-        });
-        return;
-    }
+function whenQuestionsReady(callback) {
+    return questionnaireQuestions.length
+        ? callback()
+        : loadQuestionnaire().then(callback);
+}
 
+function setTestField(input, value) {
+    if (!input) return;
+    input.value = input.type === 'checkbox' ? Boolean(value) : value;
+    if (input.type === 'checkbox') input.checked = Boolean(value);
+    input.dispatchEvent(new Event(
+        input.type === 'checkbox' || input.tagName === 'SELECT' ? 'change' : 'input',
+        { bubbles: true }
+    ));
+    if (input.closest('#menuTableBuilderTable')) return;
+
+    const question = questionnaireQuestions.find(item => item.id === input.id);
+    const key = question?.pdfFieldKey || input.name || input.id;
+    if (key !== 'FANumber' && key !== 'faNumber') {
+        appState.formData[key] = input.type === 'checkbox' ? input.checked : input.value;
+    }
+}
+
+function testDates() {
     const today = new Date();
-    const date = today.toISOString().split('T')[0];
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
-    const endDate = tomorrow.toISOString().split('T')[0];
+    const startDate = today.toISOString().split('T')[0];
+    today.setDate(today.getDate() + 1);
+    return { startDate, endDate: today.toISOString().split('T')[0] };
+}
 
+function finishTestPage(page) {
     appState.path = 'tff';
-    appState.skipCommissary = false;
-    appState.formData.todaysDate = date;
-
-    const setField = (input, value) => {
-        if (!input) return;
-        if (input.type === 'checkbox') {
-            input.checked = Boolean(value);
-        } else {
-            input.value = value;
-        }
-        input.dispatchEvent(new Event(input.type === 'checkbox' || input.tagName === 'SELECT' ? 'change' : 'input', { bubbles: true }));
-    };
-
-    questionnaireQuestions.forEach(question => {
-        if (question.id === 'faNumber') return;
-        const input = get(question.id);
-        if (!input) return;
-
-        if (question.type === 'date') {
-            setField(input, question.id === 'endDate' ? endDate : date);
-        } else if (question.type === 'select') {
-            setField(input, question.id === 'originalPackageCheck' ? 'Yes' : input.options[1]?.value || '');
-        } else if (question.type === 'checkbox') {
-            setField(input, true);
-        } else if (question.type !== 'table-builder') {
-            setField(input, `Test ${question.id}`);
-        }
-    });
-
-    const table = get('menuTableBuilderTable');
-    if (table) {
-        const fields = table.querySelectorAll('tbody input');
-        ['Test Tacos', 'Fresh ingredients', 'Commercial kitchen', 'Griddle']
-            .forEach((value, index) => setField(fields[index], value));
-    }
-
-    setField(get('applicationDate'), date);
-    setField(get('applicantPhone'), '510-555-0142');
-    document.querySelectorAll('[id$="Initials"]').forEach(input => setField(input, 'TS'));
-
-    document.querySelectorAll('#formPage3 select').forEach(select => {
-        setField(select, select.options[1]?.value || '');
-    });
-    document.querySelectorAll('#formPage3 input[type="text"]').forEach(input => {
-        if (!input.value) setField(input, 'Test response');
-    });
-
-    showFormPage(1);
+    showFormPage(page);
     showScreen('screen3');
     updateLiveCounter();
 }
 
-window.fillTestData = fillTestData;
+function fillPage1() {
+    return whenQuestionsReady(() => {
+        const { startDate, endDate } = testDates();
+        appState.skipCommissary = false;
+        questionnaireQuestions
+            .filter(question => question.phase <= 3 && question.id !== 'faNumber')
+            .forEach(question => {
+                const input = get(question.id);
+                if (question.type === 'date') {
+                    setTestField(input, question.id === 'endDate' ? endDate : startDate);
+                } else if (question.type === 'select') {
+                    setTestField(input, question.id === 'originalPackageCheck'
+                        ? 'Yes'
+                        : input?.options[1]?.value || '');
+                } else if (question.type !== 'table-builder') {
+                    setTestField(input, `Test ${question.id}`);
+                }
+            });
+
+        setTestField(get('applicationDate'), startDate);
+        const fields = get('menuTableBuilderTable')?.querySelectorAll('tbody input') || [];
+        ['Test Tacos', 'Fresh ingredients', 'Commercial kitchen', 'Griddle']
+            .forEach((value, index) => setTestField(fields[index], value));
+        finishTestPage(1);
+    });
+}
+
+function fillPage2() {
+    return whenQuestionsReady(() => {
+        questionnaireQuestions
+            .filter(question => question.phase === 5)
+            .forEach(question => setTestField(get(question.id), `Test ${question.id}`));
+        setTestField(get('commissarySignerDate'), testDates().startDate);
+        finishTestPage(2);
+    });
+}
+
+function fillPage3() {
+    return whenQuestionsReady(() => {
+        questionnaireQuestions
+            .filter(question => question.phase === 6)
+            .forEach(question => {
+                setTestField(get(question.id), question.type === 'date'
+                    ? testDates().startDate
+                    : `Test ${question.id}`);
+            });
+        document.querySelectorAll('#formPage3 select').forEach(select => {
+            setTestField(select, select.options[1]?.value || '');
+        });
+        document.querySelectorAll('#formPage3 input[type="text"]').forEach(input => {
+            setTestField(input, input.value || 'Test response');
+        });
+        document.querySelectorAll('[id$="Initials"]').forEach(input => setTestField(input, 'TS'));
+        setTestField(get('applicantPhone'), '510-555-0142');
+        finishTestPage(3);
+    });
+}
+
+window.fillPage1 = fillPage1;
+window.fillPage2 = fillPage2;
+window.fillPage3 = fillPage3;
