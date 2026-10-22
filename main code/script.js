@@ -335,6 +335,8 @@ function renderReviewScreen() {
 
     const reviewValues = new Map(Object.entries(appState.formData));
     questionnaireQuestions.forEach(question => {
+        if (question.id === "faNumber") return;
+
         const input = document.getElementById(question.id);
         if (!input) return;
         reviewValues.set(
@@ -357,6 +359,7 @@ function renderReviewScreen() {
     const includeCommissary = reviewValues.get('OriginalPackageCheck') === 'Yes';
     const sections = {};
     for (const [key, value] of reviewValues) {
+        if (key === "FANumber" || key === "faNumber") continue;
         if (!includeCommissary && key.toLowerCase().includes('commissary')) continue;
         const category = getReviewCategory(key);
         if (!sections[category]) sections[category] = [];
@@ -537,6 +540,8 @@ function updatePageText() {
     if (agDesc) agDesc.textContent = t.agDesc;
 
     questionnaireQuestions.forEach(function(question) {
+        if (question.id === "faNumber") return;
+
         const label = document.querySelector(
             `#applicationForm label[for="${question.id}"], #commercialKitchenForm label[for="${question.id}"], #commissaryForm label[for="${question.id}"], #finalSignatureForm label[for="${question.id}"]`
         );
@@ -586,6 +591,8 @@ function renderQuestionnaire() {
     finalSignatureForm.replaceChildren();
 
     questionnaireQuestions.forEach(function(question) {
+        if (question.id === "faNumber") return;
+
         const targetForm = question.id === "originalPackageCheck"
             ? commercialKitchenForm
             : question.phase === 5
