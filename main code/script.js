@@ -293,20 +293,55 @@ function formatKeyToLabel(key) {
         .replace(/\b\w/g, letter => letter.toUpperCase());
 }
 
+function getReviewCategory(key) {
+    const normalizedKey = key.toLowerCase();
+    if (normalizedKey.includes("quiz")) return "Quiz Results";
+    if (/check|signature|printname|signer/.test(normalizedKey)) {
+        return "Checklists & Signatures";
+    }
+    if (/event|start|end|eventsponsor|sponsorcontact|sponsoremail/.test(normalizedKey)) {
+        return "Event Logistics";
+    }
+    if (/original|generator|sampling|water|waste|enclosure|transport|reusable|customer|menu|commissary|outofcounty/.test(normalizedKey)) {
+        return "Operations";
+    }
+    return "Business Information";
+}
+
 function renderReviewScreen() {
     const reviewContainer = document.getElementById('reviewContent');
     if (!reviewContainer) return;
 
     reviewContainer.innerHTML = '';
+    reviewContainer.className = 'max-w-[1000px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 text-left';
 
+    const sections = {};
     for (const [key, value] of Object.entries(appState.formData)) {
-        const card = document.createElement('div');
-        card.className = 'review-card';
-        card.innerHTML = `
-            <span class="review-label">${formatKeyToLabel(key)}</span>
-            <span class="review-value">${value ? value : 'Not answered'}</span>
-        `;
-        reviewContainer.appendChild(card);
+        const category = getReviewCategory(key);
+        if (!sections[category]) sections[category] = [];
+        sections[category].push({ key, value });
+    }
+
+    for (const [category, entries] of Object.entries(sections)) {
+        const section = document.createElement('section');
+        section.className = 'bg-[#fff8ed] border-2 border-[#d9641f]/20 rounded-xl p-5 shadow-sm';
+
+        const heading = document.createElement('h3');
+        heading.className = "font-['Yeseva_One'] text-xl text-[#d9641f] mt-0 mb-3";
+        heading.textContent = category;
+        section.appendChild(heading);
+
+        entries.forEach(({ key, value }) => {
+            const card = document.createElement('div');
+            card.className = 'review-card border-b border-[#d9641f]/10 py-2 last:border-b-0';
+            card.innerHTML = `
+                <span class="review-label">${formatKeyToLabel(key)}</span>
+                <span class="review-value">${value ? value : 'Not answered'}</span>
+            `;
+            section.appendChild(card);
+        });
+
+        reviewContainer.appendChild(section);
     }
 }
 
