@@ -544,7 +544,8 @@ async function generateCountyPDF() {
 }
 
 async function downloadAndWipe() {
-    const businessName = appState.formData['businessName'] || 
+    const businessName = appState.formData['BusinessName'] ||
+                         appState.formData['businessName'] ||
                          appState.formData['business_name'] || 
                          appState.formData['companyName'] || 
                          appState.formData['applicantName'] || 
