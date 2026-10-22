@@ -758,6 +758,10 @@ const uiTranslations = {
         agTitle: "Raw produce, fruit, honey grown on my farm",
         agDesc: "View guidance for agricultural exemptions and direct-to-consumer rules.",
         validationError: "Please fill out all required fields with standard characters before proceeding.",
+        startOver: "Start over",
+        answersEnglish: "Type your answers in English.",
+        stepLabels: ["Language", "Path", "Questions", "Review", "Done"],
+        stepCounter: step => `STEP ${step} OF 5`,
         reviewTitle: "Review Your Application",
         reviewDesc: "Please review your information below before generating your official county PDF.",
         reviewBack: "Back to Questions",
@@ -784,6 +788,10 @@ const uiTranslations = {
         agTitle: "Productos crudos, fruta, miel cosechada en mi granja",
         agDesc: "Vea la guía para exenciones agrícolas y reglas de venta directa al consumidor.",
         validationError: "Por favor, complete todos los campos obligatorios antes de continuar.",
+        startOver: "Comenzar de nuevo",
+        answersEnglish: "Escriba sus respuestas en inglés.",
+        stepLabels: ["Idioma", "Ruta", "Preguntas", "Revisión", "Listo"],
+        stepCounter: step => `PASO ${step} DE 5`,
         reviewTitle: "Revise su solicitud",
         reviewDesc: "Revise la información a continuación antes de generar el PDF oficial del condado.",
         reviewBack: "Volver a las preguntas",
@@ -809,6 +817,10 @@ const uiTranslations = {
         agKicker: "农业路线",
         agTitle: "在我农场种植的生鲜农产品、水果、蜂蜜",
         agDesc: "查看农业豁免和直销规则指南。",
+        startOver: "重新开始",
+        answersEnglish: "请用英文填写您的答案。",
+        stepLabels: ["语言", "路径", "问题", "审核", "完成"],
+        stepCounter: step => `第 ${step} 步，共 5 步`,
         validationError: "请在继续之前填写所有必填字段。",
         reviewTitle: "查看您的申请",
         reviewDesc: "生成县官方 PDF 前，请查看以下信息。",
@@ -836,6 +848,10 @@ const uiTranslations = {
         agTitle: "मेरे खेत में उगाई गई कच्ची उपज, फल, शहद",
         agDesc: "कृषि छूट और प्रत्यक्ष-से-उपभोक्ता नियमों के लिए मार्गदर्शन देखें।",
         validationError: "कृपया आगे बढ़ने से पहले सभी आवश्यक फ़ील्ड भरें।",
+        startOver: "फिर से शुरू करें",
+        answersEnglish: "अपने उत्तर अंग्रेज़ी में लिखें।",
+        stepLabels: ["भाषा", "मार्ग", "प्रश्न", "समीक्षा", "पूर्ण"],
+        stepCounter: step => `चरण ${step} / 5`,
         reviewTitle: "अपने आवेदन की समीक्षा करें",
         reviewDesc: "आधिकारिक काउंटी PDF बनाने से पहले नीचे दी गई जानकारी की समीक्षा करें।",
         reviewBack: "प्रश्नों पर वापस जाएँ",
@@ -858,6 +874,16 @@ function updatePageText() {
     const lang = appState.lang;
     const t = uiTranslations[lang];
     if (!t) return;
+
+    const startOver = document.getElementById("startOverBtn");
+    if (startOver) startOver.textContent = t.startOver;
+    document.querySelectorAll(".step-tracker .step-dot span").forEach((label, index) => {
+        label.textContent = t.stepLabels[index];
+    });
+    document.querySelectorAll("[data-step-counter]").forEach(counter => {
+        counter.textContent = t.stepCounter(counter.dataset.stepCounter);
+    });
+
 
     const titleEl = document.querySelector('#screen2 .triage-title');
     const descEl = document.querySelector('#screen2 .triage-desc');
@@ -894,6 +920,10 @@ function updatePageText() {
     if (reviewDesc) reviewDesc.textContent = t.reviewDesc;
     if (reviewBack) reviewBack.textContent = t.reviewBack;
     if (reviewDownload) reviewDownload.textContent = t.reviewDownload;
+
+    const answersBanner = document.querySelector("#formPage1 .triage-desc");
+    if (answersBanner) answersBanner.textContent = t.answersEnglish;
+
 
     questionnaireQuestions.forEach(function(question) {
         if (question.id === "faNumber") return;
