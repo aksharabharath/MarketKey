@@ -353,9 +353,12 @@ function renderReviewScreen() {
                     const item = document.createElement('li');
                     item.textContent = [
                         row.menuItem,
-                        row.ingredientsSource,
-                        row.preparationLocation,
-                        row.equipmentUsed
+                        row.preppedBeforeEvent,
+                        row.preppedAtEventOnly,
+                        row.hotColdTransport,
+                        row.servedHotColdReheated,
+                        row.transportEquipment,
+                        row.cookingServingEquipment
                     ].filter(Boolean).join(' · ') || translations.notAnswered;
                     list.appendChild(item);
                 });
@@ -462,7 +465,8 @@ function collectFormData() {
     return data;
 }
 
-function checkQuizAnswers(data, fieldsByExactName, fieldsByName) {
+function checkQuizAnswers(data, fieldsByExactName, fieldsByName, quizCheckboxes = []) {
+    const optionCounts = [4, 4, 4, 2, 5, 2, 4, 2, 4, 4, 0, 2, 4, 2, 4, 4, 0, 2, 4, 2];
     Object.keys(data).filter(key => /^quiz\d+$/i.test(key)).forEach(key => {
         const select = document.getElementById(key);
         const answer = String(data[key] ?? "");
@@ -501,6 +505,12 @@ function checkQuizAnswers(data, fieldsByExactName, fieldsByName) {
                 return questionMatches && optionMatches;
             });
         }
+        if (!field && quizCheckboxes.length) {
+            const questionIndex = Number(number) - 1;
+            const offset = optionCounts.slice(0, questionIndex)
+                .reduce((total, count) => total + count, 0);
+            field = quizCheckboxes[offset + optionIndex];
+        }
         if (field) {
             try {
                 field.check();
@@ -519,7 +529,7 @@ function writePdfField(field, value, name) {
             if (value === true || value === "true" || value === "Yes") field.check();
         } else if (typeof field.setText === "function") {
             try {
-                if (typeof field.setFontSize === "function") field.setFontSize(9);
+                if (typeof field.setFontSize === "function") field.setFontSize(8);
             } catch {
                 // Legacy fields without /DA retain their existing appearance.
             }
@@ -569,16 +579,12 @@ async function generateCountyPDF() {
                             ? `${row.menuItem || ""} (${row.ingredientsSource})`
                             : row.menuItem || "";
                         fieldValues.set(`MENU ITEM #${number}`, item);
-                        fieldValues.set(`EQUIPMENT ${number}`, row.equipmentUsed || "");
-                        const location = (row.preparationLocation || "").toLowerCase();
-                        fieldValues.set(
-                            `PREPPED BEFORE EVENT ${number}`,
-                            location.includes("before") ? row.preparationLocation : ""
-                        );
-                        fieldValues.set(
-                            `PREPPED AT EVENT ${number}`,
-                            location.includes("before") ? "" : row.preparationLocation || ""
-                        );
+                        fieldValues.set(`PREPPED BEFORE EVENT ${number}`, row.preppedBeforeEvent || "");
+                        fieldValues.set(`PREPPED AT EVENT ${number}`, row.preppedAtEventOnly || "");
+                        fieldValues.set(`BROUGHT HOT OR COLD ${number}`, row.hotColdTransport || "");
+                        fieldValues.set(`SERVED HOT OR COLD ${number}`, row.servedHotColdReheated || "");
+                        fieldValues.set(`EQUIPMENT ${number}`, row.transportEquipment || "");
+                        fieldValues.set(`ELECTRIC ${number}`, row.cookingServingEquipment || row.equipmentUsed || "");
                     });
                 } catch {
                     console.warn("Could not parse menu table data");
@@ -628,7 +634,10 @@ async function generateCountyPDF() {
             if (!field || value === "" || value === null || value === undefined) continue;
             writePdfField(field, value, fieldName);
         }
-        checkQuizAnswers(data, fieldsByExactName, fieldsByName);
+        const quizCheckboxes = form.getFields()
+            .filter(field => typeof field.check === "function")
+            .slice(0, 59);
+        checkQuizAnswers(data, fieldsByExactName, fieldsByName, quizCheckboxes);
 
         const signature = data.applicantSignature || data.ApplicantSignature;
         if (signature) {
@@ -968,9 +977,12 @@ function renderQuestionnaire() {
                 <thead>
                     <tr>
                         <th scope="col" class="p-2 text-left">Menu Item</th>
-                        <th scope="col" class="p-2 text-left">Ingredients/Source</th>
-                        <th scope="col" class="p-2 text-left">Preparation Location</th>
-                        <th scope="col" class="p-2 text-left">Equipment Used</th>
+                        <th scope="col" class="p-2 text-left">Prepped Before Event</th>
+                        <th scope="col" class="p-2 text-left">Prepped at Event Only</th>
+                        <th scope="col" class="p-2 text-left">Hot/Cold Transport</th>
+                        <th scope="col" class="p-2 text-left">Served Hot/Cold/Reheated</th>
+                        <th scope="col" class="p-2 text-left">Transport Equipment</th>
+                        <th scope="col" class="p-2 text-left">Cooking/Serving Equipment</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -990,7 +1002,11 @@ function renderQuestionnaire() {
 
             const addRow = values => {
                 const row = table.tBodies[0].insertRow();
-                ["menuItem", "ingredientsSource", "preparationLocation", "equipmentUsed"]
+                [
+                    "menuItem", "preppedBeforeEvent", "preppedAtEventOnly",
+                    "hotColdTransport", "servedHotColdReheated",
+                    "transportEquipment", "cookingServingEquipment"
+                ]
                     .forEach(column => {
                         const cell = row.insertCell();
                         cell.className = "p-2 align-top";
@@ -998,7 +1014,12 @@ function renderQuestionnaire() {
                         field.type = "text";
                         field.dataset.column = column;
                         field.name = `${question.id}[${table.tBodies[0].rows.length - 1}][${column}]`;
-                        field.value = values[column] ?? "";
+                        field.value = values[column] ??
+                            (column === "preppedBeforeEvent" && values.preparationLocation?.toLowerCase().includes("before")
+                                ? values.preparationLocation
+                                : column === "preppedAtEventOnly" && values.preparationLocation?.toLowerCase().includes("before") === false
+                                    ? values.preparationLocation
+                                    : column === "cookingServingEquipment" ? values.equipmentUsed : "");
                         field.required = question.required;
                         field.className = "w-full";
                         field.setAttribute("aria-label", column.replace(/([A-Z])/g, " $1"));
