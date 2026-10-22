@@ -421,9 +421,29 @@ function collectFormData() {
     return data;
 }
 
+function checkQuizAnswers(data, fieldsByExactName, fieldsByName) {
+    Object.keys(data).filter(key => /^quiz\d+$/.test(key)).forEach(key => {
+        const select = document.getElementById(key);
+        const optionIndex = select?.selectedIndex - 1;
+        if (optionIndex < 0) return;
+
+        const number = key.slice(4);
+        const letter = String.fromCharCode(97 + optionIndex);
+        const candidates = [
+            `Quiz${number}${letter}`, `Quiz ${number} ${letter}`,
+            `${number}${letter}`, `${number} ${letter}`, `${number}.${letter}`
+        ];
+        const field = candidates
+            .map(name => fieldsByExactName.get(name) || fieldsByName.get(normalizePdfFieldName(name)))
+            .find(item => item && typeof item.check === "function");
+        if (field) field.check();
+    });
+}
+
 async function generateCountyPDF() {
     try {
-        const { PDFDocument } = await import('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.esm.js');
+        const { PDFDocument, StandardFonts, rgb } =
+            await import('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.esm.js');
 
         const formUrl = './assets/tff-application.pdf';
         const response = await fetch(formUrl);
@@ -521,7 +541,30 @@ async function generateCountyPDF() {
             } else if (typeof field.check === "function") {
                 if (value === true || value === "true" || value === "Yes") field.check();
             } else if (typeof field.setText === "function") {
+                if (typeof field.setFontSize === "function") field.setFontSize(9);
                 field.setText(String(value));
+            }
+        }
+        checkQuizAnswers(data, fieldsByExactName, fieldsByName);
+
+        const signature = data.applicantSignature || data.ApplicantSignature;
+        if (signature) {
+            const signatureField = fieldsByExactName.get("Applicant Signature");
+            const widget = signatureField?.acroField.getWidgets()[0];
+            if (widget) {
+                const pageRef = widget.P();
+                const page = pdfDoc.getPages().find(item => item.ref === pageRef) ||
+                    pdfDoc.getPages()[5];
+                const rect = widget.getRectangle();
+                const font = await pdfDoc.embedFont(StandardFonts.HelveticaOblique);
+                page.drawText(String(signature), {
+                    x: rect.x + 2,
+                    y: rect.y + 5,
+                    size: 9,
+                    font,
+                    color: rgb(0, 0, 0),
+                    maxWidth: rect.width - 4
+                });
             }
         }
 
@@ -1051,6 +1094,7 @@ function fillPage3() {
         });
         document.querySelectorAll('[id$="Initials"]').forEach(input => setTestField(input, 'TS'));
         setTestField(get('applicantPhone'), '510-555-0142');
+        setTestField(get('applicantSignature'), 'Alex Rivera');
         finishTestPage(3);
     });
 }
