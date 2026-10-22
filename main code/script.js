@@ -583,25 +583,38 @@ async function generateCountyPDF() {
                 fieldValues.set("START TIME END TIME", `${value} - ${data.endTime || data.EndTime || ""}`.trim());
             } else if (key === "menuTableBuilder" || key === "MenuTableBuilder") {
                 try {
-                    JSON.parse(value).forEach((row, index) => {
+                    const menuFieldPrefixes = [
+                        "MENU ITEM #",
+                        "PREPPED BEFORE EVENT ",
+                        "PREPPED AT EVENT ",
+                        "BROUGHT HOT OR COLD ",
+                        "SERVED HOT OR COLD ",
+                        "EQUIPMENT ",
+                        "ELECTRIC "
+                    ];
+                    JSON.parse(value).slice(0, 6).forEach((row, index) => {
+                        row = row || {};
                         const number = index + 1;
                         const location = row.preparationLocation || "";
-                        const item = row.ingredientsSource
-                            ? `${row.menuItem || ""} (${row.ingredientsSource})`
-                            : row.menuItem || "";
-                        fieldValues.set(`MENU ITEM #${number}`, item);
-                        fieldValues.set(
-                            `PREPPED BEFORE EVENT ${number}`,
-                            row.preppedBeforeEvent ?? (location.toLowerCase().includes("before") ? location : "")
-                        );
-                        fieldValues.set(
-                            `PREPPED AT EVENT ${number}`,
-                            row.preppedAtEventOnly ?? (location && !location.toLowerCase().includes("before") ? location : "")
-                        );
-                        fieldValues.set(`BROUGHT HOT OR COLD ${number}`, row.hotColdTransport || "");
-                        fieldValues.set(`SERVED HOT OR COLD ${number}`, row.servedHotColdReheated || "");
-                        fieldValues.set(`EQUIPMENT ${number}`, row.transportEquipment || "");
-                        fieldValues.set(`ELECTRIC ${number}`, row.cookingServingEquipment || row.equipmentUsed || "");
+                        const values = [
+                            row.ingredientsSource
+                                ? `${row.menuItem || ""} (${row.ingredientsSource})`
+                                : row.menuItem || "",
+                            row.preppedBeforeEvent ??
+                                (location.toLowerCase().includes("before") ? location : ""),
+                            row.preppedAtEventOnly ??
+                                (location && !location.toLowerCase().includes("before") ? location : ""),
+                            row.hotColdTransport,
+                            row.servedHotColdReheated,
+                            row.transportEquipment,
+                            row.cookingServingEquipment || row.equipmentUsed
+                        ];
+                        values.forEach((cellValue, columnIndex) => {
+                            fieldValues.set(
+                                `${menuFieldPrefixes[columnIndex]}${number}`,
+                                cellValue ?? ""
+                            );
+                        });
                     });
                 } catch {
                     console.warn("Could not parse menu table data");
