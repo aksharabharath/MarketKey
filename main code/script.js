@@ -453,8 +453,20 @@ async function generateCountyPDF() {
                 try {
                     JSON.parse(value).forEach((row, index) => {
                         const number = index + 1;
-                        fieldValues.set(`MENU ITEM #${number}`, row.menuItem || "");
+                        const item = row.ingredientsSource
+                            ? `${row.menuItem || ""} (${row.ingredientsSource})`
+                            : row.menuItem || "";
+                        fieldValues.set(`MENU ITEM #${number}`, item);
                         fieldValues.set(`EQUIPMENT ${number}`, row.equipmentUsed || "");
+                        const location = (row.preparationLocation || "").toLowerCase();
+                        fieldValues.set(
+                            `PREPPED BEFORE EVENT ${number}`,
+                            location.includes("before") ? row.preparationLocation : ""
+                        );
+                        fieldValues.set(
+                            `PREPPED AT EVENT ${number}`,
+                            location.includes("before") ? "" : row.preparationLocation || ""
+                        );
                     });
                 } catch {
                     console.warn("Could not parse menu table data");
