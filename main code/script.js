@@ -898,7 +898,9 @@ function updateLiveCounter() {
 
 function fillTestData() {
     if (!questionnaireQuestions.length) {
-        loadQuestionnaire().then(fillTestData);
+        loadQuestionnaire().then(() => {
+            if (questionnaireQuestions.length) fillTestData();
+        });
         return;
     }
 
