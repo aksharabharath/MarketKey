@@ -1,590 +1,759 @@
 [
   {
-    "id": "businessName",
-    "pdfFieldKey": "BUSINESS NAME",
-    "type": "text",
-    "category": "vendorDetails",
-    "required": true,
-    "prompts": {
-      "en": "What is the name of your food business or stand?",
-      "es": "¿Cuál es el nombre de su negocio de comida o puesto?",
-      "zh": "您的食品企业或摊位名称是什么？",
-      "hi": "आपके खाद्य व्यवसाय या स्टॉल का नाम क्या है?"
-    }
-  },
-  {
     "id": "ownerName",
-    "pdfFieldKey": "OWNER NAME",
+    "pdfFieldKey": "OwnerName",
+    "phase": 1,
     "type": "text",
-    "category": "vendorDetails",
     "required": true,
     "prompts": {
-      "en": "What is the full legal name of the business owner?",
-      "es": "¿Cuál es el nombre legal completo del dueño del negocio?",
-      "zh": "企业所有者的法定全名是什么？",
-      "hi": "व्यवसाय के मालिक का पूरा कानूनी नाम क्या है?"
-    }
-  },
-  {
-    "id": "businessAddress",
-    "pdfFieldKey": "BUSINESS ADDRESS WITH CITY STATE AND ZIP CODE",
-    "type": "text",
-    "category": "vendorDetails",
-    "required": true,
-    "prompts": {
-      "en": "What is your business address (including city, state, and zip code)?",
-      "es": "¿Cuál es la dirección de su negocio (incluyendo ciudad, estado y código postal)?",
-      "zh": "您的企业地址是什么（包括城市、州和邮政编码）？",
-      "hi": "आपके व्यवसाय का पता क्या है (शहर, राज्य और पिन कोड सहित)?"
-    }
-  },
-  {
-    "id": "mailingAddress",
-    "pdfFieldKey": "MAILING ADDRESS IF DIFFERENT FROM BUSINESS ADDRESS",
-    "type": "text",
-    "category": "vendorDetails",
-    "required": false,
-    "prompts": {
-      "en": "What is your mailing address (if different from your business address)?",
-      "es": "¿Cuál es su dirección postal (si es diferente a la de su negocio)?",
-      "zh": "您的邮寄地址是什么（如果与营业地址不同）？",
-      "hi": "आपका डाक पता क्या है (यदि आपके व्यावसायिक पते से भिन्न है)?"
-    }
-  },
-  {
-    "id": "businessPhone",
-    "pdfFieldKey": "BUSINESS AND CELL PHONE",
-    "type": "text",
-    "category": "vendorDetails",
-    "required": true,
-    "prompts": {
-      "en": "What is your contact phone number?",
-      "es": "¿Cuál es su número de teléfono de contacto?",
-      "zh": "您的联系电话是多少？",
-      "hi": "आपका संपर्क फोन नंबर क्या है?"
-    }
-  },
-  {
-    "id": "businessEmail",
-    "pdfFieldKey": "EMAIL ADDRESS",
-    "type": "email",
-    "category": "vendorDetails",
-    "required": true,
-    "prompts": {
-      "en": "What is your email address?",
-      "es": "¿Cuál es su dirección de correo electrónico?",
-      "zh": "您的电子邮箱地址是什么？",
-      "hi": "आपका ईमेल पता क्या है?"
-    }
-  },
-  {
-    "id": "boothCount",
-    "pdfFieldKey": "NUMBER OF BOOTHS",
-    "type": "select",
-    "category": "eventDetails",
-    "required": true,
-    "options": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
-    "prompts": {
-      "en": "How many booths are you operating?",
-      "es": "¿Cuántos puestos opera?",
-      "zh": "您运营多少个摊位？",
-      "hi": "आप कितने बूथ संचालित कर रहे हैं?"
-    }
-  },
-  {
-    "id": "setupType",
-    "pdfFieldKey": "INDOOR OR OUTDOOR SETUP",
-    "type": "select",
-    "category": "eventDetails",
-    "required": true,
-    "options": ["Indoor", "Outdoor"],
-    "prompts": {
-      "en": "Is your setup indoor or outdoor?",
-      "es": "¿Su instalación es bajo techo o al aire libre?",
-      "zh": "您的设置是室内还是室外？",
-      "hi": "आपका सेटअप इनडोर है या आउटडोर?"
-    }
-  },
-  {
-    "id": "eventName",
-    "pdfFieldKey": "NAME OF THE EVENT",
-    "type": "text",
-    "category": "eventDetails",
-    "required": true,
-    "prompts": {
-      "en": "What is the name of the event or market?",
-      "es": "¿Cuál es el nombre del evento o mercado?",
-      "zh": "活动或集市的名称是什么？",
-      "hi": "कार्यक्रम या बाजार का नाम क्या है?"
-    }
-  },
-  {
-    "id": "eventAddress",
-    "pdfFieldKey": "ADDRESS OF THE EVENT",
-    "type": "text",
-    "category": "eventDetails",
-    "required": true,
-    "prompts": {
-      "en": "What is the physical address where the event is taking place?",
-      "es": "¿Cuál es la dirección física donde se lleva a cabo el evento?",
-      "zh": "活动举办的具体地址是什么？",
-      "hi": "वह भौतिक पता क्या है जहाँ कार्यक्रम आयोजित किया जा रहा है?"
-    }
-  },
-  {
-    "id": "eventDates",
-    "pdfFieldKey": "START DATE END DATE",
-    "type": "date",
-    "category": "eventDetails",
-    "required": true,
-    "prompts": {
-      "en": "What are the start and end dates of the event?",
-      "es": "¿Cuáles son las fechas de inicio y fin del evento?",
-      "zh": "活动的开始和结束日期是什么？",
-      "hi": "कार्यक्रम की प्रारंभ और समाप्ति तिथियां क्या हैं?"
-    }
-  },
-  {
-    "id": "eventTimes",
-    "pdfFieldKey": "START TIME END TIME",
-    "type": "text",
-    "category": "eventDetails",
-    "required": true,
-    "prompts": {
-      "en": "What are your operating hours (start and end times) at the event?",
-      "es": "¿Cuáles son sus horas de operación (horario de inicio y fin) en el evento?",
-      "zh": "您在活动中的营业时间（开始和结束时间）是什么？",
-      "hi": "कार्यक्रम में आपके संचालन के घंटे (प्रारंभ और समाप्ति समय) क्या हैं?"
-    }
-  },
-  {
-    "id": "eventSponsor",
-    "pdfFieldKey": "EVENT SPONSOR NAME",
-    "type": "text",
-    "category": "eventDetails",
-    "required": true,
-    "prompts": {
-      "en": "Who is the event coordinator, sponsor, or organizer?",
-      "es": "¿Quién es el coordinador, patrocinador u organizador del evento?",
-      "zh": "活动协调员、赞助商或组织者是谁？",
-      "hi": "कार्यक्रम समन्वयक, प्रायोजक या आयोजक कौन है?"
-    }
-  },
-  {
-    "id": "sponsorPhone",
-    "pdfFieldKey": "CONTACT PHONE",
-    "type": "text",
-    "category": "eventDetails",
-    "required": false,
-    "prompts": {
-      "en": "What is the event sponsor's contact phone number?",
-      "es": "¿Cuál es el número de teléfono de contacto del patrocinador del evento?",
-      "zh": "活动赞助商的联系电话是多少？",
-      "hi": "कार्यक्रम प्रायोजक का संपर्क फोन नंबर क्या है?"
-    }
-  },
-  {
-    "id": "sponsorEmail",
-    "pdfFieldKey": "SPONSOR EMAIL",
-    "type": "email",
-    "category": "eventDetails",
-    "required": false,
-    "prompts": {
-      "en": "What is the event sponsor's email address?",
-      "es": "¿Cuál es la dirección de correo electrónico del patrocinador del evento?",
-      "zh": "活动赞助商的电子邮箱地址是什么？",
-      "hi": "कार्यक्रम प्रायोजक का ईमेल पता क्या है?"
-    }
-  },
-  {
-    "id": "menuDescription",
-    "pdfFieldKey": "MENU DESCRIPTION",
-    "type": "text",
-    "category": "menuDetails",
-    "required": true,
-    "prompts": {
-      "en": "Please provide a brief description of your menu or food offerings.",
-      "es": "Por favor, proporcione una breve descripción de su menú o productos alimenticios.",
-      "zh": "请简要描述您的菜单或食品供应。",
-      "hi": "कृपया अपने मेनू या खाद्य पेशकश का संक्षिप्त विवरण प्रदान करें।"
-    }
-  },
-  {
-    "id": "prePackagedQuestion",
-    "pdfFieldKey": "DO ALL OF YOUR MENU ITEMS REMAIN IN ORIGINAL FACTORY SEALED PACKAGE OR PREPACKAGED BY YOU AT COMMENCIPAL KITCHEN",
-    "type": "checkbox",
-    "category": "menuDetails",
-    "required": false,
-    "prompts": {
-      "en": "Are all menu items factory-sealed or pre-packaged at an approved commercial kitchen?",
-      "es": "¿Todos los artículos del menú están sellados de fábrica o preempaquetados en cocina comercial?",
-      "zh": "所有菜单项是否都在经批准的商业厨房中原厂密封或预包装？",
-      "hi": "क्या सभी मेनू आइटम कारखाने से सीलबंद हैं या स्वीकृत कमर्शियल किचन में पैक किए गए हैं?"
-    }
-  },
-  {
-    "id": "menuItem1",
-    "pdfFieldKey": "MENU ITEM #1",
-    "type": "text",
-    "category": "menuDetails",
-    "required": true,
-    "prompts": {
-      "en": "What is your first menu item or food product?",
-      "es": "¿Cuál es su primer plato o producto alimenticio?",
-      "zh": "您的第一道菜单菜品或食品是什么？",
-      "hi": "आपका पहला मेनू आइटम या खाद्य उत्पाद क्या है?"
-    }
-  },
-  {
-    "id": "menuItem2",
-    "pdfFieldKey": "MENU ITEM #2",
-    "type": "text",
-    "category": "menuDetails",
-    "required": false,
-    "prompts": {
-      "en": "What is your second menu item (if applicable)?",
-      "es": "¿Cuál es su segundo plato (si aplica)?",
-      "zh": "您的第二道菜单菜品是什么（如有）？",
-      "hi": "आपका दूसरा मेनू आइटम क्या है (यदि लागू हो)?"
-    }
-  },
-  {
-    "id": "menuItem3",
-    "pdfFieldKey": "MENU ITEM #3",
-    "type": "text",
-    "category": "menuDetails",
-    "required": false,
-    "prompts": {
-      "en": "What is your third menu item (if applicable)?",
-      "es": "¿Cuál es su tercer plato (si aplica)?",
-      "zh": "您的第三道菜单菜品是什么（如有）？",
-      "hi": "आपका तीसरा मेनू आइटम क्या है (यदि लागू हो)?"
-    }
-  },
-  {
-    "id": "menuItem4",
-    "pdfFieldKey": "MENU ITEM #4",
-    "type": "text",
-    "category": "menuDetails",
-    "required": false,
-    "prompts": {
-      "en": "What is your fourth menu item (if applicable)?",
-      "es": "¿Cuál es su cuarto plato (si aplica)?",
-      "zh": "您的第四道菜单菜品是什么（如有）？",
-      "hi": "आपका चौथा मेनू आइटम क्या है (यदि लागू हो)?"
-    }
-  },
-  {
-    "id": "menuItem5",
-    "pdfFieldKey": "MENU ITEM #5",
-    "type": "text",
-    "category": "menuDetails",
-    "required": false,
-    "prompts": {
-      "en": "What is your fifth menu item (if applicable)?",
-      "es": "¿Cuál es su quinto plato (si aplica)?",
-      "zh": "您的第五道菜单菜品是什么（如有）？",
-      "hi": "आपका पांचवां मेनू आइटम क्या है (यदि लागू हो)?"
-    }
-  },
-  {
-    "id": "menuItem6",
-    "pdfFieldKey": "MENU ITEM #6",
-    "type": "text",
-    "category": "menuDetails",
-    "required": false,
-    "prompts": {
-      "en": "What is your sixth menu item (if applicable)?",
-      "es": "¿Cuál es su sexto plato (si aplica)?",
-      "zh": "您的第六道菜单菜品是什么（如有）？",
-      "hi": "आपका छठा मेनू आइटम क्या है (यदि लागू हो)?"
-    }
-  },
-  {
-    "id": "menuMatrixDetails",
-    "pdfFieldKey": "DETAILED MENU MATRIX PREP STATE TRANSPORT TEMP SERVICE EQUIPMENT USED",
-    "type": "text",
-    "category": "menuDetails",
-    "required": true,
-    "prompts": {
-      "en": "Provide details on food prep timing, hot/cold transport state, and specific equipment used for each item.",
-      "es": "Proporcione detalles sobre la preparación, transporte en caliente/frío y equipo específico usado para cada artículo.",
-      "zh": "提供有关食品准备时间、冷热运输状态以及每种物品所用特定设备的详细信息。",
-      "hi": "प्रत्येक आइटम के लिए खाद्य तैयारी समय, गर्म/ठंडे परिवहन राज्य, और उपयोग किए जाने वाले विशिष्ट उपकरणों का विवरण दें।"
-    }
-  },
-  {
-    "id": "handwashSpigot",
-    "pdfFieldKey": "Container of 100degree water with a free flow spigot so water flows freely while",
-    "type": "checkbox",
-    "category": "sanitation",
-    "required": true,
-    "prompts": {
-      "en": "Will you provide a container of 100°F warm water with a free-flow spigot for handwashing?",
-      "es": "¿Proporcionará un contenedor de agua tibia a 100°F con un grifo de flujo libre para lavarse las manos?",
-      "zh": "您是否会提供一个带有自由流水龙头、盛有 100°F 温水的容器用于洗手？",
-      "hi": "क्या आप हाथ धोने के लिए स्वतंत्र रूप से बहने वाले नल के साथ 100°F गर्म पानी का कंटेनर प्रदान करेंगे?"
-    }
-  },
-  {
-    "id": "handwashBucket",
-    "pdfFieldKey": "Bucket to catch the dirty water",
-    "type": "checkbox",
-    "category": "sanitation",
-    "required": true,
-    "prompts": {
-      "en": "Will you provide a dedicated catch bucket for wastewater?",
-      "es": "¿Proporcionará un cubo dedicado para recolectar el agua sucia?",
-      "zh": "您是否会提供一个专门收集废水的桶？",
-      "hi": "क्या आप गंदे पानी को इकट्ठा करने के लिए एक समर्पित बाल्टी प्रदान करेंगे?"
-    }
-  },
-  {
-    "id": "handwashSoap",
-    "pdfFieldKey": "Liquid soap in a pump dispenser",
-    "type": "checkbox",
-    "category": "sanitation",
-    "required": true,
-    "prompts": {
-      "en": "Will you provide pump-dispenser liquid soap at the handwashing station?",
-      "es": "¿Proporcionará jabón líquido en dispensador de bomba en la estación de lavado de manos?",
-      "zh": "您是否会在洗手处提供按压式液体肥皂？",
-      "hi": "क्या आप हाथ धोने के स्थान पर पंप डिस्पेंसर वाला तरल साबुन प्रदान करेंगे?"
-    }
-  },
-  {
-    "id": "handwashTowels",
-    "pdfFieldKey": "Single use paper towels",
-    "type": "checkbox",
-    "category": "sanitation",
-    "required": true,
-    "prompts": {
-      "en": "Will you provide single-use paper towels for drying hands?",
-      "es": "¿Proporcionará toallas de papel de un solo uso para secarse las manos?",
-      "zh": "您是否会提供一次性纸巾用于擦干双手？",
-      "hi": "क्या आप हाथ सुखाने के लिए एक बार उपयोग होने वाले पेपर टॉवल प्रदान करेंगे?"
-    }
-  },
-  {
-    "id": "washBucket",
-    "pdfFieldKey": "1 Bucket with soapy water to use for washing",
-    "type": "checkbox",
-    "category": "sanitation",
-    "required": true,
-    "prompts": {
-      "en": "Will you provide a bucket with soapy water for washing equipment/utensils?",
-      "es": "¿Proporcionará un balde con agua jabonosa para lavar equipos y utensilios?",
-      "zh": "您是否会提供一桶肥皂水用于清洗设备或餐具？",
-      "hi": "क्या आप उपकरण या बर्तन धोने के लिए साबुन के पानी वाली बाल्टी प्रदान करेंगे?"
-    }
-  },
-  {
-    "id": "rinseBucket",
-    "pdfFieldKey": "1 Bucket with plain water to use for rinsing",
-    "type": "checkbox",
-    "category": "sanitation",
-    "required": true,
-    "prompts": {
-      "en": "Will you provide a bucket with clean rinse water?",
-      "es": "¿Proporcionará un balde con agua limpia para enjuagar?",
-      "zh": "您是否会提供一桶清水用于冲洗？",
-      "hi": "क्या आप rinsing के लिए साफ पानी वाली बाल्टी प्रदान करेंगे?"
-    }
-  },
-  {
-    "id": "sanitizeBucket",
-    "pdfFieldKey": "1 Bucket with bleach and water to use for sanitizing",
-    "type": "checkbox",
-    "category": "sanitation",
-    "required": true,
-    "prompts": {
-      "en": "Will you provide a bucket with a bleach-water sanitizing solution?",
-      "es": "¿Proporcionará un balde con una solución desinfectante de agua y lejía?",
-      "zh": "您是否会提供一桶漂白水消毒溶液用于消毒？",
-      "hi": "क्या आप सैनिटाइजिंग के लिए ब्लीच और पानी के घोल वाली बाल्टी प्रदान करेंगे?"
-    }
-  },
-  {
-    "id": "waterSource",
-    "pdfFieldKey": "WHERE WILL YOU OBTAIN CLEAN WATER FOR HANDWASH AND WAREWASH",
-    "type": "select",
-    "category": "operations",
-    "required": true,
-    "options": [
-      "Event-provided potable water source",
-      "Brought my own 5+ gallon container",
-      "Approved commercial commissary source"
-    ],
-    "prompts": {
-      "en": "Where will you obtain clean water for handwashing and equipment washing?",
-      "es": "¿De dónde obtendrá agua limpia para lavarse las manos y lavar los equipos?",
-      "zh": "您从哪里获取用于洗手和清洗设备的清洁水源？",
-      "hi": "आप हाथ धोने और उपकरण धोने के लिए साफ पानी कहाँ से प्राप्त करेंगे?"
-    }
-  },
-  {
-    "id": "wasteDisposal",
-    "pdfFieldKey": "WHERE WILL YOU DISPOSE OF DIRTY WATER GARBAGE AND USED FRY OIL",
-    "type": "select",
-    "category": "operations",
-    "required": true,
-    "options": [
-      "Approved event wastewater tank / utility sink",
-      "Sewer disposal connection at event site",
-      "Haul back to approved commercial commissary"
-    ],
-    "prompts": {
-      "en": "Where will you dispose of dirty wastewater, garbage, and used frying oil?",
-      "es": "¿Dónde desechará el agua sucia, la basura y el aceite de cocina usado?",
-      "zh": "您将在哪里处理脏废水、垃圾和用过的煎炸油？",
-      "hi": "आप गंदे अपशिष्ट जल, कचरे और उपयोग किए गए तलने के तेल का निपटान कहाँ करेंगे?"
-    }
-  },
-  {
-    "id": "boothEnclosure",
-    "pdfFieldKey": "WILL YOU PROVIDE A FULLY ENCLOSED BOOTH IF NO EXPLAIN WHY IF YES EXPLAIN THE MATERIALS USED",
-    "type": "select",
-    "category": "operations",
-    "required": true,
-    "options": [
-      "Fully Enclosed Booth (Mesh screening & Vinyl walls)",
-      "Open Air Setup (Exempt / Pre-packaged only)"
-    ],
-    "prompts": {
-      "en": "Will you provide a fully enclosed booth setup?",
-      "es": "¿Proporcionará una configuración de puesto completamente cerrada?",
-      "zh": "您是否会提供完全封闭的摊位设置？",
-      "hi": "क्या आप पूरी तरह से संलग्न बूथ सेटअप प्रदान करेंगे?"
-    }
-  },
-  {
-    "id": "boothLayoutDrawing",
-    "pdfFieldKey": "SUBMIT WITH THIS APPLICATION A DRAWING SHOWING PLACEMENT OF EQUIPMENT IN BOOTH",
-    "type": "text",
-    "category": "operations",
-    "required": true,
-    "prompts": {
-      "en": "Describe your booth layout or equipment placement for your required sketch.",
-      "es": "Describa la distribución de su puesto o la colocación de equipos para su boceto requerido.",
-      "zh": "描述您的摊位布局或所需草图的设备放置位置。",
-      "hi": "अपने आवश्यक स्केच के लिए अपने बूथ लेआउट या उपकरण प्लेसमेंट का वर्णन करें।"
-    }
-  },
-  {
-    "id": "utensilTransportProcedure",
-    "pdfFieldKey": "HOW WILL YOU TRANSPORT UTENSILS AND EQUIPMENT AND MAINTAIN BOOTH CLEAN SANITARY ORGANIZED",
-    "type": "text",
-    "category": "operations",
-    "required": true,
-    "prompts": {
-      "en": "How will you transport utensils/equipment and keep your booth clean, sanitary, and organized?",
-      "es": "¿Cómo transportará los utensilios/equipos y mantendrá su puesto limpio, sanitario y organizado?",
-      "zh": "您将如何运输餐具/设备并保持摊位清洁、卫生和有序？",
-      "hi": "आप बर्तन/उपकरणों का परिवहन कैसे करेंगे और अपने बूथ को स्वच्छ, सेनेटरी और व्यवस्थित रखेंगे?"
-    }
-  },
-  {
-    "id": "commissaryName",
-    "pdfFieldKey": "Commissary Commercial Kitchen",
-    "type": "text",
-    "category": "operations",
-    "required": true,
-    "prompts": {
-      "en": "What is the name and address of your approved commissary or commercial kitchen?",
-      "es": "¿Cuál es el nombre y la dirección de su cocina comercial o comisario autorizado?",
-      "zh": "您批准的中央厨房或商业厨房的名称和地址是什么？",
-      "hi": "आपके स्वीकृत कमिसरी या कमर्शियल किचन का नाम और पता क्या है?"
-    }
-  },
-  {
-    "id": "reusableContainers",
-    "pdfFieldKey": "WHAT ARE YOUR OPERATING PROCEDURES FOR ACCEPTING CUSTOMER OWNED RE USEABLE CONTAINERS",
-    "type": "text",
-    "category": "compliance",
-    "required": false,
-    "prompts": {
-      "en": "What are your procedures for handling customer-owned reusable containers (cups, mugs, plates) to prevent contamination?",
-      "es": "¿Cuáles son sus procedimientos para manejar recipientes reutilizables propiedad del cliente para prevenir la contaminación?",
-      "zh": "您如何处理顾客自带的可重复使用容器以防止污染？",
-      "hi": "दूषित होने से बचाने के लिए आप ग्राहकों के अपने पुन: प्रयोज्य बर्तनों को संभालने की क्या प्रक्रिया अपनाते हैं?"
-    }
-  },
-  {
-    "id": "samplingYN",
-    "pdfFieldKey": "SAMPLING Y/N",
-    "type": "checkbox",
-    "category": "operations",
-    "required": false,
-    "prompts": {
-      "en": "Will you be offering food samples at your booth?",
-      "es": "¿Ofrecerá muestras de comida en su puesto?",
-      "zh": "您是否会在摊位提供食品样品？",
-      "hi": "क्या आप अपने बूथ पर खाद्य नमूने पेश करेंगे?"
-    }
-  },
-  {
-    "id": "generatorInfo",
-    "pdfFieldKey": "Generator Information",
-    "type": "checkbox",
-    "category": "operations",
-    "required": false,
-    "prompts": {
-      "en": "Will you be using a generator?",
-      "es": "¿Utilizará un generador?",
-      "zh": "您是否会使用发电机？",
-      "hi": "क्या आप जनरेटर का उपयोग करेंगे?"
+      "en": "Owner Name",
+      "es": "Nombre del propietario",
+      "zh": "所有者姓名",
+      "hi": "मालिक का नाम"
     }
   },
   {
     "id": "sponsorApproval",
-    "pdfFieldKey": "Sponsor Approval",
-    "type": "checkbox",
-    "category": "compliance",
+    "pdfFieldKey": "SponsorApproval",
+    "phase": 1,
+    "type": "select",
+    "required": true,
+    "options": ["Yes", "No"],
+    "prompts": {
+      "en": "Do you have sponsor approval to participate? (Note: If no, your application will not be reviewed)",
+      "es": "¿Tiene la aprobación del patrocinador para participar? (Nota: Si no, su solicitud no será revisada)",
+      "zh": "您是否有赞助商的参展批准？（注意：如果没有, 您的申请将不会被审核）",
+      "hi": "क्या आपके पास भाग लेने के लिए प्रायोजक की स्वीकृति है? (नोट: यदि नहीं, तो आपके आवेदन की समीक्षा नहीं की जाएगी)"
+    }
+  },
+  {
+    "id": "businessName",
+    "pdfFieldKey": "BusinessName",
+    "phase": 1,
+    "type": "text",
+    "required": true,
+    "prompts": {
+      "en": "Business Name",
+      "es": "Nombre del negocio",
+      "zh": "企业名称",
+      "hi": "व्यवसाय का नाम"
+    }
+  },
+  {
+    "id": "numberOfBooths",
+    "pdfFieldKey": "NumberOfBooths",
+    "phase": 1,
+    "type": "text",
+    "required": true,
+    "prompts": {
+      "en": "Number of Booths (# of Booths - Submit one application per booth)",
+      "es": "Número de puestos (# de puestos - Envíe una solicitud por puesto)",
+      "zh": "摊位数量（每个摊位提交一份申请）",
+      "hi": "बूथों की संख्या (प्रति बूथ एक आवेदन जमा करें)"
+    }
+  },
+  {
+    "id": "indoorOutdoor",
+    "pdfFieldKey": "IndoorOutdoor",
+    "phase": 1,
+    "type": "select",
+    "required": true,
+    "options": ["Indoor", "Outdoor"],
+    "prompts": {
+      "en": "Indicate Indoor or Outdoor",
+      "es": "Indique si es bajo techo (Indoor) o al aire libre (Outdoor)",
+      "zh": "标明室内还是室外",
+      "hi": "इनडोर या आउटडोर इंगित करें"
+    }
+  },
+  {
+    "id": "boothName",
+    "pdfFieldKey": "BoothName",
+    "phase": 1,
+    "type": "text",
+    "required": true,
+    "prompts": {
+      "en": "Name of the Booth",
+      "es": "Nombre del puesto",
+      "zh": "摊位名称",
+      "hi": "बूथ का नाम"
+    }
+  },
+  {
+    "id": "emailAddress",
+    "pdfFieldKey": "EmailAddress",
+    "phase": 1,
+    "type": "text",
+    "required": true,
+    "prompts": {
+      "en": "Email Address (This is how we will contact you if more information is needed)",
+      "es": "Correo electrónico (Así es como nos pondremos en contacto si se necesita más información)",
+      "zh": "电子邮箱地址（如果需要更多信息，我们将通过此方式联系您）",
+      "hi": "ईमेल पता (यदि अधिक जानकारी की आवश्यकता होगी तो हम इसी तरह संपर्क करेंगे)"
+    }
+  },
+  {
+    "id": "businessAddress",
+    "pdfFieldKey": "BusinessAddress",
+    "phase": 1,
+    "type": "text",
+    "required": true,
+    "prompts": {
+      "en": "Business Address with City, State, and Zip Code",
+      "es": "Dirección del negocio con ciudad, estado y código postal",
+      "zh": "商业地址（包含城市、州和邮政编码）",
+      "hi": "शहर, राज्य और पिन कोड के साथ व्यावसायिक पता"
+    }
+  },
+  {
+    "id": "mailingAddress",
+    "pdfFieldKey": "MailingAddress",
+    "phase": 1,
+    "type": "text",
     "required": false,
     "prompts": {
-      "en": "Has the event sponsor approved your booth setup?",
-      "es": "¿El patrocinador del evento ha aprobado la configuración de su puesto?",
-      "zh": "活动赞助商是否已批准您的摊位设置？",
-      "hi": "क्या कार्यक्रम प्रायोजक ने आपके बूथ सेटअप को मंजूरी दे दी है?"
+      "en": "Mailing Address (if different from business address)",
+      "es": "Dirección postal (si es diferente a la del negocio)",
+      "zh": "邮寄地址（如果与商业地址不同）",
+      "hi": "मेलिंग पता (यदि व्यावसायिक पते से भिन्न है)"
+    }
+  },
+  {
+    "id": "phoneNumbers",
+    "pdfFieldKey": "PhoneNumbers",
+    "phase": 1,
+    "type": "text",
+    "required": true,
+    "prompts": {
+      "en": "Business and Cell Phone",
+      "es": "Teléfono del negocio y celular",
+      "zh": "商业电话和手机号码",
+      "hi": "व्यापार और सेल फोन"
+    }
+  },
+  {
+    "id": "faNumber",
+    "pdfFieldKey": "FANumber",
+    "phase": 1,
+    "type": "text",
+    "required": false,
+    "prompts": {
+      "en": "FA # (Facility Account Number - Office Use Only)",
+      "es": "FA # (Número de cuenta de instalación - Solo para uso de oficina)",
+      "zh": "FA #（设施账号 - 仅供办公使用）",
+      "hi": "FA # (सुविधा खाता संख्या - केवल कार्यालय उपयोग के लिए)"
+    }
+  },
+  {
+    "id": "eventName",
+    "pdfFieldKey": "EventName",
+    "phase": 2,
+    "type": "text",
+    "required": true,
+    "prompts": {
+      "en": "Name of the Event",
+      "es": "Nombre del evento",
+      "zh": "活动名称",
+      "hi": "कार्यक्रम का नाम"
+    }
+  },
+  {
+    "id": "eventAddress",
+    "pdfFieldKey": "EventAddress",
+    "phase": 2,
+    "type": "text",
+    "required": true,
+    "prompts": {
+      "en": "Event Address with City",
+      "es": "Dirección del evento con ciudad",
+      "zh": "活动地址及城市",
+      "hi": "शहर के साथ कार्यक्रम का पता"
+    }
+  },
+  {
+    "id": "startDate",
+    "pdfFieldKey": "StartDate",
+    "phase": 2,
+    "type": "date",
+    "required": true,
+    "prompts": {
+      "en": "Start Date",
+      "es": "Fecha de inicio",
+      "zh": "开始日期",
+      "hi": "आरंभ करने की तिथि"
+    }
+  },
+  {
+    "id": "endDate",
+    "pdfFieldKey": "EndDate",
+    "phase": 2,
+    "type": "date",
+    "required": true,
+    "prompts": {
+      "en": "End Date",
+      "es": "Fecha de finalización",
+      "zh": "结束日期",
+      "hi": "समाप्ति तिथि"
+    }
+  },
+  {
+    "id": "startTime",
+    "pdfFieldKey": "StartTime",
+    "phase": 2,
+    "type": "text",
+    "required": true,
+    "prompts": {
+      "en": "Start Time (e.g., 9:00 AM)",
+      "es": "Hora de inicio (ej., 9:00 AM)",
+      "zh": "开始时间（例如上午 9:00）",
+      "hi": "प्रारंभ समय (जैसे, सुबह 9:00 बजे)"
+    }
+  },
+  {
+    "id": "endTime",
+    "pdfFieldKey": "EndTime",
+    "phase": 2,
+    "type": "text",
+    "required": true,
+    "prompts": {
+      "en": "End Time (e.g., 5:00 PM)",
+      "es": "Hora de finalización (ej., 5:00 PM)",
+      "zh": "结束时间（例如下午 5:00）",
+      "hi": "समाप्ति समय (जैसे, शाम 5:00 बजे)"
+    }
+  },
+  {
+    "id": "eventSponsorName",
+    "pdfFieldKey": "EventSponsorName",
+    "phase": 2,
+    "type": "text",
+    "required": true,
+    "prompts": {
+      "en": "Event Sponsor Name",
+      "es": "Nombre del patrocinador del evento",
+      "zh": "活动赞助商名称",
+      "hi": "कार्यक्रम प्रायोजक का नाम"
+    }
+  },
+  {
+    "id": "sponsorContactPhone",
+    "pdfFieldKey": "SponsorContactPhone",
+    "phase": 2,
+    "type": "text",
+    "required": true,
+    "prompts": {
+      "en": "Contact Phone (Sponsor)",
+      "es": "Teléfono de contacto (Patrocinador)",
+      "zh": "联系电话（赞助商）",
+      "hi": "संपर्क फोन (प्रायोजक)"
+    }
+  },
+  {
+    "id": "sponsorEmail",
+    "pdfFieldKey": "SponsorEmail",
+    "phase": 2,
+    "type": "text",
+    "required": true,
+    "prompts": {
+      "en": "Sponsor Email",
+      "es": "Correo electrónico del patrocinador",
+      "zh": "赞助商电子邮件",
+      "hi": "प्रायोजक ईमेल"
+    }
+  },
+  {
+    "id": "originalPackageCheck",
+    "pdfFieldKey": "OriginalPackageCheck",
+    "phase": 3,
+    "type": "select",
+    "required": true,
+    "options": ["Yes", "No"],
+    "prompts": {
+      "en": "Do all of your menu items, including samples, remain in the original factory sealed package or are they pre-packaged by you at a commercial kitchen?",
+      "es": "¿Todos sus artículos de menú, incluidas las muestras, permanecen en su paquete original sellado de fábrica o son preempaquetados por usted en una cocina comercial?",
+      "zh": "您的所有菜单项（包括样品）是否都保留在原厂密封包装中，或者由您在商业厨房中预先包装？",
+      "hi": "क्या आपके सभी मेनू आइटम, नमूनों सहित, मूल कारखाने से सील बंद पैकेज में रहते हैं या आपके द्वारा वाणिज्यिक रसोई में पहले से पैक किए जाते हैं?"
+    }
+  },
+  {
+    "id": "generatorInfo",
+    "pdfFieldKey": "GeneratorInfo",
+    "phase": 3,
+    "type": "text",
+    "required": false,
+    "prompts": {
+      "en": "Will you use electrical equipment? If yes, list make, model, and wattage of your generator:",
+      "es": "¿Utilizará equipo eléctrico? Si es así, indique la marca, modelo y potencia de su generador:",
+      "zh": "您是否会使用电气设备？如果是，请列出您的发电机的品牌、型号和瓦数：",
+      "hi": "क्या आप विद्युत उपकरण का उपयोग करेंगे? यदि हाँ, तो अपने जनरेटर का मेक, मॉडल और वाटेज सूचीबद्ध करें:"
+    }
+  },
+  {
+    "id": "samplingDetails",
+    "pdfFieldKey": "SamplingDetails",
+    "phase": 3,
+    "type": "text",
+    "required": false,
+    "prompts": {
+      "en": "Are you sampling? If yes, please describe:",
+      "es": "¿Está ofreciendo muestras? Si es así, descríbalo:",
+      "zh": "您是否提供样品？如果是，请描述：",
+      "hi": "क्या आप नमूने दे रहे हैं? यदि हाँ, तो कृपया वर्णन करें:"
+    }
+  },
+  {
+    "id": "waterSource",
+    "pdfFieldKey": "WaterSource",
+    "phase": 3,
+    "type": "text",
+    "required": true,
+    "prompts": {
+      "en": "Where will you obtain clean water for handwash and warewash?",
+      "es": "¿Dónde obtendrá agua limpia para el lavado de manos y utensilios?",
+      "zh": "您将在哪里获取用于洗手和洗涤器具的清洁水？",
+      "hi": "आप हाथ धोने और बर्तन धोने के लिए स्वच्छ पानी कहाँ से प्राप्त करेंगे?"
+    }
+  },
+  {
+    "id": "wasteDisposal",
+    "pdfFieldKey": "WasteDisposal",
+    "phase": 3,
+    "type": "text",
+    "required": true,
+    "prompts": {
+      "en": "Where will you dispose of dirty water, garbage, and used fry oil?",
+      "es": "¿Dónde desechará el agua sucia, la basura y el aceite de freír usado?",
+      "zh": "您将在哪里处理污水、垃圾和使用过的炸油？",
+      "hi": "आप गंदे पानी, कचरे और इस्तेमाल किए गए तलने के तेल का निपटान कहाँ करेंगे?"
+    }
+  },
+  {
+    "id": "boothEnclosure",
+    "pdfFieldKey": "BoothEnclosure",
+    "phase": 3,
+    "type": "text",
+    "required": true,
+    "prompts": {
+      "en": "Will you provide a fully enclosed booth? (If no, explain why; if yes, describe floors/walls/overhead)",
+      "es": "¿Proporcionará un puesto completamente cerrado? (Si no, explique por qué; si es así, describa pisos/paredes/techo)",
+      "zh": "您是否会提供完全封闭的摊位？（如果否，请解释原因；如果是，请描述地面/墙壁/顶棚）",
+      "hi": "क्या आप पूरी तरह से संलग्न बूथ प्रदान करेंगे? (यदि नहीं, तो कारण बताएं; यदि हाँ, तो फर्श/दीवारों/छत का वर्णन करें)"
+    }
+  },
+  {
+    "id": "transportSanitation",
+    "pdfFieldKey": "TransportSanitation",
+    "phase": 3,
+    "type": "text",
+    "required": true,
+    "prompts": {
+      "en": "How will you transport your utensils and equipment and maintain your booth clean, sanitary, and organized?",
+      "es": "¿Cómo transportará sus utensilios y equipos y mantendrá su puesto limpio, sanitario y organizado?",
+      "zh": "您将如何运输您的餐具和设备并保持摊位清洁、卫生和有序？",
+      "hi": "आप अपने बर्तनों और उपकरणों का परिवहन कैसे करेंगे और अपने बूथ को स्वच्छ, सेनेटरी और व्यवस्थित कैसे रखेंगे?"
+    }
+  },
+  {
+    "id": "reusableUtensils",
+    "pdfFieldKey": "ReusableUtensils",
+    "phase": 3,
+    "type": "text",
+    "required": false,
+    "prompts": {
+      "en": "Will you or the sponsor be providing reusable/returnable utensils (forks, plates, cups, etc.) for customer use?",
+      "es": "¿Usted o el patrocinador proporcionarán utensilios reutilizables/retornables para el uso del cliente?",
+      "zh": "您或赞助商是否会提供可重复使用/可退还的餐具供客户使用？",
+      "hi": "क्या आप या प्रायोजक ग्राहक के उपयोग के लिए पुन: प्रयोज्य/वापसी योग्य बर्तन प्रदान कर रहे हैं?"
+    }
+  },
+  {
+    "id": "customerContainers",
+    "pdfFieldKey": "CustomerContainers",
+    "phase": 3,
+    "type": "text",
+    "required": false,
+    "prompts": {
+      "en": "What are your operating procedures for accepting customer-owned reusable containers and preventing contamination?",
+      "es": "¿Cuáles son sus procedimientos operativos para aceptar recipientes reutilizables propiedad del cliente y prevenir la contaminación?",
+      "zh": "您接受客户自带可重复使用容器并防止污染的操作程序是什么？",
+      "hi": "ग्राहक के स्वामित्व वाले पुन: प्रयोज्य कंटेनर स्वीकार करने और संदूषण को रोकने के लिए आपकी परिचालन प्रक्रियाएं क्या हैं?"
+    }
+  },
+  {
+    "id": "menuTableBuilder",
+    "pdfFieldKey": "MenuTableBuilder",
+    "phase": 3,
+    "type": "table-builder",
+    "required": true,
+    "prompts": {
+      "en": "Menu Items & Equipment Details Table",
+      "es": "Tabla de detalles de menú y equipos",
+      "zh": "菜单项与设备详情表",
+      "hi": "मेनू आइटम और उपकरण विवरण तालिका"
+    }
+  },
+  {
+    "id": "checkHandwash",
+    "pdfFieldKey": "CheckHandwash",
+    "phase": 4,
+    "type": "checkbox",
+    "required": true,
+    "prompts": {
+      "en": "1. Hand-wash station set up first: 100°F water container with free flow spigot, catch bucket, liquid soap in pump dispenser, single-use paper towels.",
+      "es": "1. Estación de lavado de manos instalada: agua a 100°F con llave de flujo libre, balde colector, jabón líquido y toallas de papel.",
+      "zh": "1. 率先设置洗手站：100°F 带有自由流水龙头的水容器、收集桶、泵式洗手液、一次性纸巾。",
+      "hi": "1. हाथ धोने का स्टेशन पहले सेट किया गया: 100°F पानी का कंटेनर, बाल्टी, लिक्विड सोप, सिंगल-यूज़ पेपर तौलिए।"
+    }
+  },
+  {
+    "id": "checkUtensilWash",
+    "pdfFieldKey": "CheckUtensilWash",
+    "phase": 4,
+    "type": "checkbox",
+    "required": true,
+    "prompts": {
+      "en": "2. Utensil wash station set up: 1 bucket soapy water (wash), 1 bucket plain water (rinse), 1 bucket bleach & water (sanitize).",
+      "es": "2. Estación de lavado de utensilios instalada: 1 balde con agua jabonosa, 1 balde con agua limpia, 1 balde con cloro y agua.",
+      "zh": "2. 设置餐具清洗站：1个装有肥皂水的桶（清洗）、1个装清水的桶（冲洗）、1个装漂白水溶液的桶（消毒）。",
+      "hi": "2. बर्तन धोने का स्टेशन सेट किया गया: soapy पानी की बाल्टी (धोने के लिए), सादे पानी की बाल्टी (खंगालने के लिए), ब्लीच और पानी की बाल्टी (सैनिटाइज करने के लिए)।"
+    }
+  },
+  {
+    "id": "checkTaskDelegation",
+    "pdfFieldKey": "CheckTaskDelegation",
+    "phase": 4,
+    "type": "checkbox",
+    "required": true,
+    "prompts": {
+      "en": "3. Tasks delegated by person in charge: Prevent cross-contamination, maintain clean prep area, make operational corrections.",
+      "es": "3. Tareas delegadas por el responsable: Prevenir contaminación cruzada, mantener área limpia, hacer correcciones operativas.",
+      "zh": "3. 负责人委派任务：防止交叉污染、保持准备区清洁、根据需要进行运营纠正。",
+      "hi": "3. प्रभारी व्यक्ति द्वारा कार्य सौंपे गए: क्रॉस-संदूषण को रोकना, साफ तैयारी क्षेत्र बनाए रखना, परिचालन सुधार करना।"
+    }
+  },
+  {
+    "id": "checkPrepInside",
+    "pdfFieldKey": "CheckPrepInside",
+    "phase": 4,
+    "type": "checkbox",
+    "required": true,
+    "prompts": {
+      "en": "4. All food preparation is done inside the booth.",
+      "es": "4. Toda la preparación de alimentos se realiza dentro del puesto.",
+      "zh": "4. 所有食物准备工作均在摊位内部进行。",
+      "hi": "4. सभी खाद्य तैयारी बूथ के अंदर की जाती है।"
+    }
+  },
+  {
+    "id": "checkOutdoorCooking",
+    "pdfFieldKey": "CheckOutdoorCooking",
+    "phase": 4,
+    "type": "checkbox",
+    "required": true,
+    "prompts": {
+      "en": "5. All food items cooked outdoors must be served to the customer from inside the booth.",
+      "es": "5. Todos los alimentos cocinados al aire libre deben ser servidos al cliente desde el interior del puesto.",
+      "zh": "5. 在室外烹制的食品必须从摊位内部提供给顾客。",
+      "hi": "5. बाहर पके सभी खाद्य पदार्थ बूथ के अंदर से ग्राहक को परोसे जाने चाहिए।"
+    }
+  },
+  {
+    "id": "checkThermometer",
+    "pdfFieldKey": "CheckThermometer",
+    "phase": 4,
+    "type": "checkbox",
+    "required": true,
+    "prompts": {
+      "en": "6. A thermometer is available in the booth to measure food temperatures.",
+      "es": "6. Hay un termómetro disponible en el puesto para medir la temperatura de los alimentos.",
+      "zh": "6. 摊位内配有温度计以测量食物温度。",
+नेलिश: "6. खाद्य तापमान मापने के लिए बूथ में एक थर्मामीटर उपलब्ध है।"
+    }
+  },
+  {
+    "id": "checkColdHolding",
+    "pdfFieldKey": "CheckColdHolding",
+    "phase": 4,
+    "type": "checkbox",
+    "required": true,
+    "prompts": {
+      "en": "7. All cold foods are well iced and are below 45°F.",
+      "es": "7. Todos los alimentos fríos están bien encongelados/con hielo y por debajo de 45°F.",
+      "zh": "7. 所有冷藏食品均保持冰镇且温度低于 45°F。",
+      "hi": "7. सभी ठंडे खाद्य पदार्थ अच्छी तरह से बर्फ में रखे गए हैं और 45°F से कम हैं।"
+    }
+  },
+  {
+    "id": "checkHotHolding",
+    "pdfFieldKey": "CheckHotHolding",
+    "phase": 4,
+    "type": "checkbox",
+    "required": true,
+    "prompts": {
+      "en": "8. All hot foods are served directly, held at/above 135°F in equipment, or discarded at end of day.",
+      "es": "8. Todos los alimentos calientes se sirven directamente, se mantienen a/sobre 135°F o se desechan al final del día.",
+      "zh": "8. 所有热食均直接供应、在设备中保持在 135°F 或以上，或在一天结束时丢弃。",
+      "hi": "8. सभी गर्म भोजन सीधे परोसे जाते हैं, उपकरण में 135°F या उससे अधिक पर रखे जाते हैं, या दिन के अंत में त्याग दिए जाते हैं।"
+    }
+  },
+  {
+    "id": "checkPermitDisplay",
+    "pdfFieldKey": "CheckPermitDisplay",
+    "phase": 4,
+    "type": "checkbox",
+    "required": true,
+    "prompts": {
+      "en": "9. Health Permit is prominently displayed in public view.",
+      "es": "9. El permiso de salud se muestra de manera destacada a la vista del público.",
+      "zh": "9. 健康许可证醒目地展示在公众视野中。",
+      "hi": "9. स्वास्थ्य परमिट सार्वजनिक रूप से प्रमुखता से प्रदर्शित किया गया है।"
+    }
+  },
+  {
+    "id": "checkTrashContainers",
+    "pdfFieldKey": "CheckTrashContainers",
+    "phase": 4,
+    "type": "checkbox",
+    "required": true,
+    "prompts": {
+      "en": "10. Trash containers are available inside the booth.",
+      "es": "10. Hay contenedores de basura disponibles dentro del puesto.",
+      "zh": "10. 摊位内提供垃圾桶。",
+      "hi": "10. बूथ के अंदर कचरा पात्र उपलब्ध हैं।"
+    }
+  },
+  {
+    "id": "checkCondiments",
+    "pdfFieldKey": "CheckCondiments",
+    "phase": 4,
+    "type": "checkbox",
+    "required": true,
+    "prompts": {
+      "en": "11. Self-service condiments are in containers with hinged lids, squeeze bottles, or individual packets.",
+      "es": "11. Los condimentos de autoservicio están en recipientes con tapa abatible, botellas exprimibles o paquetes individuales.",
+      "zh": "11. 自助调味品采用带铰链盖的容器、挤压瓶或独立小包。",
+      "hi": "11. सेल्फ-सर्विस मसाले ढक्कन वाले कंटेनरों, निचोड़ने वाली बोतलों या व्यक्तिगत पैकेट में हैं।"
+    }
+  },
+  {
+    "id": "checkContaminationProtection",
+    "pdfFieldKey": "CheckContaminationProtection",
+    "phase": 4,
+    "type": "checkbox",
+    "required": true,
+    "prompts": {
+      "en": "12. All open food is protected from coughs/sneezes and all foodservice workers are healthy.",
+      "es": "12. Todos los alimentos abiertos están protegidos contra tos/estornudos y los trabajadores están sanos.",
+      "zh": "12. 所有散装食品免受咳嗽/喷嚏污染，且所有餐饮服务人员身体健康。",
+      "hi": "12. सभी खुले खाद्य पदार्थों को खाँसी/छींक से बचाया जाता है और सभी खाद्य सेवा कार्यकर्ता स्वस्थ हैं।"
+    }
+  },
+  {
+    "id": "checkBoothWalls",
+    "pdfFieldKey": "CheckBoothWalls",
+    "phase": 4,
+    "type": "checkbox",
+    "required": true,
+    "prompts": {
+      "en": "13. All 4 walls of my booth are in place unless all my food is pre-packaged.",
+      "es": "13. Las 4 paredes de mi puesto están instaladas a menos que todo esté preempaquetado.",
+      "zh": "13. 除非所有食物都是预包装的，否则我的摊位所有4面墙都已到位。",
+      "hi": "13. जब तक सारा भोजन पहले से पैक न हो, मेरे बूथ की सभी 4 दीवारें अपनी जगह पर हैं।"
+    }
+  },
+  {
+    "id": "checkUtilityLocations",
+    "pdfFieldKey": "CheckUtilityLocations",
+    "phase": 4,
+    "type": "checkbox",
+    "required": true,
+    "prompts": {
+      "en": "14. I know the location of the on-site clean water supply, grey water disposal, and fry oil disposal sites.",
+      "es": "14. Conozco la ubicación del suministro de agua limpia, eliminación de agua gris y aceite de freír.",
+      "zh": "14. 我知道现场清洁供水、废水处理和炸油处理地点的具体位置。",
+      "hi": "14. मुझे ऑन-साइट स्वच्छ पानी की आपूर्ति, ग्रे वाटर निपटान और तलने के तेल के निपटान स्थलों का पता है।"
+    }
+  },
+  {
+    "id": "commissaryName",
+    "pdfFieldKey": "CommissaryName",
+    "phase": 5,
+    "type": "text",
+    "required": false,
+    "prompts": {
+      "en": "Commissary / Commercial Kitchen Name",
+      "es": "Nombre de la comisaria / cocina comercial",
+      "zh": "中央厨房 / 商业厨房名称",
+      "hi": "कमिसरी / वाणिज्यिक रसोई का नाम"
+    }
+  },
+  {
+    "id": "commissaryOwnerName",
+    "pdfFieldKey": "CommissaryOwnerName",
+    "phase": 5,
+    "type": "text",
+    "required": false,
+    "prompts": {
+      "en": "Commissary Owner / Manager Name",
+      "es": "Nombre del propietario / gerente de la comisaría",
+      "zh": "中央厨房所有者/经理姓名",
+      "hi": "कमिसरी मालिक / प्रबंधक का नाम"
+    }
+  },
+  {
+    "id": "commissaryAddress",
+    "pdfFieldKey": "CommissaryAddress",
+    "phase": 5,
+    "type": "text",
+    "required": false,
+    "prompts": {
+      "en": "Commissary Street Address, City, and Zip Code",
+      "es": "Dirección, ciudad y código postal de la comisaría",
+      "zh": "中央厨房街道地址、城市和邮政编码",
+      "hi": "कमिसरी का पता, शहर और पिन कोड"
+    }
+  },
+  {
+    "id": "commissaryPhones",
+    "pdfFieldKey": "CommissaryPhones",
+    "phase": 5,
+    "type": "text",
+    "required": false,
+    "prompts": {
+      "en": "Commissary Cell Phone # & Alternate Phone #",
+      "es": "Teléfono celular y alternativo de la comisaría",
+      "zh": "中央厨房手机号码及备用电话号码",
+      "hi": "कमिसरी सेल फोन नंबर और वैकल्पिक फोन नंबर"
+    }
+  },
+  {
+    "id": "commissaryServicesList",
+    "pdfFieldKey": "CommissaryServicesList",
+    "phase": 5,
+    "type": "text",
+    "required": false,
+    "prompts": {
+      "en": "List of Services Provided by Commissary (Food prep, warewash, storage, waste disposal, water, etc.)",
+      "es": "Lista de servicios proporcionados por la comisaría (preparación, lavado, almacenamiento, eliminación, agua, etc.)",
+      "zh": "中央厨房提供的服务列表（食品准备、洗涤、仓储、废物处理、供水等）",
+      "hi": "कमिसरी द्वारा प्रदान की जाने वाली सेवाओं की सूची (खाद्य तैयारी, बर्तन धोना, भंडारण, कचरा निपटान, पानी, आदि)"
+    }
+  },
+  {
+    "id": "commissaryNoExplanation",
+    "pdfFieldKey": "CommissaryNoExplanation",
+    "phase": 5,
+    "type": "text",
+    "required": false,
+    "prompts": {
+      "en": "Explanation for any 'NO' answers on commissary services:",
+      "es": "Explicación para cualquier respuesta 'NO' en los servicios de la comisaría:",
+      "zh": "对中央厨房服务中任何“否”回答的解释：",
+      "hi": "कमिसरी सेवाओं पर किसी भी 'नहीं' उत्तर के लिए स्पष्टीकरण:"
+    }
+  },
+  {
+    "id": "commissarySignerName",
+    "pdfFieldKey": "CommissarySignerName",
+    "phase": 5,
+    "type": "text",
+    "required": false,
+    "prompts": {
+      "en": "Print Authorized Signer Name (Commissary)",
+      "es": "Nombre en letra de imprenta del firmante autorizado (Comisaría)",
+      "zh": "打印授权签字人姓名（中央厨房）",
+      "hi": "अधिकृत हस्ताक्षरकर्ता का नाम प्रिंट करें (कमिसरी)"
+    }
+  },
+  {
+    "id": "commissarySignerPhone",
+    "pdfFieldKey": "CommissarySignerPhone",
+    "phase": 5,
+    "type": "text",
+    "required": false,
+    "prompts": {
+      "en": "Authorized Signer Phone",
+      "es": "Teléfono del firmante autorizado",
+      "zh": "授权签字人电话",
+      "hi": "अधिकृत हस्ताक्षरकर्ता फोन"
+    }
+  },
+  {
+    "id": "commissarySignerDate",
+    "pdfFieldKey": "CommissarySignerDate",
+    "phase": 5,
+    "type": "date",
+    "required": false,
+    "prompts": {
+      "en": "Commissary Agreement Date",
+      "es": "Fecha del acuerdo de comisaría",
+      "zh": "中央厨房协议日期",
+      "hi": "कमिसरी समझौते की तिथि"
+    }
+  },
+  {
+    "id": "outOfCountyInfo",
+    "pdfFieldKey": "OutOfCountyInfo",
+    "phase": 5,
+    "type": "text",
+    "required": false,
+    "prompts": {
+      "en": "Outside County / Berkeley Verification (If applicable: Establishment City/County, Out-of-County REHS Name, Phone, Email)",
+      "es": "Verificación fuera del condado / Berkeley (Si aplica: Ciudad/Condado, Nombre REHS, Teléfono, Correo)",
+      "zh": "外县/伯克利验证（如适用：机构城市/县、外县 REHS 姓名、电话、电子邮件）",
+      "hi": "बाहरी काउंटी / बर्कले सत्यापन (यदि लागू हो: स्थापना शहर/काउंटी, आरईएचएस नाम, फोन, ईमेल)"
     }
   },
   {
     "id": "printName",
-    "pdfFieldKey": "print name",
+    "pdfFieldKey": "PrintName",
+    "phase": 6,
     "type": "text",
-    "category": "signoff",
     "required": true,
     "prompts": {
-      "en": "What is your printed full name as the applicant?",
-      "es": "¿Cuál es su nombre completo impreso como solicitante?",
-      "zh": "作为申请人，您的打印全名是什么？",
-      "hi": "आवेदक के रूप में आपका मुद्रित पूरा नाम क्या है?"
+      "en": "Print Name (Applicant Acknowledgment & Signature)",
+      "es": "Nombre en letra de imprenta (Reconocimiento y firma del solicitante)",
+      "zh": "打印姓名（申请人确认与签名）",
+      "hi": "नाम प्रिंट करें (आवेदक पावती और हस्ताक्षर)"
     }
   },
   {
-    "id": "phoneNumber",
-    "pdfFieldKey": "phone number",
-    "type": "text",
-    "category": "signoff",
-    "required": true,
-    "prompts": {
-      "en": "What is your direct phone number for application follow-up?",
-      "es": "¿Cuál es su número de teléfono directo para el seguimiento de la solicitud?",
-      "zh": "用于申请后续跟进的直接电话号码是多少？",
-      "hi": "आवेदन फॉलो-अप के लिए आपका सीधा फोन नंबर क्या है?"
-    }
-  },
-  {
-    "id": "todaysDate",
-    "pdfFieldKey": "today's date",
+    "id": "applicantSignatureDate",
+    "pdfFieldKey": "ApplicantSignatureDate",
+    "phase": 6,
     "type": "date",
-    "category": "signoff",
     "required": true,
     "prompts": {
-      "en": "What is today's date?",
-      "es": "¿Cuál es la fecha de hoy?",
-      "zh": "今天的日期是什么？",
-      "hi": "आज की तारीख क्या है?"
+      "en": "Signature Date",
+      "es": "Fecha de firma",
+      "zh": "签署日期",
+      "hi": "हस्ताक्षर की तिथि"
+    }
+  },
+  {
+    "id": "quizBoothName",
+    "pdfFieldKey": "QuizBoothName",
+    "phase": 7,
+    "type": "text",
+    "required": false,
+    "prompts": {
+      "en": "Food Safety Quiz - Booth Name",
+      "es": "Cuestionario de seguridad alimentaria - Nombre del puesto",
+      "zh": "食品安全测验 - 摊位名称",
+      "hi": "खाद्य सुरक्षा प्रश्नोत्तरी - बूथ का नाम"
+    }
+  },
+  {
+    "id": "quizEventInfo",
+    "pdfFieldKey": "QuizEventInfo",
+    "phase": 7,
+    "type": "text",
+    "required": false,
+    "prompts": {
+      "en": "Food Safety Quiz - Event Name and Date(s)",
+      "es": "Cuestionario de seguridad alimentaria - Nombre y fecha(s) del evento",
+      "zh": "食品安全测验 - 活动名称及日期",
+      "hi": "खाद्य सुरक्षा प्रश्नोत्तरी - कार्यक्रम का नाम और तिथि"
     }
   }
 ]
