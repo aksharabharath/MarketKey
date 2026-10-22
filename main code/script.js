@@ -349,7 +349,7 @@ async function generateCountyPDF() {
     try {
         const { PDFDocument } = await import('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.esm.js');
 
-        const formUrl = '/assets/tff-application.pdf';  
+        const formUrl = './assets/tff-application.pdf';
         const response = await fetch(formUrl);
 
         if (!response.ok) {
