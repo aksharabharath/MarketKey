@@ -160,6 +160,7 @@ if (canvas && clearBtn) {
     canvas.addEventListener("pointermove", e => {
         if (!painting) return;
 
+        signatureHasDrawn = true;
         const pos = getPosition(e);
         context.lineTo(pos.x, pos.y);
         context.stroke();
