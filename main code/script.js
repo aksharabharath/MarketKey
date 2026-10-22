@@ -254,6 +254,45 @@ function saveLanguage(langCode) {
     updatePageText();
 }
 // 5. PDF and review functions
+function formatKeyToLabel(key) {
+    const text = String(key)
+        .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+        .replace(/[_-]+/g, " ")
+        .trim();
+    const knownWords = [
+        "contamination", "protection", "containers", "thermometer",
+        "delegation", "disposal", "transport", "sanitation", "reusable",
+        "business", "sponsor", "contact", "original", "package", "generator",
+        "sampling", "details", "outdoor", "cooking", "condiments", "utility",
+        "locations", "hand", "wash", "utensil", "task", "prep", "inside",
+        "cold", "holding", "permit", "trash", "booth", "walls", "hot",
+        "water", "source", "waste", "customer", "commissary", "services",
+        "explanation", "signer", "applicant", "signature", "number", "name",
+        "event", "address", "phone", "email", "owner", "date", "print",
+        "check", "quiz"
+    ];
+    const words = text === text.toUpperCase()
+        ? (() => {
+            const result = [];
+            let remaining = text.toLowerCase();
+            while (remaining) {
+                const word = knownWords.find(candidate => remaining.startsWith(candidate));
+                if (!word) {
+                    result.push(remaining);
+                    break;
+                }
+                result.push(word);
+                remaining = remaining.slice(word.length);
+            }
+            return result;
+        })()
+        : text.split(/\s+/);
+
+    return words
+        .join(" ")
+        .replace(/\b\w/g, letter => letter.toUpperCase());
+}
+
 function renderReviewScreen() {
     const reviewContainer = document.getElementById('reviewContent');
     if (!reviewContainer) return;
@@ -264,7 +303,7 @@ function renderReviewScreen() {
         const card = document.createElement('div');
         card.className = 'review-card';
         card.innerHTML = `
-            <span class="review-label">${key}</span>
+            <span class="review-label">${formatKeyToLabel(key)}</span>
             <span class="review-value">${value ? value : 'Not answered'}</span>
         `;
         reviewContainer.appendChild(card);
