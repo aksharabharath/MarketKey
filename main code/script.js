@@ -8,150 +8,92 @@ const appState = {
     formData: {}
 };
 
+const get = id => document.getElementById(id);
+const listen = (id, event, handler) => get(id)?.addEventListener(event, handler);
+
+function resetApp() {
+    appState.formData = {};
+    appState.path = null;
+    appState.skipCommissary = false;
+    showScreen('screen1');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     showScreen('screen1');
     updateStepTracker(1);
     loadQuestionnaire();
     prefillAutoDates();
-    
-    const headerControls = document.getElementById('headerControls');
-    if (headerControls) {
-        headerControls.style.display = 'none';
-    }
-    const downloadBtn = document.getElementById('downloadPdfBtn');
-    if (downloadBtn) {
-        downloadBtn.addEventListener('click', downloadAndWipe);
-    }
+    if (get('headerControls')) get('headerControls').style.display = 'none';
 
-    const startOverBtn = document.getElementById('startOverBtn');
-    if (startOverBtn) {
-        startOverBtn.addEventListener('click', () => {
-            if (confirm("Are you sure you want to start over? All entered data will be cleared.")) {
-                appState.formData = {};
-                appState.path = null;
-                appState.skipCommissary = false;
-                showScreen('screen1');
-            }
-        });
-    }
+    listen('downloadPdfBtn', 'click', downloadAndWipe);
+    listen('startOverBtn', 'click', () => {
+        if (confirm('Are you sure you want to start over? All entered data will be cleared.')) resetApp();
+    });
+    listen('startNewAppBtn', 'click', resetApp);
+    listen('revBackBtn', 'click', () => showScreen('screen3'));
 
-    const qBackBtn = document.getElementById('qBackBtn');
-    if (qBackBtn) {
-        qBackBtn.addEventListener('click', () => {
-            if (appState.currentFormPage === 3 && appState.skipCommissary) {
-                showFormPage(1);
-                return;
-            }
-            if (appState.currentFormPage > 1) {
-                showFormPage(appState.currentFormPage - 1);
-            } else {
-                showScreen('screen2');
-            }
-        });
-    }
-
-    const revBackBtn = document.getElementById('revBackBtn');
-    if (revBackBtn) {
-        revBackBtn.addEventListener('click', () => showScreen('screen3'));
-    }
-
-    const startNewAppBtn = document.getElementById('startNewAppBtn');
-    if (startNewAppBtn) {
-        startNewAppBtn.addEventListener('click', () => {
-            appState.formData = {};
-            appState.path = null;
-            appState.skipCommissary = false;
-            showScreen('screen1');
-        });
-    }
+    listen('qBackBtn', 'click', () => {
+        if (appState.currentFormPage === 3 && appState.skipCommissary) {
+            showFormPage(1);
+        } else if (appState.currentFormPage > 1) {
+            showFormPage(appState.currentFormPage - 1);
+        } else {
+            showScreen('screen2');
+        }
+    });
 
     document.querySelectorAll('.lang-switcher span').forEach(span => {
-        span.addEventListener('click', (e) => {
-            const selectedLang = e.currentTarget.getAttribute('data-lang');
-            saveLanguage(selectedLang);
+        span.addEventListener('click', () => saveLanguage(span.dataset.lang));
+    });
+    document.querySelectorAll('.languageButtons button').forEach(button => {
+        button.addEventListener('click', () => {
+            document.querySelectorAll('.languageButtons button')
+                .forEach(item => item.classList.toggle('active', item === button));
+            saveLanguage(button.dataset.lang);
         });
     });
-    
-    document.querySelectorAll('.languageButtons button').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            // Remove active class from all buttons
-            document.querySelectorAll('.languageButtons button').forEach(b => b.classList.remove('active'));
-            // Add active class to the clicked button
-            e.currentTarget.classList.add('active');
 
-            const selectedLang = e.currentTarget.getAttribute('data-lang');
-            saveLanguage(selectedLang);
+    document.querySelectorAll('.next-btn').forEach(button => {
+        button.addEventListener('click', event => {
+            if (button.id === 'pSubmitBtn' || button.id === 'qSubmitBtn') return;
+            const next = button.closest('.screen')?.nextElementSibling;
+            if (next?.classList.contains('screen')) showScreen(next.id);
         });
     });
-  
 
-    const nextButtons = document.querySelectorAll(".next-btn");
-    nextButtons.forEach(function(button) {
-        button.addEventListener("click", function(e) {
-            if (button.id === "pSubmitBtn" || button.id === "qSubmitBtn") return; 
+    listen('qSubmitBtn', 'click', event => {
+        event.preventDefault();
+        if (!validateForm()) return;
 
-            const currentScreen = button.closest(".screen");
-            const nextScreen = currentScreen.nextElementSibling;
-
-            if (nextScreen && nextScreen.classList.contains("screen")) {
-                showScreen(nextScreen.id);
-            }
-        });
-    });   
-    
-    const qSubmitBtn = document.getElementById("qSubmitBtn");
-    if (qSubmitBtn) {
-        qSubmitBtn.addEventListener("click", function(e) {
-            e.preventDefault();
-            if (!validateForm()) return;
-
-            if (appState.currentFormPage === 1) {
-                const kitchenAnswer = document.getElementById('originalPackageCheck')?.value;
-                appState.skipCommissary = kitchenAnswer === 'No';
-                showFormPage(appState.skipCommissary ? 3 : 2);
-            } else if (appState.currentFormPage < 3) {
-                showFormPage(appState.currentFormPage + 1);
-            } else {
-                renderReviewScreen();
-                showScreen("screen4");
-            }
-        });
-    }
-    
-    const tffBtn = document.getElementById('tffPathBtn');
-        if (tffBtn) {
-            tffBtn.addEventListener('click', () => {
-                appState.path = 'tff';
-                appState.skipCommissary = false;
-                showFormPage(1);
-                const today = new Date().toISOString().split('T')[0];
-                appState.formData['todaysDate'] = today;
-                
-                showScreen('screen3');
-                loadQuestionnaire(); 
-            });
+        if (appState.currentFormPage === 1) {
+            appState.skipCommissary = get('originalPackageCheck')?.value === 'No';
+            showFormPage(appState.skipCommissary ? 3 : 2);
+        } else if (appState.currentFormPage < 3) {
+            showFormPage(appState.currentFormPage + 1);
+        } else {
+            renderReviewScreen();
+            showScreen('screen4');
         }
+    });
 
-    const agBtn = document.getElementById('agPathBtn');
-    if (agBtn) {
-        agBtn.addEventListener('click', () => {
-            appState.path = 'ag';
-            const pathCards = document.querySelector('.path-cards');
-            const agGuidance = document.getElementById('agGuidanceView');
-            if (pathCards) pathCards.style.display = 'none';
-            if (agGuidance) agGuidance.style.display = 'block';
-        });
-    }
+    listen('tffPathBtn', 'click', () => {
+        appState.path = 'tff';
+        appState.skipCommissary = false;
+        appState.formData.todaysDate = new Date().toISOString().split('T')[0];
+        showFormPage(1);
+        showScreen('screen3');
+        loadQuestionnaire();
+    });
 
-    const agBackBtn = document.getElementById('agBackBtn');
-    if (agBackBtn) {
-        agBackBtn.addEventListener('click', () => {
-            const pathCards = document.querySelector('.path-cards');
-            const agGuidance = document.getElementById('agGuidanceView');
-            if (pathCards) pathCards.style.display = 'flex';
-            if (agGuidance) agGuidance.style.display = 'none';
-        });
-    }
+    listen('agPathBtn', 'click', () => {
+        appState.path = 'ag';
+        document.querySelector('.path-cards').style.display = 'none';
+        get('agGuidanceView').style.display = 'block';
+    });
+    listen('agBackBtn', 'click', () => {
+        document.querySelector('.path-cards').style.display = 'flex';
+        get('agGuidanceView').style.display = 'none';
+    });
 });
 //------------------- (insert #2-4), check MarketKey/docs/handoff_notes.md for reference if need clarification
 
