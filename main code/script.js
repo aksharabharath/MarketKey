@@ -7,14 +7,35 @@ const appState = {
     path: null,
     formData: {}
 };
+let signatureHasDrawn = false;
 
 const get = id => document.getElementById(id);
 const listen = (id, event, handler) => get(id)?.addEventListener(event, handler);
+
+function clearSignatureCanvas() {
+    const canvas = get("signature-pad");
+    const context = canvas?.getContext("2d");
+    if (canvas && context) context.clearRect(0, 0, canvas.width, canvas.height);
+    signatureHasDrawn = false;
+}
+
+function restoreSignatureCanvas() {
+    const signature = appState.formData.applicantSignature;
+    const canvas = get("signature-pad");
+    const context = canvas?.getContext("2d");
+    if (!signature || !canvas || !context) return;
+
+    const image = new Image();
+    image.onload = () => context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    image.src = signature;
+    signatureHasDrawn = true;
+}
 
 function resetApp() {
     appState.formData = {};
     appState.path = null;
     appState.skipCommissary = false;
+    clearSignatureCanvas();
     showScreen('screen1');
 }
 
@@ -30,7 +51,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (confirm('Are you sure you want to start over? All entered data will be cleared.')) resetApp();
     });
     listen('startNewAppBtn', 'click', resetApp);
-    listen('revBackBtn', 'click', () => showScreen('screen3'));
+    listen('revBackBtn', 'click', () => {
+        showScreen('screen3');
+        restoreSignatureCanvas();
+    });
 
     listen('qBackBtn', 'click', () => {
         if (appState.currentFormPage === 3 && appState.skipCommissary) {
@@ -77,8 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     appState.formData.applicantSignature =
                     canvas.toDataURL("image/png");
 
-                    canvas.getContext("2d").clearRect(
-                            0, 0, canvas.width, canvas.height);
+                    clearSignatureCanvas();
                             }
                     renderReviewScreen();
                     showScreen('screen4');
@@ -126,6 +149,7 @@ if (canvas && clearBtn) {
 
     canvas.addEventListener("pointerdown", e => {
         painting = true;
+        signatureHasDrawn = true;
         canvas.setPointerCapture(e.pointerId);
 
         const pos = getPosition(e);
@@ -152,7 +176,7 @@ if (canvas && clearBtn) {
     canvas.addEventListener("pointercancel", stopPainting);
 
     clearBtn.addEventListener("click", () => {
-        context.clearRect(0, 0, canvas.width, canvas.height);
+        clearSignatureCanvas();
         delete appState.formData.applicantSignature;
     });
 }
@@ -751,7 +775,8 @@ async function generateCountyPDF() {
 
         const signature = data.applicantSignature || data.ApplicantSignature;
         if (signature && signature.startsWith("data:image/png;base64,")) {
-            const signatureField = fieldsByExactName.get("Applicant Signature");             const widget = signatureField?.acroField.getWidgets()[0];
+            const signatureField = fieldsByExactName.get("Applicant Signature");
+             const widget = signatureField?.acroField.getWidgets()[0];
 
             if (widget) {
                 const pageRef = widget.P();
@@ -1236,6 +1261,15 @@ function prefillAutoDates() {
 function validateForm() {
     const page = document.getElementById(`formPage${appState.currentFormPage}`);
     if (!page) return false;
+    const validationAlert = document.getElementById("validationAlert");
+    if (appState.currentFormPage === 3 && !signatureHasDrawn) {
+        if (validationAlert) {
+            validationAlert.textContent = "Please draw your signature before continuing.";
+            validationAlert.style.setProperty("display", "block", "important");
+        }
+        get("signature-pad")?.focus();
+        return false;
+    }
 
     const requiredInputs = Array.from(
         page.querySelectorAll('input[required], select[required], textarea[required]')
@@ -1248,8 +1282,6 @@ function validateForm() {
         if (input.type === "checkbox") return !input.checked;
         return !input.value.trim();
     });
-    const validationAlert = document.getElementById("validationAlert");
-
     if (unanswered.length > 0) {
         if (validationAlert) {
             validationAlert.style.setProperty("display", "block", "important");
