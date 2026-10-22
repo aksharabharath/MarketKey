@@ -360,6 +360,7 @@ const pdfFieldAliases = {
     reusableUtensils: "WILL YOU OR SPONSOR PROVIDE RESUABLE PLATEWARE ETC?",
     customerContainers: "WHAT ARE YOUR OPERATING PROCEDURES FOR ACCEPTING CUSTOMER OWNED RE USEABLE CONTAINERS SUCH AS CUPS MUGS PLATES ETC HOW WILL YOU ENSURE THE CONTAINERS WILL NOT CREATE A CONTAMINATION ISSUE INSIDE YOUR BOOTH OR WITH YOUR EMPLOYEES TFF OPERATORS ARE NOT ALLOWED TO PROVIDE MULTI USE UTENSILS FOR CUSTOMERS WITH OUT DEPARTMENT APPROVAL",
     printName: "Print Name",
+    applicantName: "Print Name",
     applicantSignatureDate: "Date",
     quizBoothName: "booth name",
     quizEventInfo: "Event Name and Dates",
@@ -420,9 +421,54 @@ function collectFormData() {
     return data;
 }
 
+function checkQuizAnswers(data, fieldsByExactName, fieldsByName) {
+    Object.keys(data).filter(key => /^quiz\d+$/.test(key)).forEach(key => {
+        const select = document.getElementById(key);
+        const optionIndex = select?.selectedIndex - 1;
+        if (optionIndex < 0) return;
+
+        const number = key.slice(4);
+        const letter = String.fromCharCode(97 + optionIndex);
+        const candidates = [
+            `Quiz${number}${letter}`, `Quiz ${number} ${letter}`,
+            `${number}${letter}`, `${number} ${letter}`, `${number}.${letter}`
+        ];
+        const field = candidates
+            .map(name => fieldsByExactName.get(name) || fieldsByName.get(normalizePdfFieldName(name)))
+            .find(item => item && typeof item.check === "function");
+        if (field) {
+            try {
+                field.check();
+            } catch (error) {
+                console.warn(`Could not check quiz field ${key}: ${error.message}`);
+            }
+        }
+    });
+}
+
+function writePdfField(field, value, name) {
+    try {
+        if (typeof field.select === "function") {
+            field.select(String(value));
+        } else if (typeof field.check === "function") {
+            if (value === true || value === "true" || value === "Yes") field.check();
+        } else if (typeof field.setText === "function") {
+            try {
+                if (typeof field.setFontSize === "function") field.setFontSize(9);
+            } catch {
+                // Legacy fields without /DA retain their existing appearance.
+            }
+            field.setText(String(value));
+        }
+    } catch (error) {
+        console.warn(`Could not fill PDF field ${name}: ${error.message}`);
+    }
+}
+
 async function generateCountyPDF() {
     try {
-        const { PDFDocument } = await import('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.esm.js');
+        const { PDFDocument, StandardFonts, rgb } =
+            await import('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.esm.js');
 
         const formUrl = './assets/tff-application.pdf';
         const response = await fetch(formUrl);
@@ -478,16 +524,65 @@ async function generateCountyPDF() {
             }
         }
 
+        fieldValues.set(
+            "booth name",
+            data.boothName || data.BoothName || data.quizBoothName || ""
+        );
+        fieldValues.set(
+            "Event Name and Dates",
+            `${data.eventName || data.EventName || ""} ` +
+            `${data.startDate || data.StartDate || ""} - ` +
+            `${data.endDate || data.EndDate || ""}`.trim()
+        );
+        fieldValues.set(
+            "Print Name",
+            data.applicantName || data.PrintName || data.printName || ""
+        );
+        Object.entries({
+            "1": "checkHandwashInitials",
+            "2": "checkUtensilWashInitials",
+            "3": "checkTaskDelegationInitials",
+            "4": "checkPrepInsideInitials",
+            "5": "checkOutdoorCookingInitials",
+            "6": "checkThermometerInitials",
+            "7": "checkColdHoldingInitials",
+            "8": "checkHotHoldingInitials",
+            "9": "checkPermitDisplayInitials",
+            "10": "checkTrashContainersInitials",
+            "11": "checkCondimentsInitials",
+            "12": "checkContaminationProtectionInitials",
+            "13 1": "checkBoothWallsInitials",
+            "13 2": "checkUtilityLocationsInitials"
+        }).forEach(([pdfName, key]) => {
+            if (data[key] !== undefined) fieldValues.set(pdfName, String(data[key]));
+        });
+
         for (const [fieldName, value] of fieldValues) {
             const field = fieldsByExactName.get(fieldName) ||
                 fieldsByName.get(normalizePdfFieldName(fieldName));
             if (!field || value === "" || value === null || value === undefined) continue;
-            if (typeof field.select === "function") {
-                field.select(String(value));
-            } else if (typeof field.check === "function") {
-                if (value === true || value === "true" || value === "Yes") field.check();
-            } else if (typeof field.setText === "function") {
-                field.setText(String(value));
+            writePdfField(field, value, fieldName);
+        }
+        checkQuizAnswers(data, fieldsByExactName, fieldsByName);
+
+        const signature = data.applicantSignature || data.ApplicantSignature;
+        if (signature) {
+            const signatureField = fieldsByExactName.get("Applicant Signature");
+            const widget = signatureField?.acroField.getWidgets()[0];
+            if (widget) {
+                const pageRef = widget.P();
+                const page = pdfDoc.getPages().find(item => item.ref === pageRef) ||
+                    pdfDoc.getPages()[5];
+                const rect = widget.getRectangle();
+                const font = await pdfDoc.embedFont(StandardFonts.HelveticaOblique);
+                page.drawText(String(signature), {
+                    x: rect.x + 2,
+                    y: rect.y + 5,
+                    size: 9,
+                    font,
+                    color: rgb(0, 0, 0),
+                    maxWidth: rect.width - 4
+                });
             }
         }
 
@@ -933,12 +1028,40 @@ function finishTestPage(page) {
     updateLiveCounter();
 }
 
-// used codex to write this part
-//
 function fillPage1() {
     return whenQuestionsReady(() => {
         const { startDate, endDate } = testDates();
         appState.skipCommissary = false;
+        const values = {
+            ownerName: 'Alex Rivera',
+            sponsorApproval: 'Yes',
+            businessName: 'Rivera Fresh Foods',
+            numberOfBooths: '2',
+            indoorOutdoor: 'Outdoor',
+            boothName: 'Rivera Fresh Foods',
+            emailAddress: 'alex.rivera@example.com',
+            businessAddress: '123 Market Street, Fremont, CA 94538',
+            mailingAddress: '123 Market Street, Fremont, CA 94538',
+            phoneNumbers: '510-555-0142',
+            eventName: 'Fremont Sunday Market',
+            eventAddress: '400 Capitol Avenue, Fremont, CA',
+            startDate,
+            endDate,
+            startTime: '9:00 AM',
+            endTime: '3:00 PM',
+            eventSponsorName: 'Fremont Market Association',
+            sponsorContactPhone: '510-555-0198',
+            sponsorEmail: 'events@fremontmarket.example',
+            originalPackageCheck: 'Yes',
+            generatorInfo: 'Honda EU2200i, 1800 watts',
+            samplingDetails: 'Fruit samples served in single-use cups',
+            waterSource: 'Event-provided potable water station',
+            wasteDisposal: 'Event grey-water tank and refuse bins',
+            boothEnclosure: 'Four walls, overhead cover, and pass-through window',
+            transportSanitation: 'Covered, sanitized containers in a clean vehicle',
+            reusableUtensils: 'No reusable utensils',
+            customerContainers: 'Customer containers stay separate from food and staff equipment'
+        };
         questionnaireQuestions
             .filter(question => question.phase <= 3 && question.id !== 'faNumber')
             .forEach(question => {
@@ -950,14 +1073,13 @@ function fillPage1() {
                         ? 'Yes'
                         : input?.options[1]?.value || '');
                 } else if (question.type !== 'table-builder') {
-                    setTestField(input, `Test ${question.id}`);
+                    setTestField(input, values[question.id] || 'Sample response');
                 }
             });
 
-
         setTestField(get('applicationDate'), startDate);
         const fields = get('menuTableBuilderTable')?.querySelectorAll('tbody input') || [];
-        ['Test Tacos', 'Fresh ingredients', 'Commercial kitchen', 'Griddle']
+        ['Chicken tacos', 'Fresh produce and tortillas', 'Commercial kitchen', 'Flat-top griddle']
             .forEach((value, index) => setTestField(fields[index], value));
         finishTestPage(1);
     });
@@ -990,6 +1112,7 @@ function fillPage3() {
         });
         document.querySelectorAll('[id$="Initials"]').forEach(input => setTestField(input, 'TS'));
         setTestField(get('applicantPhone'), '510-555-0142');
+        setTestField(get('applicantSignature'), 'Alex Rivera');
         finishTestPage(3);
     });
 }
