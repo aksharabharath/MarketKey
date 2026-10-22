@@ -173,12 +173,14 @@ function updateStepTracker(currentStep) {
 
 function showFormPage(pageNumber) {
     document.querySelectorAll('[id^="formPage"]').forEach(page => {
+        page.classList.add('hidden');
         page.style.display = 'none';
     });
 
     const page = document.getElementById(`formPage${pageNumber}`);
     if (!page) return;
 
+    page.classList.remove('hidden');
     page.style.display = 'block';
     appState.currentFormPage = pageNumber;
 }
