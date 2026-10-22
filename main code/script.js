@@ -624,8 +624,24 @@ async function generateCountyPDF() {
         );
         fieldValues.set(
             "Print Name",
-            data.applicantName || data.PrintName || data.printName || ""
+            data.ownerName || data.OwnerName || data.applicantName ||
+            data.PrintName || data.printName || ""
         );
+        let handwashItems = ["quiz17a", "quiz17b", "quiz17c", "quiz17d"]
+            .map(key => data[key])
+            .filter(Boolean)
+            .map(String);
+        if (!handwashItems.length && data.quiz17) {
+            try {
+                const parsed = JSON.parse(data.quiz17);
+                handwashItems = Array.isArray(parsed) ? parsed.map(String) : [];
+            } catch {
+                handwashItems = String(data.quiz17).split(/\r?\n|[•;]/);
+            }
+        }
+        handwashItems.slice(0, 4).forEach((item, index) => {
+            fieldValues.set(["one", "two", "three", "four"][index], item.trim());
+        });
         Object.entries({
             "1": "checkHandwashInitials",
             "2": "checkUtensilWashInitials",
