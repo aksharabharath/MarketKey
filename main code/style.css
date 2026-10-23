@@ -130,11 +130,11 @@
     background-color: #b95018;
 }
 
-body, #view-app { background-color: #faf5ee; background-image: none; }
-.view-landing { min-height: calc(100vh - 77px); padding: clamp(80px, 14vh, 150px) 5%; background-color: #faf5ee; background-image: none; color: #713515; text-align: center; }
-.landing-eyebrow { color: #b55d22; font: 600 0.85rem 'League Spartan', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
-.landing-title { max-width: 720px; margin: 16px auto; color: #d9641f; font: 700 clamp(2.4rem, 6vw, 4.5rem) 'League Spartan', sans-serif; line-height: 1.05; }
-.landing-subtitle { max-width: 620px; margin: 0 auto 32px; color: #8b6248; font-size: 1.1rem; line-height: 1.6; }
-.landing-cta { padding: 15px 30px; border: 0; border-radius: 10px; background: #d9641f; color: #fff8ed; font: 700 1.1rem 'League Spartan', sans-serif; cursor: pointer; box-shadow: 0 8px 18px rgba(113, 53, 21, 0.16); transition: background-color 160ms ease, transform 160ms ease, box-shadow 160ms ease; }
+body, #view-app { background-color: #faf5ee; background-image: none; color: #d9641f; }
+.view-landing { min-height: calc(100vh - 77px); padding: clamp(80px, 14vh, 150px) 5%; background-color: #faf5ee; background-image: none; color: #d9641f; text-align: center; font-family: inherit; }
+.landing-eyebrow { color: #d9641f; font-size: 0.875rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.9; }
+.landing-title { max-width: 720px; margin: 16px auto; color: #d9641f; font-size: clamp(2.25rem, 6vw, 3.5rem); font-weight: 400; line-height: 1.05; }
+.landing-subtitle { max-width: 620px; margin: 0 auto 32px; color: #d9641f; font-size: 1rem; line-height: 1.5; opacity: 0.9; }
+.landing-cta { padding: 12px 28px; border: 0; border-radius: 8px; background: #d9641f; color: #fdcb7b; font-size: 1.125rem; font-weight: 700; cursor: pointer; box-shadow: 0 8px 18px rgba(113, 53, 21, 0.16); transition: background-color 160ms ease, transform 160ms ease, box-shadow 160ms ease; }
 .landing-cta:hover, .landing-cta:focus-visible { background-color: #b95018; box-shadow: 0 12px 24px rgba(113, 53, 21, 0.22); transform: translateY(-2px); }
 .landing-cta:focus-visible { outline: 3px solid #fdcb7b; outline-offset: 3px; }
