@@ -964,7 +964,87 @@ function updatePageText() {
     const lang = appState.lang;
     const t = uiTranslations[lang];
     if (!t) return;
+        const headings = {
+        en: {
+            tagline: "Your food business starts here.",
+            subtitle: "Find the permits you need to sell food in Alameda County. We'll guide you through the requirements, step by step.",
+            language: "Choose your language",
+            next: "Next",
+            application: "Temporary Food Facility Application",
+            commissary: "Commercial Kitchen / Commissary Agreement",
+            quiz: "Food Safety Quiz",
+            quizDescription: "Complete the official Alameda County food safety quiz.",
+            checklist: "Self-Inspection Checklist",
+            signatures: "Final Signatures / Contact Info"
+        },
+        es: {
+            tagline: "Su negocio de comida comienza aquí.",
+            subtitle: "Encuentre los permisos que necesita para vender alimentos en el condado de Alameda. Le guiaremos paso a paso.",
+            language: "Elija su idioma",
+            next: "Siguiente",
+            application: "Solicitud para una instalación temporal de alimentos",
+            commissary: "Acuerdo de cocina comercial / comisariato",
+            quiz: "Cuestionario de seguridad alimentaria",
+            quizDescription: "Complete el cuestionario oficial de seguridad alimentaria del condado de Alameda.",
+            checklist: "Lista de autoinspección",
+            signatures: "Firmas finales / Información de contacto"
+        },
+        zh: {
+            tagline: "您的食品生意从这里开始。",
+            subtitle: "了解在阿拉米达县销售食品所需的许可证。我们将逐步指导您完成各项要求。",
+            language: "请选择您的语言",
+            next: "下一步",
+            application: "临时食品设施申请",
+            commissary: "商业厨房／中央厨房协议",
+            quiz: "食品安全测验",
+            quizDescription: "请完成阿拉米达县官方食品安全测验。",
+            checklist: "自查清单",
+            signatures: "最终签名／联系信息"
+        },
+        hi: {
+            tagline: "आपका खाद्य व्यवसाय यहाँ से शुरू होता है।",
+            subtitle: "अलामेडा काउंटी में खाद्य पदार्थ बेचने के लिए आवश्यक परमिट जानें। हम हर चरण में आपका मार्गदर्शन करेंगे।",
+            language: "अपनी भाषा चुनें",
+            next: "अगला",
+            application: "अस्थायी खाद्य सुविधा आवेदन",
+            commissary: "व्यावसायिक रसोई / कमिसरी समझौता",
+            quiz: "खाद्य सुरक्षा प्रश्नोत्तरी",
+            quizDescription: "अलामेडा काउंटी की आधिकारिक खाद्य सुरक्षा प्रश्नोत्तरी पूरी करें।",
+            checklist: "स्व-निरीक्षण सूची",
+            signatures: "अंतिम हस्ताक्षर / संपर्क जानकारी"
+        }
+    };
 
+    const headingText = headings[lang] || headings.en;
+
+    const headingElements = {
+        "#screen1 .tagline": headingText.tagline,
+        "#screen1 .hero-subtitle": headingText.subtitle,
+        "#languageHeading": headingText.language,
+        "#langNextBtn": headingText.next,
+        "#formPage1 h2": headingText.application,
+        "#formPage2 h2": headingText.commissary,
+        "#formPage3 h2": headingText.quiz,
+        "#formPage3 > p": headingText.quizDescription
+    };
+
+    Object.entries(headingElements).forEach(function([selector, text]) {
+        const element = document.querySelector(selector);
+
+        if (element) {
+            element.textContent = text;
+        }
+    });
+
+    const sectionHeadings = document.querySelectorAll("#formPage3 h3");
+
+    if (sectionHeadings[0]) {
+        sectionHeadings[0].textContent = headingText.checklist;
+    }
+
+    if (sectionHeadings[1]) {
+        sectionHeadings[1].textContent = headingText.signatures;
+    }
     const startOver = document.getElementById("startOverBtn");
     if (startOver) startOver.textContent = t.startOver;
     document.querySelectorAll(".step-tracker .step-dot span").forEach((label, index) => {
