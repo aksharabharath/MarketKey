@@ -1231,13 +1231,13 @@ function updatePageText() {
     const answersBanner = document.querySelector("#formPage1 .triage-desc");
     if (answersBanner) answersBanner.textContent = t.answersEnglish;
 
-    const sectionHeadings = document.querySelectorAll("#formPage3 .form-section-card h3");
-    if (sectionHeadings[0]) {
-        sectionHeadings[0].textContent = t.checklistTitle;
-        const description = sectionHeadings[0].parentElement.querySelector("p");
+    const signatureSections = document.querySelectorAll("#formPage3 .form-section-card h3");
+    if (signatureSections[0]) {
+        signatureSections[0].textContent = t.checklistTitle;
+        const description = signatureSections[0].parentElement.querySelector("p");
         if (description) description.textContent = t.checklistDescription;
     }
-    if (sectionHeadings[1]) sectionHeadings[1].textContent = t.signatureTitle;
+    if (signatureSections[1]) signatureSections[1].textContent = t.signatureTitle;
     const setText = (selector, text) => {
         const element = document.querySelector(selector);
         if (element) element.textContent = text;
