@@ -297,6 +297,7 @@ function saveLanguage(langCode) {
         headerControls.style.display = "flex";
     }
 
+    updateLandingPageText();
     renderQuestionnaire();
     updatePageText();
 }
@@ -866,6 +867,22 @@ const uiTranslations = {
             "Checklists & Signatures": "Checklists & Signatures",
             "Quiz Results": "Quiz Results",
             "Commissary Agreement": "Commissary Agreement"
+        },
+        landing: {
+            tagline: "Your food business starts here.",
+            subtitle: "Find the permits you need to sell food in Alameda County. We'll guide you through the requirements, step by step.",
+            trust: "Free to get started · Guided step by step",
+            cta: "Next",
+            features: [
+                "Know what to do next",
+                "Finish with a ready-to-use application",
+                "Understand each requirement"
+            ],
+            featureDescriptions: [
+                "Clear guidance at every step.",
+                "Generate an official application you can use right away.",
+                "Plain-language explanations for each permit requirement."
+            ]
         }
     },
     es: {
@@ -896,6 +913,22 @@ const uiTranslations = {
             "Checklists & Signatures": "Listas de verificación y firmas",
             "Quiz Results": "Resultados del cuestionario",
             "Commissary Agreement": "Acuerdo de cocina/comisariato"
+        },
+        landing: {
+            tagline: "Su negocio de comida comienza aquí.",
+            subtitle: "Encuentre los permisos que necesita para vender alimentos en el condado de Alameda. Le guiaremos paso a paso.",
+            trust: "Gratis para comenzar · Orientación paso a paso",
+            cta: "Siguiente",
+            features: [
+                "Sepa qué hacer después",
+                "Termine con una solicitud lista para usar",
+                "Comprenda cada requisito"
+            ],
+            featureDescriptions: [
+                "Orientación clara en cada paso.",
+                "Genere una solicitud oficial lista para usar.",
+                "Explicaciones sencillas de cada requisito."
+            ]
         }
     },
     zh: {
@@ -926,6 +959,22 @@ const uiTranslations = {
             "Checklists & Signatures": "检查清单与签名",
             "Quiz Results": "测验结果",
             "Commissary Agreement": "共享厨房协议"
+        },
+        landing: {
+            tagline: "您的食品生意从这里开始。",
+            subtitle: "了解在阿拉米达县销售食品所需的许可证。我们将逐步指导您完成各项要求。",
+            trust: "免费开始 · 逐步指导",
+            cta: "下一步",
+            features: [
+                "了解下一步该做什么",
+                "完成一份可直接使用的申请",
+                "了解每项要求"
+            ],
+            featureDescriptions: [
+                "每一步都有清晰的指导。",
+                "生成一份可以立即使用的官方申请。",
+                "用简单易懂的语言解释每项许可要求。"
+            ]
         }
     },
     hi: {
@@ -956,9 +1005,53 @@ const uiTranslations = {
             "Checklists & Signatures": "जाँच सूची और हस्ताक्षर",
             "Quiz Results": "प्रश्नोत्तरी के परिणाम",
             "Commissary Agreement": "साझा रसोई समझौता"
+        },
+        landing: {
+            tagline: "आपका खाद्य व्यवसाय यहाँ से शुरू होता है।",
+            subtitle: "अलामेडा काउंटी में खाद्य पदार्थ बेचने के लिए आवश्यक परमिट जानें। हम हर चरण में आपका मार्गदर्शन करेंगे।",
+            trust: "शुरुआत मुफ़्त · हर चरण में मार्गदर्शन",
+            cta: "अगला",
+            features: [
+                "जानें कि आगे क्या करना है",
+                "तैयार उपयोग योग्य आवेदन पूरा करें",
+                "हर आवश्यकता को समझें"
+            ],
+            featureDescriptions: [
+                "हर चरण में स्पष्ट मार्गदर्शन।",
+                "तुरंत उपयोग करने योग्य आधिकारिक आवेदन बनाएं।",
+                "हर परमिट आवश्यकता की सरल भाषा में जानकारी।"
+            ]
         }
     }
 };
+
+function updateLandingPageText() {
+    const landing = (uiTranslations[appState.lang] || uiTranslations.en).landing;
+    if (!landing) return;
+
+    const elements = {
+        "#screen1 .tagline": landing.tagline,
+        "#screen1 .hero-subtitle": landing.subtitle,
+        "#screen1 .trust-microcopy": landing.trust,
+        "#langNextBtn": landing.cta
+    };
+
+    Object.entries(elements).forEach(([selector, text]) => {
+        const element = document.querySelector(selector);
+        if (element) element.textContent = text;
+    });
+
+    document.querySelectorAll("#screen1 .feature-card h3, #screen1 [data-landing-feature-title]")
+        .forEach((element, index) => {
+            if (landing.features[index]) element.textContent = landing.features[index];
+        });
+    document.querySelectorAll("#screen1 .feature-card p, #screen1 [data-landing-feature-description]")
+        .forEach((element, index) => {
+            if (landing.featureDescriptions[index]) {
+                element.textContent = landing.featureDescriptions[index];
+            }
+        });
+}
 
 function updatePageText() {
     const lang = appState.lang;
@@ -1112,6 +1205,7 @@ function updatePageText() {
     });
 
     renderReviewScreen();
+    updateLandingPageText();
     transalteHeadingAndStuff();
     updateLiveCounter();
 }
