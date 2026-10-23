@@ -48,6 +48,10 @@ function switchView(view) {
 
     landing.hidden = view !== 'landing';
     app.hidden = view !== 'app';
+    const headerControls = get('headerControls');
+    const startOver = get('startOverBtn');
+    if (headerControls) headerControls.style.display = 'flex';
+    if (startOver) startOver.style.display = view === 'app' ? '' : 'none';
     if (view === 'app') showScreen('screen1');
 }
 
@@ -57,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateStepTracker(1);
     loadQuestionnaire();
     prefillAutoDates();
-    if (get('headerControls')) get('headerControls').style.display = 'none';
 
     listen('downloadPdfBtn', 'click', downloadAndWipe);
     listen('startOverBtn', 'click', () => {
@@ -80,8 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.querySelectorAll('.lang-switcher span').forEach(span => {
-        span.addEventListener('click', () => saveLanguage(span.dataset.lang));
+    document.querySelectorAll('.lang-switcher [data-lang]').forEach(button => {
+        button.addEventListener('click', () => saveLanguage(button.dataset.lang));
     });
     document.querySelectorAll('.languageButtons button').forEach(button => {
         button.addEventListener('click', () => {
@@ -293,16 +296,14 @@ function saveLanguage(langCode) {
     });
 
     // update the header language selection
-    document.querySelectorAll(".lang-switcher span").forEach(span => {
-        const isSelected = span.dataset.lang === langCode;
+    document.querySelectorAll(".lang-switcher [data-lang]").forEach(button => {
+        const isSelected = button.dataset.lang === langCode;
 
-        span.classList.toggle("active", isSelected);
+        button.classList.toggle("active", isSelected);
+        button.setAttribute("aria-pressed", String(isSelected));
 
-        span.style.opacity = isSelected ? "1" : "0.6";
-        span.style.fontWeight = isSelected ? "700" : "400";
-        span.style.borderBottom = isSelected
-        ? "1px solid currentColor"
-        : "none";
+        button.style.opacity = isSelected ? "1" : "0.6";
+        button.style.fontWeight = isSelected ? "700" : "400";
     });
 
     const headerControls = document.getElementById("headerControls");
@@ -883,11 +884,12 @@ const uiTranslations = {
             "Commissary Agreement": "Commissary Agreement"
         },
         landing: {
+            kicker: "Fremont vendors · Alameda County",
             tagline: "Your food business starts here.",
             subtitle: "Find the permits you need to sell food in Alameda County. We'll guide you through the requirements, step by step.",
             trust: "Free to get started · Guided step by step",
             cta: "Get Started →",
-            features: [
+            featureTitles: [
                 "Know what to do next",
                 "Finish with a ready-to-use application",
                 "Understand each requirement"
@@ -929,11 +931,12 @@ const uiTranslations = {
             "Commissary Agreement": "Acuerdo de cocina/comisariato"
         },
         landing: {
+            kicker: "Vendedores de Fremont · Condado de Alameda",
             tagline: "Su negocio de comida comienza aquí.",
             subtitle: "Encuentre los permisos que necesita para vender alimentos en el condado de Alameda. Le guiaremos paso a paso.",
             trust: "Gratis para comenzar · Orientación paso a paso",
             cta: "Comenzar →",
-            features: [
+            featureTitles: [
                 "Sepa qué hacer después",
                 "Termine con una solicitud lista para usar",
                 "Comprenda cada requisito"
@@ -975,11 +978,12 @@ const uiTranslations = {
             "Commissary Agreement": "共享厨房协议"
         },
         landing: {
+            kicker: "弗里蒙特商家 · 阿拉米达县",
             tagline: "您的食品生意从这里开始。",
             subtitle: "了解在阿拉米达县销售食品所需的许可证。我们将逐步指导您完成各项要求。",
             trust: "免费开始 · 逐步指导",
             cta: "开始 →",
-            features: [
+            featureTitles: [
                 "了解下一步该做什么",
                 "完成一份可直接使用的申请",
                 "了解每项要求"
@@ -1021,11 +1025,12 @@ const uiTranslations = {
             "Commissary Agreement": "साझा रसोई समझौता"
         },
         landing: {
+            kicker: "फ्रीमोंट विक्रेता · अलामेडा काउंटी",
             tagline: "आपका खाद्य व्यवसाय यहाँ से शुरू होता है।",
             subtitle: "अलामेडा काउंटी में खाद्य पदार्थ बेचने के लिए आवश्यक परमिट जानें। हम हर चरण में आपका मार्गदर्शन करेंगे।",
             trust: "शुरुआत मुफ़्त · हर चरण में मार्गदर्शन",
             cta: "शुरू करें →",
-            features: [
+            featureTitles: [
                 "जानें कि आगे क्या करना है",
                 "तैयार उपयोग योग्य आवेदन पूरा करें",
                 "हर आवश्यकता को समझें"
@@ -1044,6 +1049,7 @@ function updateLandingPageText() {
     if (!landing) return;
 
     const elements = {
+        "#view-landing .landing-eyebrow": landing.kicker,
         "#screen1 .tagline, #view-landing .landing-title": landing.tagline,
         "#screen1 .hero-subtitle, #view-landing .landing-subtitle": landing.subtitle,
         "#screen1 .trust-microcopy": landing.trust,
@@ -1051,13 +1057,26 @@ function updateLandingPageText() {
     };
 
     Object.entries(elements).forEach(([selector, text]) => {
-        const element = document.querySelector(selector);
-        if (element) element.textContent = text;
+        document.querySelectorAll(selector).forEach(element => {
+            element.textContent = text;
+        });
+    });
+
+    document.querySelectorAll("#view-landing [data-i18n]").forEach(element => {
+        const key = element.dataset.i18n.replace("landing.", "");
+        const titleMatch = key.match(/^feature(\d+)Title$/);
+        const descriptionMatch = key.match(/^feature(\d+)Description$/);
+        const value = titleMatch
+            ? landing.featureTitles[Number(titleMatch[1]) - 1]
+            : descriptionMatch
+                ? landing.featureDescriptions[Number(descriptionMatch[1]) - 1]
+                : landing[key];
+        if (typeof value === "string") element.textContent = value;
     });
 
     document.querySelectorAll("#screen1 .feature-card h3, #screen1 [data-landing-feature-title], #view-landing [data-landing-feature-title]")
         .forEach((element, index) => {
-            if (landing.features[index]) element.textContent = landing.features[index];
+            if (landing.featureTitles[index]) element.textContent = landing.featureTitles[index];
         });
     document.querySelectorAll("#screen1 .feature-card p, #screen1 [data-landing-feature-description], #view-landing [data-landing-feature-description]")
         .forEach((element, index) => {
