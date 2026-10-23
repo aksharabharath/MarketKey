@@ -19,6 +19,12 @@
     "type": "select",
     "required": true,
     "options": ["Yes", "No"],
+    "optionLabels": {
+      "en": {"Yes": "Yes", "No": "No"},
+      "es": {"Yes": "Sí", "No": "No"},
+      "zh": {"Yes": "是", "No": "否"},
+      "hi": {"Yes": "हाँ", "No": "नहीं"}
+    },
     "prompts": {
       "en": "Do you have sponsor approval to participate? (Note: If no, your application will not be reviewed)",
       "es": "¿Tiene la aprobación del patrocinador para participar? (Nota: Si no, su solicitud no será revisada)",
@@ -59,6 +65,12 @@
     "type": "select",
     "required": true,
     "options": ["Indoor", "Outdoor"],
+    "optionLabels": {
+      "en": {"Indoor": "Indoor", "Outdoor": "Outdoor"},
+      "es": {"Indoor": "Interior", "Outdoor": "Al aire libre"},
+      "zh": {"Indoor": "室内", "Outdoor": "室外"},
+      "hi": {"Indoor": "इनडोर", "Outdoor": "आउटडोर"}
+    },
     "prompts": {
       "en": "Indicate Indoor or Outdoor",
       "es": "Indique si es bajo techo (Indoor) o al aire libre (Outdoor)",
@@ -268,6 +280,12 @@
     "type": "select",
     "required": true,
     "options": ["Yes", "No"],
+    "optionLabels": {
+      "en": {"Yes": "Yes", "No": "No"},
+      "es": {"Yes": "Sí", "No": "No"},
+      "zh": {"Yes": "是", "No": "否"},
+      "hi": {"Yes": "हाँ", "No": "नहीं"}
+    },
     "prompts": {
       "en": "Do all of your menu items, including samples, remain in the original factory sealed package or are they pre-packaged by you at a commercial kitchen?",
       "es": "¿Todos sus artículos de menú, incluidas las muestras, permanecen en su paquete original sellado de fábrica o son preempaquetados por usted en una cocina comercial?",
