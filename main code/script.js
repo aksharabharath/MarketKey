@@ -1,6 +1,7 @@
 // 1. entire thing functions
 const appState = {
     lang: 'en',
+    language: 'en',
     currentStep: 1,
     currentFormPage: 1,
     currentView: 'landing',
@@ -83,6 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.lang-switcher span').forEach(span => {
         span.addEventListener('click', () => saveLanguage(span.dataset.lang));
+    });
+    document.querySelectorAll('.landing-language').forEach(button => {
+        button.addEventListener('click', () => saveLanguage(button.dataset.lang));
     });
     document.querySelectorAll('.languageButtons button').forEach(button => {
         button.addEventListener('click', () => {
@@ -273,6 +277,7 @@ function saveLanguage(langCode) {
 
     // Save the chosen language.
     appState.lang = langCode;
+    appState.language = langCode;
     document.documentElement.lang = langCode;
 
     // Update the first page.
@@ -306,7 +311,9 @@ function saveLanguage(langCode) {
         : "none";
     });
     document.querySelectorAll(".landing-language").forEach(button => {
-        button.classList.toggle("active", button.dataset.lang === langCode);
+        const isSelected = button.dataset.lang === langCode;
+        button.classList.toggle("active", isSelected);
+        button.setAttribute("aria-pressed", String(isSelected));
     });
 
     const headerControls = document.getElementById("headerControls");
