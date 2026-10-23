@@ -1,10 +1,22 @@
 [hidden] { display: none !important; }
 
-.view-landing {min-height: 100vh; background: linear-gradient(135deg, #fff3dc 0%, #ffebcc 55%, #f8d99d 100%); }
-
-.landing-shell {width: min(1120px, 100%); min-height: 100vh; margin: 0 auto; padding: 24px 5% 64px; box-sizing: border-box;} 
-.landing-topbar {display: flex;align-items: center;justify-content: space-between;gap: 20px;}
-
+.view-landing {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fff3dc 0%, #ffebcc 55%, #f8d99d 100%);
+}
+.landing-shell {
+    width: min(1120px, 100%);
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 24px 5% 64px;
+    box-sizing: border-box;
+}
+.landing-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
 .landing-brand {
     color: #d9641f;
     font-family: 'League Spartan', sans-serif;
@@ -37,6 +49,8 @@
     background: #d9641f;
     color: #fff8ed;
 }
+.landing-language:not(.active) { opacity: 0.72; }
+.landing-language.active { box-shadow: 0 3px 8px rgba(113, 53, 21, 0.18); }
 .landing-language:focus-visible,
 .app-home-button:focus-visible {
     outline: 3px solid #713515;
