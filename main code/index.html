@@ -20,19 +20,33 @@
         <div class="flex items-center gap-3" id="headerControls" style="display: none;">
             <button type="button" class="bg-transparent border-none text-[#fdcb7b] font-['League_Spartan'] text-base cursor-pointer opacity-80 hover:opacity-100 hover:underline" id="startOverBtn">Start over</button>
             <div class="flex gap-2 font-['League_Spartan'] text-sm lang-switcher">
-                <span data-lang="en" class="cursor-pointer opacity-60 font-bold border-b border-[#fdcb7b] active">EN</span>
-                <span data-lang="es" class="cursor-pointer opacity-60">ES</span>
-                <span data-lang="zh" class="cursor-pointer opacity-60">中文</span>
-                <span data-lang="hi" class="cursor-pointer opacity-60">हिं</span>
+                <button type="button" data-lang="en" aria-label="English" aria-pressed="true" class="lang-pill active">EN</button>
+                <button type="button" data-lang="es" aria-label="Español" aria-pressed="false" class="lang-pill">ES</button>
+                <button type="button" data-lang="zh" aria-label="Chinese" aria-pressed="false" class="lang-pill">中文</button>
+                <button type="button" data-lang="hi" aria-label="Hindi" aria-pressed="false" class="lang-pill">हिं</button>
             </div>
         </div>
     </header>
 
     <section id="view-landing" class="view-landing" aria-labelledby="landingTitle">
-        <p class="landing-eyebrow font-['League_Spartan']">Fremont vendors · Alameda County</p>
-        <h1 id="landingTitle" class="landing-title font-['Yeseva_One']">Your food business starts here.</h1>
-        <p class="landing-subtitle">Find the permits you need to sell food in Alameda County. We'll guide you through the requirements, step by step.</p>
-        <button type="button" id="getStartedBtn" class="landing-cta font-['League_Spartan']">Get Started →</button>
+        <p class="landing-eyebrow font-['League_Spartan']" data-i18n="landing.kicker">Fremont vendors · Alameda County</p>
+        <h1 id="landingTitle" class="landing-title font-['Yeseva_One']" data-i18n="landing.tagline">Your food business starts here.</h1>
+        <p class="landing-subtitle" data-i18n="landing.subtitle">Find the permits you need to sell food in Alameda County. We'll guide you through the requirements, step by step.</p>
+        <div class="feature-grid" aria-label="MarketKey benefits">
+            <article class="feature-card">
+                <h2 data-i18n="landing.feature1Title">Know what to do next</h2>
+                <p data-i18n="landing.feature1Description">Clear guidance at every step.</p>
+            </article>
+            <article class="feature-card">
+                <h2 data-i18n="landing.feature2Title">Finish with a ready-to-use application</h2>
+                <p data-i18n="landing.feature2Description">Generate an official application you can use right away.</p>
+            </article>
+            <article class="feature-card">
+                <h2 data-i18n="landing.feature3Title">Understand each requirement</h2>
+                <p data-i18n="landing.feature3Description">Plain-language explanations for each permit requirement.</p>
+            </article>
+        </div>
+        <button type="button" id="getStartedBtn" class="landing-cta font-['League_Spartan']" data-i18n="landing.cta">Get Started →</button>
     </section>
 
     <main id="view-app" class="w-full min-h-[calc(100vh-77px)] py-[60px] px-[5%] text-center bg-[#faf5ee] text-[#d9641f]" hidden>
