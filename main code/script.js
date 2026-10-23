@@ -398,7 +398,7 @@ function reviewValue(value, translations) {
 function renderReviewScreen() {
     const reviewContainer = document.getElementById('reviewContent');
     if (!reviewContainer) return;
-    const translations = uiTranslations[appState.lang] || uiTranslations.en;
+    const translations = uiTranslations[appState.language || appState.lang] || uiTranslations.en;
 
     reviewContainer.innerHTML = '';
     reviewContainer.className = 'max-w-[1000px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 text-left';
@@ -986,7 +986,7 @@ const uiTranslations = {
         },
         startOver: "重新开始",
         answersEnglish: "请用英文填写您的答案。",
-        stepLabels: ["语言", "路径", "问题", "审核", "完成"],
+        stepLabels: ["语言", "路径", "问题", "查看", "完成"],
         stepCounter: step => `第 ${step} 步，共 5 步`,
         validationError: "请在继续之前填写所有必填字段。",
         reviewTitle: "查看您的申请",
@@ -1050,7 +1050,7 @@ const uiTranslations = {
         quizTitle: "खाद्य सुरक्षा प्रश्नोत्तरी",
         quizDescription: "Alameda County की आधिकारिक खाद्य सुरक्षा प्रश्नोत्तरी पूरी करें।",
         checklistTitle: "स्व-निरीक्षण जाँच सूची",
-        checklistDescription: "हर item के तैयार होने की पुष्टि करने के बाद उसके आगे अपने initials लिखें।",
+        checklistDescription: "हर वस्तु तैयार होने की पुष्टि करने के बाद उसके आगे अपने नाम के शुरुआती अक्षर लिखें।",
         signatureTitle: "अंतिम हस्ताक्षर / संपर्क जानकारी",
         applicantPhone: "आवेदक का फ़ोन नंबर",
         clearSignature: "हस्ताक्षर मिटाएँ",
@@ -1326,7 +1326,7 @@ function renderQuestionnaire() {
         const label = document.createElement("label");
         label.htmlFor = question.id;
 
-        const prompt = question.prompts[appState.lang] || question.prompts.en;
+        const prompt = question.prompts[appState.language || appState.lang] || question.prompts.en;
         label.textContent = prompt + (question.required ? " *" : "");
 
         let input;
@@ -1346,10 +1346,11 @@ function renderQuestionnaire() {
             defaultOpt.selected = !savedAnswer;
             input.appendChild(defaultOpt);
 
-            question.options.forEach(optText => {
+            question.options.forEach((optText, index) => {
                 const opt = document.createElement("option");
                 opt.value = optText;
-                opt.textContent = optText;
+                opt.textContent =
+                    question.optionLabels?.[appState.language || appState.lang]?.[index] || optText;
                 if (savedAnswer === optText) opt.selected = true;
                 input.appendChild(opt);
             });
@@ -1565,7 +1566,7 @@ function updateLiveCounter() {
             hi: `${total} आवश्यक प्रश्नों में से ${answered} के उत्तर दिए गए`
         };
 
-        counter.textContent = messages[appState.lang] || messages.en;
+        counter.textContent = messages[appState.language || appState.lang] || messages.en;
     }
 }
 
@@ -1775,7 +1776,7 @@ function transalteHeadingAndStuff() {
         }
     };
 
-    const text = translations[appState.lang] || translations.en;
+    const text = translations[appState.language || appState.lang] || translations.en;
 
     const elements = {
         "#screen1 .tagline": text.hero,
