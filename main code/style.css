@@ -138,3 +138,12 @@ body, #view-app { background-color: #faf5ee; background-image: none; color: #d96
 .landing-cta { padding: 12px 28px; border: 0; border-radius: 8px; background: #d9641f; color: #fdcb7b; font-size: 1.125rem; font-weight: 700; cursor: pointer; box-shadow: 0 8px 18px rgba(113, 53, 21, 0.16); transition: background-color 160ms ease, transform 160ms ease, box-shadow 160ms ease; }
 .landing-cta:hover, .landing-cta:focus-visible { background-color: #b95018; box-shadow: 0 12px 24px rgba(113, 53, 21, 0.22); transform: translateY(-2px); }
 .landing-cta:focus-visible { outline: 3px solid #fdcb7b; outline-offset: 3px; }
+.lang-switcher { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 6px; }
+.lang-pill { padding: 6px 9px; border: 1px solid transparent; border-radius: 999px; background: transparent; color: #fdcb7b; font: 600 0.875rem 'League Spartan', sans-serif; cursor: pointer; }
+.lang-pill:hover, .lang-pill:focus-visible, .lang-pill.active { border-color: #fdcb7b; background-color: rgba(253, 203, 123, 0.18); }
+.lang-pill:focus-visible { outline: 2px solid #fff8ed; outline-offset: 2px; }
+.feature-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; width: min(100%, 860px); margin: 36px auto; }
+.feature-card { padding: 22px; border: 2px solid rgba(217, 100, 31, 0.2); border-radius: 16px; background: #fff8ed; text-align: left; }
+.feature-card h2 { margin: 0 0 8px; color: #d9641f; font: 400 1.25rem 'Yeseva One', serif; line-height: 1.2; }
+.feature-card p { margin: 0; color: #d9641f; font-size: 0.95rem; line-height: 1.5; opacity: 0.9; }
+@media (max-width: 640px) { header { flex-wrap: wrap; gap: 12px; } #headerControls { width: 100%; justify-content: flex-end; } .feature-grid { grid-template-columns: 1fr; margin: 28px auto; } .feature-card { text-align: center; } }
