@@ -244,6 +244,7 @@ function showFormPage(pageNumber) {
     page.style.display = 'block';
     page.setAttribute('aria-hidden', 'false');
     appState.currentFormPage = pageNumber;
+    window.scrollTo(0, 0);
 }
 // save the selected language
 function saveLanguage(langCode) {
@@ -798,25 +799,27 @@ async function generateCountyPDF() {
 
         const signature = data.applicantSignature || data.ApplicantSignature;
         if (signature && signature.startsWith("data:image/png;base64,")) {
-            const signatureField = fieldsByExactName.get("Applicant Signature");
-             const widget = signatureField?.acroField.getWidgets()[0];
+            const signatureImage = await pdfDoc.embedPng(dataUrlToBytes(signature));
+            const signatureFields = ["Applicant Signature", "Signature1"];
 
-            if (widget) {
-                const pageRef = widget.P();
-                const page = pdfDoc.getPages().find(item => item.ref === pageRef)
-                    || pdfDoc.getPages()[5];
+            signatureFields.forEach(fieldName => {
+                const signatureField = fieldsByExactName.get(fieldName);
+                const widgets = signatureField?.acroField.getWidgets() || [];
 
-                const rect = widget.getRectangle();
-                const signatureImageBytes = dataUrlToBytes(signature);
-                const signatureImage = await pdfDoc.embedPng(signatureImageBytes);
+                widgets.forEach(widget => {
+                    const pageRef = widget.P();
+                    const page = pdfDoc.getPages().find(item => item.ref === pageRef);
+                    if (!page) return;
 
-                page.drawImage(signatureImage, {
-                    x: rect.x + 2,
-                    y: rect.y + 2,
-                    width: rect.width - 4,
-                    height: rect.height - 4
+                    const rect = widget.getRectangle();
+                    page.drawImage(signatureImage, {
+                        x: rect.x + 2,
+                        y: rect.y + 2,
+                        width: Math.max(0, rect.width - 4),
+                        height: Math.max(0, rect.height - 4)
+                    });
                 });
-            }
+            });
         }
 
         form.flatten();
