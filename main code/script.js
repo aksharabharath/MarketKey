@@ -107,7 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!validateForm()) return;
 
         if (appState.currentFormPage === 1) {
-            appState.skipCommissary = get('originalPackageCheck')?.value === 'No';
+            const usesCommercialKitchen = get('originalPackageCheck')?.value === 'Yes';
+            appState.skipCommissary = !usesCommercialKitchen;
+            updateCommissaryRequirements(usesCommercialKitchen);
             showFormPage(appState.skipCommissary ? 3 : 2);
         } else if (appState.currentFormPage < 3) {
             showFormPage(appState.currentFormPage + 1);
@@ -1243,7 +1245,7 @@ function updatePageText() {
                 question.prompts[appState.lang] || question.prompts.en;
 
             label.textContent =
-                prompt + (question.required ? " *" : "");
+                prompt + (isQuestionRequired(question) ? " *" : "");
         }
     });
 
@@ -1308,7 +1310,8 @@ function renderQuestionnaire() {
         label.htmlFor = question.id;
 
         const prompt = question.prompts[appState.lang] || question.prompts.en;
-        label.textContent = prompt + (question.required ? " *" : "");
+        const required = isQuestionRequired(question);
+        label.textContent = prompt + (required ? " *" : "");
 
         let input;
         const storageKey = question.pdfFieldKey || question.id;
@@ -1318,7 +1321,7 @@ function renderQuestionnaire() {
             input = document.createElement("select");
             input.id = question.id;
             input.name = question.id;
-            input.required = question.required;
+            input.required = required;
 
             const defaultOpt = document.createElement("option");
             defaultOpt.value = "";
@@ -1330,7 +1333,10 @@ function renderQuestionnaire() {
             question.options.forEach(optText => {
                 const opt = document.createElement("option");
                 opt.value = optText;
-                opt.textContent = optText;
+                opt.textContent =
+                    question.optionLabels?.[appState.lang]?.[optText] ||
+                    question.optionLabels?.en?.[optText] ||
+                    optText;
                 if (savedAnswer === optText) opt.selected = true;
                 input.appendChild(opt);
             });
@@ -1343,7 +1349,7 @@ function renderQuestionnaire() {
             input.name = question.id;
             input.type = "date";
             input.classList.add("auto-date");
-            input.required = question.required;
+            input.required = required;
             input.value = savedAnswer ?? "";
             container.append(label, input);
 
@@ -1405,7 +1411,7 @@ function renderQuestionnaire() {
                                 : column === "preppedAtEventOnly" && values.preparationLocation?.toLowerCase().includes("before") === false
                                     ? values.preparationLocation
                                     : column === "cookingServingEquipment" ? (values.equipmentUsed ?? "") : "");
-                        field.required = question.required;
+                        field.required = required;
                         field.className = "w-full";
                         field.setAttribute("aria-label", column.replace(/([A-Z])/g, " $1"));
                         field.addEventListener("input", syncRows);
@@ -1437,7 +1443,7 @@ function renderQuestionnaire() {
             input.id = question.id;
             input.name = question.id;
             input.type = "checkbox";
-            input.required = question.required;
+            input.required = required;
             input.checked = savedAnswer === true;
             container.classList.add("checkbox-question");
             container.append(input, label);
@@ -1447,7 +1453,7 @@ function renderQuestionnaire() {
             input.id = question.id;
             input.name = question.id;
             input.type = question.type || "text";
-            input.required = question.required;
+            input.required = required;
             input.value = savedAnswer ?? "";
             container.append(label, input);
         }
@@ -1553,6 +1559,20 @@ function whenQuestionsReady(callback) {
     return questionnaireQuestions.length
         ? callback()
         : loadQuestionnaire().then(callback);
+}
+
+function isQuestionRequired(question) {
+    return question.required ||
+        (question.phase === 5 && get("originalPackageCheck")?.value === "Yes");
+}
+
+function updateCommissaryRequirements(required) {
+    document.querySelectorAll(
+        "#formPage2 input, #formPage2 select, #formPage2 textarea"
+    ).forEach(input => {
+        const question = questionnaireQuestions.find(item => item.id === input.id);
+        input.required = Boolean(question && (question.required || (required && question.phase === 5)));
+    });
 }
 
 function setTestField(input, value) {
