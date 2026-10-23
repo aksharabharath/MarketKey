@@ -10,11 +10,11 @@ We built MarketKey to make that process easier to understand. It explains the re
 
 ## Core Features
 
-- **Guided questionnaire and routing:** A 58-question workflow uses plain language and routes vendors through the relevant permit questions.
-- **Multilingual access:** The interface supports English, Spanish, Mandarin, and Hindi. Labels can be localized while stored answers keep their canonical English values for reliable PDF mapping.
-- **Official PDF generation:** `pdf-lib` fills the official county PDF template in the browser. The flow also captures and embeds a signature drawing.
-- **Landing page and app flow:** A two-layer layout gives visitors a short overview first, then opens the five-step application workflow when they are ready to start.
-- **Privacy-minded drafts:** Form data is handled on the client, with local draft state used to keep answers available during the session. The app does not need a backend database for the application.
+-  A 58-question workflow uses plain language and routes vendors through the relevant permit questions.
+-  The interface supports English, Spanish, Mandarin, and Hindi. Labels can be localized while stored answers keep their canonical English values for reliable PDF mapping.
+-  `pdf-lib` fills the official county PDF template in the browser. The flow also captures and embeds a signature drawing.
+-  A two-layer layout gives visitors a short overview first, then opens the five-step application workflow when they are ready to start.
+-  Form data is handled on the client, with local draft state used to keep answers available during the session. The app does not need a backend database for the application.
 
 ## Tech Stack & Architecture
 
