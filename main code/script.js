@@ -1,10 +1,8 @@
-// 1. entire thing functions
+// set up the app state
 const appState = {
     lang: 'en',
-    language: 'en',
     currentStep: 1,
     currentFormPage: 1,
-    currentView: 'landing',
     skipCommissary: false,
     path: null,
     formData: {}
@@ -13,18 +11,6 @@ let signatureHasDrawn = false;
 
 const get = id => document.getElementById(id);
 const listen = (id, event, handler) => get(id)?.addEventListener(event, handler);
-
-function showView(view) {
-    appState.currentView = view;
-    const landing = get("view-landing");
-    const app = get("view-app");
-    if (landing) landing.hidden = view !== "landing";
-    if (app) app.hidden = view !== "app";
-
-    const headerControls = get("headerControls");
-    if (headerControls) headerControls.style.display = view === "app" ? "flex" : "none";
-    if (view === "app") showScreen("screen1");
-}
 
 function clearSignatureCanvas() {
     const canvas = get("signature-pad");
@@ -54,7 +40,7 @@ function resetApp() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    showView('landing');
+    showScreen('screen1');
     updateStepTracker(1);
     loadQuestionnaire();
     prefillAutoDates();
@@ -65,8 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (confirm('Are you sure you want to start over? All entered data will be cleared.')) resetApp();
     });
     listen('startNewAppBtn', 'click', resetApp);
-    listen('getStartedBtn', 'click', () => showView('app'));
-    listen('homeBtn', 'click', () => showView('landing'));
     listen('revBackBtn', 'click', () => {
         showScreen('screen3');
         restoreSignatureCanvas();
@@ -84,9 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.lang-switcher span').forEach(span => {
         span.addEventListener('click', () => saveLanguage(span.dataset.lang));
-    });
-    document.querySelectorAll('.landing-language').forEach(button => {
-        button.addEventListener('click', () => saveLanguage(button.dataset.lang));
     });
     document.querySelectorAll('.languageButtons button').forEach(button => {
         button.addEventListener('click', () => {
@@ -201,9 +182,9 @@ if (canvas && clearBtn) {
     });
 }
 });
-//------------------- (insert #2-4), check MarketKey/docs/handoff_notes.md for reference if need clarification
+// screen and form setup starts here
 
-//2, for screen switching : 
+// switch between the main screens
 function showScreen(screenId){
     const screens = document.querySelectorAll(".screen");
     screens.forEach(function(screen) {
@@ -219,7 +200,7 @@ function showScreen(screenId){
     window.scrollTo(0, 0);
 }
 
-//2, for UPD stateTracker 
+// update the progress tracker
 function updateStepTracker(currentStep) {
     const steps = document.querySelectorAll(".step-dot");
     steps.forEach(function(step) {
@@ -247,7 +228,7 @@ function showFormPage(pageNumber) {
     page.setAttribute('aria-hidden', 'false');
     appState.currentFormPage = pageNumber;
 }
-//2 for savelang 
+// save the selected language
 function saveLanguage(langCode) {
     const languages = {
         en: {
@@ -275,12 +256,11 @@ function saveLanguage(langCode) {
     const selected = languages[langCode];
     if (!selected) return;
 
-    // Save the chosen language.
+    // save the chosen language
     appState.lang = langCode;
-    appState.language = langCode;
     document.documentElement.lang = langCode;
 
-    // Update the first page.
+    // update the language page
     document.getElementById("languageHeading").textContent =
         selected.heading;
 
@@ -290,7 +270,7 @@ function saveLanguage(langCode) {
     document.getElementById("langNextBtn").textContent =
         selected.next;
 
-    // Highlight the selected language button.
+    // highlight the selected language button
     document.querySelectorAll(".languageButtons button").forEach(button => {
         const isSelected = button.dataset.lang === langCode;
 
@@ -298,7 +278,7 @@ function saveLanguage(langCode) {
         button.setAttribute("aria-pressed", String(isSelected));
     });
 
-    // Update the header language selection.
+    // update the header language selection
     document.querySelectorAll(".lang-switcher span").forEach(span => {
         const isSelected = span.dataset.lang === langCode;
 
@@ -310,11 +290,6 @@ function saveLanguage(langCode) {
         ? "1px solid currentColor"
         : "none";
     });
-    document.querySelectorAll(".landing-language").forEach(button => {
-        const isSelected = button.dataset.lang === langCode;
-        button.classList.toggle("active", isSelected);
-        button.setAttribute("aria-pressed", String(isSelected));
-    });
 
     const headerControls = document.getElementById("headerControls");
 
@@ -323,9 +298,9 @@ function saveLanguage(langCode) {
     }
 
     renderQuestionnaire();
-    refreshLocalizedText();
+    updatePageText();
 }
-// 5. PDF and review functions
+// review and PDF functions
 function formatKeyToLabel(key) {
     const text = String(key)
         .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
@@ -398,7 +373,7 @@ function reviewValue(value, translations) {
 function renderReviewScreen() {
     const reviewContainer = document.getElementById('reviewContent');
     if (!reviewContainer) return;
-    const translations = uiTranslations[appState.language || appState.lang] || uiTranslations.en;
+    const translations = uiTranslations[appState.lang] || uiTranslations.en;
 
     reviewContainer.innerHTML = '';
     reviewContainer.className = 'max-w-[1000px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 text-left';
@@ -654,7 +629,7 @@ function writePdfField(field, value, name) {
                     field.setFontSize(8);
                 }
             } catch {
-                // Legacy fields without /DA retain their existing appearance.
+                // older fields without /DA keep their existing appearance
             }
             field.setText(text);
         }
@@ -868,18 +843,10 @@ const uiTranslations = {
         step2Desc: "Cooked food and samples use the county form, while whole produce from your own farm often does not.",
         tffKicker: "Temporary food facility",
         tffTitle: "Prepared food, hot food, baked goods, samples",
-        tffDesc: "Complete the official Alameda County temporary food facility application directly in your browser.",
+        tffDesc: "Fills out the official Alameda County temporary food facility application directly in your browser.",
         agKicker: "Agricultural route",
         agTitle: "Raw produce, fruit, honey grown on my farm",
         agDesc: "View guidance for agricultural exemptions and direct-to-consumer rules.",
-        landing: {
-            eyebrow: "Fremont vendors · Alameda County",
-            title: "Permits made clearer for food vendors.",
-            desc: "MarketKey helps Fremont and Alameda County food vendors navigate public health permits with guided steps and plain-language support.",
-            benefits: ["Guided steps", "Official PDF", "Plain language"],
-            benefitDescriptions: ["Know what to do next.", "Finish with a ready-to-use application.", "Understand each requirement."],
-            getStarted: "Get Started"
-        },
         validationError: "Please fill out all required fields with standard characters before proceeding.",
         startOver: "Start over",
         answersEnglish: "Type your answers in English.",
@@ -889,20 +856,6 @@ const uiTranslations = {
         reviewDesc: "Please review your information below before generating your official county PDF.",
         reviewBack: "Back to Questions",
         reviewDownload: "Download Official Application PDF",
-        questionnaireTitle: "Temporary Food Facility Application",
-        answersInstruction: "Type your answers in English.",
-        quizTitle: "Food Safety Quiz",
-        quizDescription: "Complete the official Alameda County food safety quiz.",
-        checklistTitle: "Self-Inspection Checklist",
-        checklistDescription: "Initial each item after confirming it is ready for operation.",
-        signatureTitle: "Final Signatures / Contact Info",
-        applicantPhone: "Applicant Phone Number",
-        clearSignature: "Clear Signature",
-        back: "Back",
-        saveContinue: "Save & Continue",
-        signatureError: "Please draw your signature before continuing.",
-        doneTitle: "Application Generated Successfully!",
-        doneDescription: "Your PDF has been downloaded to your device.",
         yes: "Yes",
         no: "No",
         notAnswered: "Not answered",
@@ -920,18 +873,10 @@ const uiTranslations = {
         step2Desc: "Los alimentos cocinados y muestras usan el formulario del condado, mientras que los productos agrícolas propios a menudo no.",
         tffKicker: "Instalación de comida temporal",
         tffTitle: "Comida preparada, comida caliente, productos horneados, muestras",
-        tffDesc: "Complete la solicitud oficial de instalaciones de alimentos temporales del Condado de Alameda directamente en su navegador.",
+        tffDesc: "Llena la solicitud oficial de instalaciones de comida temporal del Condado de Alameda directamente en su navegador.",
         agKicker: "Ruta agrícola",
         agTitle: "Productos crudos, fruta, miel cosechada en mi granja",
         agDesc: "Vea la guía para exenciones agrícolas y reglas de venta directa al consumidor.",
-        landing: {
-            eyebrow: "Vendedores de Fremont · Condado de Alameda",
-            title: "Permisos más claros para vendedores de alimentos.",
-            desc: "MarketKey ayuda a los vendedores de alimentos de Fremont y del Condado de Alameda a gestionar los permisos de salud pública con pasos guiados y explicaciones sencillas.",
-            benefits: ["Pasos guiados", "PDF oficial", "Lenguaje sencillo"],
-            benefitDescriptions: ["Sepa qué hacer a continuación.", "Termine con una solicitud lista para usar.", "Comprenda cada requisito."],
-            getStarted: "Comenzar"
-        },
         validationError: "Por favor, complete todos los campos obligatorios antes de continuar.",
         startOver: "Comenzar de nuevo",
         answersEnglish: "Escriba sus respuestas en inglés.",
@@ -941,20 +886,6 @@ const uiTranslations = {
         reviewDesc: "Revise la información a continuación antes de generar el PDF oficial del condado.",
         reviewBack: "Volver a las preguntas",
         reviewDownload: "Descargar la solicitud oficial en PDF",
-        questionnaireTitle: "Solicitud de instalación de alimentos temporales",
-        answersInstruction: "Escriba sus respuestas en inglés.",
-        quizTitle: "Cuestionario de seguridad alimentaria",
-        quizDescription: "Complete el cuestionario oficial de seguridad alimentaria del Condado de Alameda.",
-        checklistTitle: "Lista de verificación de autoinspección",
-        checklistDescription: "Ponga sus iniciales después de confirmar que cada elemento está listo para operar.",
-        signatureTitle: "Firmas finales / Información de contacto",
-        applicantPhone: "Número de teléfono del solicitante",
-        clearSignature: "Borrar firma",
-        back: "Atrás",
-        saveContinue: "Guardar y continuar",
-        signatureError: "Dibuje su firma antes de continuar.",
-        doneTitle: "¡Solicitud generada correctamente!",
-        doneDescription: "El PDF se ha descargado en su dispositivo.",
         yes: "Sí",
         no: "No",
         notAnswered: "Sin respuesta",
@@ -972,41 +903,19 @@ const uiTranslations = {
         step2Desc: "熟食和样品需要使用县级表格，而您自己农场种植的整块农产品通常不需要。",
         tffKicker: "临时食品设施",
         tffTitle: "熟食、热食、烘焙食品、样品",
-        tffDesc: "直接在您的浏览器中填写阿拉米达县官方临时食品设施申请表。",
+        tffDesc: "直接在您的浏览器中填写阿拉amed达县官方临时食品设施申请表。",
         agKicker: "农业路线",
         agTitle: "在我农场种植的生鲜农产品、水果、蜂蜜",
         agDesc: "查看农业豁免和直销规则指南。",
-        landing: {
-            eyebrow: "弗里蒙特商户 · 阿拉米达县",
-            title: "让食品经营许可更清晰。",
-            desc: "MarketKey 通过分步引导和通俗说明，帮助弗里蒙特及阿拉米达县的食品商户办理公共卫生许可。",
-            benefits: ["分步引导", "官方 PDF", "通俗说明"],
-            benefitDescriptions: ["了解下一步该做什么。", "完成一份可直接使用的申请。", "理解每项要求。"],
-            getStarted: "开始使用"
-        },
         startOver: "重新开始",
         answersEnglish: "请用英文填写您的答案。",
-        stepLabels: ["语言", "路径", "问题", "查看", "完成"],
+        stepLabels: ["语言", "路径", "问题", "审核", "完成"],
         stepCounter: step => `第 ${step} 步，共 5 步`,
         validationError: "请在继续之前填写所有必填字段。",
         reviewTitle: "查看您的申请",
         reviewDesc: "生成县官方 PDF 前，请查看以下信息。",
         reviewBack: "返回问题",
         reviewDownload: "下载官方申请 PDF",
-        questionnaireTitle: "临时食品设施申请",
-        answersInstruction: "请用英文填写您的答案。",
-        quizTitle: "食品安全测验",
-        quizDescription: "完成阿拉米达县官方食品安全测验。",
-        checklistTitle: "自我检查清单",
-        checklistDescription: "确认每项准备就绪后，请在旁边写下您的姓名首字母。",
-        signatureTitle: "最终签名 / 联系信息",
-        applicantPhone: "申请人电话号码",
-        clearSignature: "清除签名",
-        back: "返回",
-        saveContinue: "保存并继续",
-        signatureError: "请先签名，然后继续。",
-        doneTitle: "申请已成功生成！",
-        doneDescription: "PDF 已下载到您的设备。",
         yes: "是",
         no: "否",
         notAnswered: "未回答",
@@ -1024,18 +933,10 @@ const uiTranslations = {
         step2Desc: "पका हुआ भोजन और नमूने काउंटी फॉर्म का उपयोग करते हैं, जबकि आपके अपने खेत की ताजा उपज अक्सर ऐसा नहीं करती है।",
         tffKicker: "अस्थायी खाद्य सुविधा",
         tffTitle: "तैयार भोजन, गर्म भोजन, पके हुए सामान, नमूने",
-        tffDesc: "अपने ब्राउज़र में आधिकारिक Alameda County अस्थायी खाद्य सुविधा आवेदन सीधे पूरा करें।",
+        tffDesc: "सीधे अपने ब्राउज़र में आधिकारिक Alameda County अस्थायी खाद्य सुविधा आवेदन भरें।",
         agKicker: "कृषि मार्ग",
         agTitle: "मेरे खेत में उगाई गई कच्ची उपज, फल, शहद",
         agDesc: "कृषि छूट और प्रत्यक्ष-से-उपभोक्ता नियमों के लिए मार्गदर्शन देखें।",
-        landing: {
-            eyebrow: "फ्रेमोंट विक्रेता · Alameda County",
-            title: "खाद्य विक्रेताओं के लिए परमिट अब आसान।",
-            desc: "MarketKey फ्रेमोंट और Alameda County के खाद्य विक्रेताओं को चरण-दर-चरण मार्गदर्शन और सरल भाषा के साथ सार्वजनिक स्वास्थ्य परमिट समझने में मदद करता है।",
-            benefits: ["निर्देशित चरण", "आधिकारिक PDF", "सरल भाषा"],
-            benefitDescriptions: ["जानें कि आगे क्या करना है।", "उपयोग के लिए तैयार आवेदन पूरा करें।", "हर आवश्यकता को समझें।"],
-            getStarted: "शुरू करें"
-        },
         validationError: "कृपया आगे बढ़ने से पहले सभी आवश्यक फ़ील्ड भरें।",
         startOver: "फिर से शुरू करें",
         answersEnglish: "अपने उत्तर अंग्रेज़ी में लिखें।",
@@ -1045,20 +946,6 @@ const uiTranslations = {
         reviewDesc: "आधिकारिक काउंटी PDF बनाने से पहले नीचे दी गई जानकारी की समीक्षा करें।",
         reviewBack: "प्रश्नों पर वापस जाएँ",
         reviewDownload: "आधिकारिक आवेदन PDF डाउनलोड करें",
-        questionnaireTitle: "अस्थायी खाद्य सुविधा आवेदन",
-        answersInstruction: "अपने उत्तर अंग्रेज़ी में लिखें।",
-        quizTitle: "खाद्य सुरक्षा प्रश्नोत्तरी",
-        quizDescription: "Alameda County की आधिकारिक खाद्य सुरक्षा प्रश्नोत्तरी पूरी करें।",
-        checklistTitle: "स्व-निरीक्षण जाँच सूची",
-        checklistDescription: "हर वस्तु तैयार होने की पुष्टि करने के बाद उसके आगे अपने नाम के शुरुआती अक्षर लिखें।",
-        signatureTitle: "अंतिम हस्ताक्षर / संपर्क जानकारी",
-        applicantPhone: "आवेदक का फ़ोन नंबर",
-        clearSignature: "हस्ताक्षर मिटाएँ",
-        back: "वापस",
-        saveContinue: "सहेजें और जारी रखें",
-        signatureError: "जारी रखने से पहले अपने हस्ताक्षर करें।",
-        doneTitle: "आवेदन सफलतापूर्वक तैयार हो गया!",
-        doneDescription: "आपका PDF आपके डिवाइस पर डाउनलोड हो गया है।",
         yes: "हाँ",
         no: "नहीं",
         notAnswered: "उत्तर नहीं दिया गया",
@@ -1073,32 +960,8 @@ const uiTranslations = {
     }
 };
 
-function updateLandingText() {
-    const translations = uiTranslations[appState.language || appState.lang] || uiTranslations.en;
-    const landing = translations.landing;
-    if (!landing) return;
-
-    const setText = (id, value) => {
-        const element = document.getElementById(id);
-        if (element) element.textContent = value;
-    };
-    setText("landingEyebrow", landing.eyebrow);
-    setText("landingTitle", landing.title);
-    setText("landingDesc", landing.desc);
-    landing.benefits.forEach((benefit, index) => {
-        setText(`landingBenefit${index + 1}`, benefit);
-        setText(`landingBenefitDesc${index + 1}`, landing.benefitDescriptions[index]);
-    });
-    setText("getStartedBtn", `${landing.getStarted} →`);
-}
-
-function refreshLocalizedText() {
-    updateLandingText();
-    updatePageText();
-}
-
 function updatePageText() {
-    const lang = appState.language || appState.lang;
+    const lang = appState.lang;
     const t = uiTranslations[lang];
     if (!t) return;
         const headings = {
@@ -1231,25 +1094,6 @@ function updatePageText() {
     const answersBanner = document.querySelector("#formPage1 .triage-desc");
     if (answersBanner) answersBanner.textContent = t.answersEnglish;
 
-    const signatureSections = document.querySelectorAll("#formPage3 .form-section-card h3");
-    if (signatureSections[0]) {
-        signatureSections[0].textContent = t.checklistTitle;
-        const description = signatureSections[0].parentElement.querySelector("p");
-        if (description) description.textContent = t.checklistDescription;
-    }
-    if (signatureSections[1]) signatureSections[1].textContent = t.signatureTitle;
-    const setText = (selector, text) => {
-        const element = document.querySelector(selector);
-        if (element) element.textContent = text;
-    };
-    setText('#formPage3 label[for="applicantPhone"]', t.applicantPhone);
-    setText("#clear-btn", t.clearSignature);
-    setText("#qBackBtn", t.back);
-    setText("#qSubmitBtn", t.saveContinue);
-    setText("#screen5 .triage-title", t.doneTitle);
-    const doneDescription = document.querySelector("#screen5 .triage-desc");
-    if (doneDescription) doneDescription.firstChild.textContent = `${t.doneDescription} `;
-
 
     questionnaireQuestions.forEach(function(question) {
         if (question.id === "faNumber") return;
@@ -1260,7 +1104,7 @@ function updatePageText() {
 
         if (label) {
             const prompt =
-                question.prompts[appState.language || appState.lang] || question.prompts.en;
+                question.prompts[appState.lang] || question.prompts.en;
 
             label.textContent =
                 prompt + (question.required ? " *" : "");
@@ -1326,7 +1170,7 @@ function renderQuestionnaire() {
         const label = document.createElement("label");
         label.htmlFor = question.id;
 
-        const prompt = question.prompts[appState.language || appState.lang] || question.prompts.en;
+        const prompt = question.prompts[appState.lang] || question.prompts.en;
         label.textContent = prompt + (question.required ? " *" : "");
 
         let input;
@@ -1346,11 +1190,10 @@ function renderQuestionnaire() {
             defaultOpt.selected = !savedAnswer;
             input.appendChild(defaultOpt);
 
-            question.options.forEach((optText, index) => {
+            question.options.forEach(optText => {
                 const opt = document.createElement("option");
                 opt.value = optText;
-                opt.textContent =
-                    question.optionLabels?.[appState.language || appState.lang]?.[index] || optText;
+                opt.textContent = optText;
                 if (savedAnswer === optText) opt.selected = true;
                 input.appendChild(opt);
             });
@@ -1505,8 +1348,7 @@ function validateForm() {
     const validationAlert = document.getElementById("validationAlert");
     if (appState.currentFormPage === 3 && !signatureHasDrawn) {
         if (validationAlert) {
-            const translations = uiTranslations[appState.language || appState.lang] || uiTranslations.en;
-            validationAlert.textContent = translations.signatureError;
+            validationAlert.textContent = "Please draw your signature before continuing.";
             validationAlert.style.setProperty("display", "block", "important");
         }
         get("signature-pad")?.focus();
@@ -1566,7 +1408,7 @@ function updateLiveCounter() {
             hi: `${total} आवश्यक प्रश्नों में से ${answered} के उत्तर दिए गए`
         };
 
-        counter.textContent = messages[appState.language || appState.lang] || messages.en;
+        counter.textContent = messages[appState.lang] || messages.en;
     }
 }
 
@@ -1776,7 +1618,7 @@ function transalteHeadingAndStuff() {
         }
     };
 
-    const text = translations[appState.language || appState.lang] || translations.en;
+    const text = translations[appState.lang] || translations.en;
 
     const elements = {
         "#screen1 .tagline": text.hero,
@@ -1808,7 +1650,7 @@ function transalteHeadingAndStuff() {
             }
         });
 
-        // The Add Row button is directly after the table.
+        // the add row button sits right after the table
         const addButton = table.nextElementSibling;
         if (addButton && addButton.tagName === "BUTTON") {
             addButton.textContent = text.add;
