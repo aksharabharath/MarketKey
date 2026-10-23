@@ -3,6 +3,7 @@ const appState = {
     lang: 'en',
     currentStep: 1,
     currentFormPage: 1,
+    currentView: 'landing',
     skipCommissary: false,
     path: null,
     formData: {}
@@ -11,6 +12,18 @@ let signatureHasDrawn = false;
 
 const get = id => document.getElementById(id);
 const listen = (id, event, handler) => get(id)?.addEventListener(event, handler);
+
+function showView(view) {
+    appState.currentView = view;
+    const landing = get("view-landing");
+    const app = get("view-app");
+    if (landing) landing.hidden = view !== "landing";
+    if (app) app.hidden = view !== "app";
+
+    const headerControls = get("headerControls");
+    if (headerControls) headerControls.style.display = view === "app" ? "flex" : "none";
+    if (view === "app") showScreen("screen1");
+}
 
 function clearSignatureCanvas() {
     const canvas = get("signature-pad");
@@ -40,7 +53,7 @@ function resetApp() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    showScreen('screen1');
+    showView('landing');
     updateStepTracker(1);
     loadQuestionnaire();
     prefillAutoDates();
@@ -51,6 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (confirm('Are you sure you want to start over? All entered data will be cleared.')) resetApp();
     });
     listen('startNewAppBtn', 'click', resetApp);
+    listen('getStartedBtn', 'click', () => showView('app'));
+    listen('homeBtn', 'click', () => showView('landing'));
     listen('revBackBtn', 'click', () => {
         showScreen('screen3');
         restoreSignatureCanvas();
@@ -290,6 +305,9 @@ function saveLanguage(langCode) {
         ? "1px solid currentColor"
         : "none";
     });
+    document.querySelectorAll(".landing-language").forEach(button => {
+        button.classList.toggle("active", button.dataset.lang === langCode);
+    });
 
     const headerControls = document.getElementById("headerControls");
 
@@ -298,6 +316,7 @@ function saveLanguage(langCode) {
     }
 
     renderQuestionnaire();
+    updateLandingText();
     updatePageText();
 }
 // 5. PDF and review functions
@@ -847,6 +866,13 @@ const uiTranslations = {
         agKicker: "Agricultural route",
         agTitle: "Raw produce, fruit, honey grown on my farm",
         agDesc: "View guidance for agricultural exemptions and direct-to-consumer rules.",
+        landing: {
+            eyebrow: "Fremont vendors · Alameda County",
+            title: "Permits made clearer for food vendors.",
+            desc: "MarketKey helps Fremont and Alameda County food vendors navigate public health permits with guided steps and plain-language support.",
+            benefits: ["Guided steps", "Official PDF", "Plain language"],
+            getStarted: "Get Started"
+        },
         validationError: "Please fill out all required fields with standard characters before proceeding.",
         startOver: "Start over",
         answersEnglish: "Type your answers in English.",
@@ -877,6 +903,13 @@ const uiTranslations = {
         agKicker: "Ruta agrícola",
         agTitle: "Productos crudos, fruta, miel cosechada en mi granja",
         agDesc: "Vea la guía para exenciones agrícolas y reglas de venta directa al consumidor.",
+        landing: {
+            eyebrow: "Vendedores de Fremont · Condado de Alameda",
+            title: "Permisos más claros para vendedores de alimentos.",
+            desc: "MarketKey ayuda a los vendedores de alimentos de Fremont y del Condado de Alameda a gestionar los permisos de salud pública con pasos guiados y explicaciones sencillas.",
+            benefits: ["Pasos guiados", "PDF oficial", "Lenguaje sencillo"],
+            getStarted: "Comenzar"
+        },
         validationError: "Por favor, complete todos los campos obligatorios antes de continuar.",
         startOver: "Comenzar de nuevo",
         answersEnglish: "Escriba sus respuestas en inglés.",
@@ -907,6 +940,13 @@ const uiTranslations = {
         agKicker: "农业路线",
         agTitle: "在我农场种植的生鲜农产品、水果、蜂蜜",
         agDesc: "查看农业豁免和直销规则指南。",
+        landing: {
+            eyebrow: "弗里蒙特商户 · 阿拉米达县",
+            title: "让食品经营许可更清晰。",
+            desc: "MarketKey 通过分步引导和通俗说明，帮助弗里蒙特及阿拉米达县的食品商户办理公共卫生许可。",
+            benefits: ["分步引导", "官方 PDF", "通俗说明"],
+            getStarted: "开始使用"
+        },
         startOver: "重新开始",
         answersEnglish: "请用英文填写您的答案。",
         stepLabels: ["语言", "路径", "问题", "审核", "完成"],
@@ -937,6 +977,13 @@ const uiTranslations = {
         agKicker: "कृषि मार्ग",
         agTitle: "मेरे खेत में उगाई गई कच्ची उपज, फल, शहद",
         agDesc: "कृषि छूट और प्रत्यक्ष-से-उपभोक्ता नियमों के लिए मार्गदर्शन देखें।",
+        landing: {
+            eyebrow: "फ्रेमोंट विक्रेता · Alameda County",
+            title: "खाद्य विक्रेताओं के लिए परमिट अब आसान।",
+            desc: "MarketKey फ्रेमोंट और Alameda County के खाद्य विक्रेताओं को चरण-दर-चरण मार्गदर्शन और सरल भाषा के साथ सार्वजनिक स्वास्थ्य परमिट समझने में मदद करता है।",
+            benefits: ["निर्देशित चरण", "आधिकारिक PDF", "सरल भाषा"],
+            getStarted: "शुरू करें"
+        },
         validationError: "कृपया आगे बढ़ने से पहले सभी आवश्यक फ़ील्ड भरें।",
         startOver: "फिर से शुरू करें",
         answersEnglish: "अपने उत्तर अंग्रेज़ी में लिखें।",
@@ -959,6 +1006,24 @@ const uiTranslations = {
         }
     }
 };
+
+function updateLandingText() {
+    const translations = uiTranslations[appState.lang] || uiTranslations.en;
+    const landing = translations.landing;
+    if (!landing) return;
+
+    const setText = (id, value) => {
+        const element = document.getElementById(id);
+        if (element) element.textContent = value;
+    };
+    setText("landingEyebrow", landing.eyebrow);
+    setText("landingTitle", landing.title);
+    setText("landingDesc", landing.desc);
+    landing.benefits.forEach((benefit, index) => {
+        setText(`landingBenefit${index + 1}`, benefit);
+    });
+    setText("getStartedBtn", `${landing.getStarted} →`);
+}
 
 function updatePageText() {
     const lang = appState.lang;

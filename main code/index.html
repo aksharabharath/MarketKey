@@ -15,9 +15,36 @@
 
 <body class="bg-[#ffebcc] text-[#d9641f] font-sans min-h-screen m-0 overflow-x-hidden max-w-[100vw]">
 
+    <section id="view-landing" class="view-landing" aria-labelledby="landingTitle">
+        <div class="landing-shell">
+            <div class="landing-topbar">
+                <a class="landing-brand" href="#view-landing">MarketKey</a>
+                <div class="landing-language-switcher" aria-label="Choose language">
+                    <button type="button" class="landing-language active" data-lang="en">EN</button>
+                    <button type="button" class="landing-language" data-lang="es">ES</button>
+                    <button type="button" class="landing-language" data-lang="zh">中文</button>
+                    <button type="button" class="landing-language" data-lang="hi">हिं</button>
+                </div>
+            </div>
+            <div class="landing-content">
+                <p id="landingEyebrow" class="landing-eyebrow">Fremont vendors · Alameda County</p>
+                <h1 id="landingTitle">Permits made clearer for food vendors.</h1>
+                <p id="landingDesc" class="landing-description">MarketKey helps Fremont and Alameda County food vendors navigate public health permits with guided steps and plain-language support.</p>
+                <div class="landing-benefits">
+                    <div><strong id="landingBenefit1">Guided steps</strong><span>Know what to do next.</span></div>
+                    <div><strong id="landingBenefit2">Official PDF</strong><span>Finish with a ready-to-use application.</span></div>
+                    <div><strong id="landingBenefit3">Plain language</strong><span>Understand each requirement.</span></div>
+                </div>
+                <button type="button" id="getStartedBtn" class="landing-cta">Get Started <span aria-hidden="true">→</span></button>
+            </div>
+        </div>
+    </section>
+
+    <div id="view-app" class="view-app" hidden>
     <header class="flex justify-between items-center py-6 px-[5%] bg-[#d9641f] text-[#fdcb7b] border-b border-[#fdcb7b]/25">
         <a class="text-2xl font-bold font-['League_Spartan'] no-underline text-inherit" href="index.html">MarketKey</a>
         <div class="flex items-center gap-3" id="headerControls" style="display: none;">
+            <button type="button" class="app-home-button" id="homeBtn">Home / Overview</button>
             <button type="button" class="bg-transparent border-none text-[#fdcb7b] font-['League_Spartan'] text-base cursor-pointer opacity-80 hover:opacity-100 hover:underline" id="startOverBtn">Start over</button>
             <div class="flex gap-2 font-['League_Spartan'] text-sm lang-switcher">
                 <span data-lang="en" class="cursor-pointer opacity-60 font-bold border-b border-[#fdcb7b] active">EN</span>
@@ -325,6 +352,7 @@
             </div>
         </section>
     </main>
+    </div>
 
 </body>
 
