@@ -130,8 +130,8 @@
     background-color: #b95018;
 }
 
-body, #view-app { background-color: #faf5ee; }
-.view-landing { min-height: calc(100vh - 77px); padding: clamp(80px, 14vh, 150px) 5%; background-color: #faf5ee; color: #713515; text-align: center; }
+body, #view-app { background-color: #faf5ee; background-image: none; }
+.view-landing { min-height: calc(100vh - 77px); padding: clamp(80px, 14vh, 150px) 5%; background-color: #faf5ee; background-image: none; color: #713515; text-align: center; }
 .landing-eyebrow { color: #b55d22; font: 600 0.85rem 'League Spartan', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
 .landing-title { max-width: 720px; margin: 16px auto; color: #d9641f; font: 700 clamp(2.4rem, 6vw, 4.5rem) 'League Spartan', sans-serif; line-height: 1.05; }
 .landing-subtitle { max-width: 620px; margin: 0 auto 32px; color: #8b6248; font-size: 1.1rem; line-height: 1.6; }
