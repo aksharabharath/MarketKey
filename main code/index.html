@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="overflow-x-hidden max-w-[100vw] bg-[#ffebcc] text-[#d9641f]">
+<html lang="en" class="overflow-x-hidden max-w-[100vw] bg-[#faf5ee] text-[#d9641f]">
 
 <head>
     <meta charset="UTF-8">
@@ -13,7 +13,7 @@
     <script src="script.js" defer></script>
 </head>
 
-<body class="bg-[#ffebcc] text-[#d9641f] font-sans min-h-screen m-0 overflow-x-hidden max-w-[100vw]">
+<body class="bg-[#faf5ee] text-[#d9641f] font-sans min-h-screen m-0 overflow-x-hidden max-w-[100vw]">
 
     <header class="flex justify-between items-center py-6 px-[5%] bg-[#d9641f] text-[#fdcb7b] border-b border-[#fdcb7b]/25">
         <a class="text-2xl font-bold font-['League_Spartan'] no-underline text-inherit" href="index.html">MarketKey</a>
@@ -28,7 +28,14 @@
         </div>
     </header>
 
-    <main class="w-full min-h-[calc(100vh-77px)] py-[60px] px-[5%] text-center bg-[#ffebcc] text-[#d9641f]">
+    <section id="view-landing" class="view-landing" aria-labelledby="landingTitle">
+        <p class="landing-eyebrow">Fremont vendors · Alameda County</p>
+        <h1 id="landingTitle" class="landing-title">Your food business starts here.</h1>
+        <p class="landing-subtitle">Find the permits you need to sell food in Alameda County. We'll guide you through the requirements, step by step.</p>
+        <button type="button" id="getStartedBtn" class="landing-cta">Get Started →</button>
+    </section>
+
+    <main id="view-app" class="w-full min-h-[calc(100vh-77px)] py-[60px] px-[5%] text-center bg-[#faf5ee] text-[#d9641f]" hidden>
         <nav class="flex justify-center gap-3 my-5 font-['League_Spartan'] text-sm step-tracker">
             <div class="flex items-center gap-1.5 opacity-50 font-bold step-dot active" data-step="1">
                 <div class="w-6 h-6 rounded-full border-2 border-[#d9641f] flex items-center justify-center text-xs step-circle">1</div>
