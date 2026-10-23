@@ -1,4 +1,4 @@
-// 1. entire thing functions
+// set up the app state
 const appState = {
     lang: 'en',
     currentStep: 1,
@@ -182,9 +182,9 @@ if (canvas && clearBtn) {
     });
 }
 });
-//------------------- (insert #2-4), check MarketKey/docs/handoff_notes.md for reference if need clarification
+// screen and form setup starts here
 
-//2, for screen switching : 
+// switch between the main screens
 function showScreen(screenId){
     const screens = document.querySelectorAll(".screen");
     screens.forEach(function(screen) {
@@ -200,7 +200,7 @@ function showScreen(screenId){
     window.scrollTo(0, 0);
 }
 
-//2, for UPD stateTracker 
+// update the progress tracker
 function updateStepTracker(currentStep) {
     const steps = document.querySelectorAll(".step-dot");
     steps.forEach(function(step) {
@@ -228,7 +228,7 @@ function showFormPage(pageNumber) {
     page.setAttribute('aria-hidden', 'false');
     appState.currentFormPage = pageNumber;
 }
-//2 for savelang 
+// save the selected language
 function saveLanguage(langCode) {
     const languages = {
         en: {
@@ -256,11 +256,11 @@ function saveLanguage(langCode) {
     const selected = languages[langCode];
     if (!selected) return;
 
-    // Save the chosen language.
+    // save the chosen language
     appState.lang = langCode;
     document.documentElement.lang = langCode;
 
-    // Update the first page.
+    // update the language page
     document.getElementById("languageHeading").textContent =
         selected.heading;
 
@@ -270,7 +270,7 @@ function saveLanguage(langCode) {
     document.getElementById("langNextBtn").textContent =
         selected.next;
 
-    // Highlight the selected language button.
+    // highlight the selected language button
     document.querySelectorAll(".languageButtons button").forEach(button => {
         const isSelected = button.dataset.lang === langCode;
 
@@ -278,7 +278,7 @@ function saveLanguage(langCode) {
         button.setAttribute("aria-pressed", String(isSelected));
     });
 
-    // Update the header language selection.
+    // update the header language selection
     document.querySelectorAll(".lang-switcher span").forEach(span => {
         const isSelected = span.dataset.lang === langCode;
 
@@ -300,7 +300,7 @@ function saveLanguage(langCode) {
     renderQuestionnaire();
     updatePageText();
 }
-// 5. PDF and review functions
+// review and PDF functions
 function formatKeyToLabel(key) {
     const text = String(key)
         .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
@@ -629,7 +629,7 @@ function writePdfField(field, value, name) {
                     field.setFontSize(8);
                 }
             } catch {
-                // Legacy fields without /DA retain their existing appearance.
+                // older fields without /DA keep their existing appearance
             }
             field.setText(text);
         }
@@ -1650,7 +1650,7 @@ function transalteHeadingAndStuff() {
             }
         });
 
-        // The Add Row button is directly after the table.
+        // the add row button sits right after the table
         const addButton = table.nextElementSibling;
         if (addButton && addButton.tagName === "BUTTON") {
             addButton.textContent = text.add;
