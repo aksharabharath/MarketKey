@@ -878,6 +878,7 @@ const uiTranslations = {
             title: "Permits made clearer for food vendors.",
             desc: "MarketKey helps Fremont and Alameda County food vendors navigate public health permits with guided steps and plain-language support.",
             benefits: ["Guided steps", "Official PDF", "Plain language"],
+            benefitDescriptions: ["Know what to do next.", "Finish with a ready-to-use application.", "Understand each requirement."],
             getStarted: "Get Started"
         },
         validationError: "Please fill out all required fields with standard characters before proceeding.",
@@ -915,6 +916,7 @@ const uiTranslations = {
             title: "Permisos más claros para vendedores de alimentos.",
             desc: "MarketKey ayuda a los vendedores de alimentos de Fremont y del Condado de Alameda a gestionar los permisos de salud pública con pasos guiados y explicaciones sencillas.",
             benefits: ["Pasos guiados", "PDF oficial", "Lenguaje sencillo"],
+            benefitDescriptions: ["Sepa qué hacer a continuación.", "Termine con una solicitud lista para usar.", "Comprenda cada requisito."],
             getStarted: "Comenzar"
         },
         validationError: "Por favor, complete todos los campos obligatorios antes de continuar.",
@@ -952,6 +954,7 @@ const uiTranslations = {
             title: "让食品经营许可更清晰。",
             desc: "MarketKey 通过分步引导和通俗说明，帮助弗里蒙特及阿拉米达县的食品商户办理公共卫生许可。",
             benefits: ["分步引导", "官方 PDF", "通俗说明"],
+            benefitDescriptions: ["了解下一步该做什么。", "完成一份可直接使用的申请。", "理解每项要求。"],
             getStarted: "开始使用"
         },
         startOver: "重新开始",
@@ -989,6 +992,7 @@ const uiTranslations = {
             title: "खाद्य विक्रेताओं के लिए परमिट अब आसान।",
             desc: "MarketKey फ्रेमोंट और Alameda County के खाद्य विक्रेताओं को चरण-दर-चरण मार्गदर्शन और सरल भाषा के साथ सार्वजनिक स्वास्थ्य परमिट समझने में मदद करता है।",
             benefits: ["निर्देशित चरण", "आधिकारिक PDF", "सरल भाषा"],
+            benefitDescriptions: ["जानें कि आगे क्या करना है।", "उपयोग के लिए तैयार आवेदन पूरा करें।", "हर आवश्यकता को समझें।"],
             getStarted: "शुरू करें"
         },
         validationError: "कृपया आगे बढ़ने से पहले सभी आवश्यक फ़ील्ड भरें।",
@@ -1028,6 +1032,7 @@ function updateLandingText() {
     setText("landingDesc", landing.desc);
     landing.benefits.forEach((benefit, index) => {
         setText(`landingBenefit${index + 1}`, benefit);
+        setText(`landingBenefitDesc${index + 1}`, landing.benefitDescriptions[index]);
     });
     setText("getStartedBtn", `${landing.getStarted} →`);
 }
