@@ -74,6 +74,13 @@
 }
 .step-dot.active { opacity: 1; }
 
+.step-helper {
+    margin: 8px 0 0;
+    color: #8b6248;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+}
+
 .trust-microcopy {
     margin: 18px 0 0;
     color: #8b6248;
@@ -93,6 +100,11 @@
     background-color: #b95018;
     box-shadow: 0 12px 24px rgba(113, 53, 21, 0.22);
     transform: translateY(-2px);
+}
+.languageButtons button:focus-visible,
+.primary-cta:focus-visible {
+    outline: 3px solid #713515;
+    outline-offset: 3px;
 }
 .primary-cta:active {
     transform: translateY(0);

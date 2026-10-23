@@ -202,6 +202,7 @@ function showScreen(screenId){
 
 //2, for UPD stateTracker 
 function updateStepTracker(currentStep) {
+    appState.currentStep = currentStep;
     const steps = document.querySelectorAll(".step-dot");
     steps.forEach(function(step) {
         const number = Number(step.dataset.step);
@@ -211,6 +212,12 @@ function updateStepTracker(currentStep) {
             step.classList.remove("active");
         }
     });
+    const t = uiTranslations[appState.lang] || uiTranslations.en;
+    const helper = document.getElementById("stepHelper");
+    if (helper) {
+        helper.textContent =
+            `${t.stepCounter(currentStep)} · ${t.stepHelpers[currentStep - 1]}`;
+    }
 }
 
 function showFormPage(pageNumber) {
@@ -851,6 +858,7 @@ const uiTranslations = {
         startOver: "Start over",
         answersEnglish: "Type your answers in English.",
         stepLabels: ["Language", "Path", "Questions", "Review", "Done"],
+        stepHelpers: ["Choose your language", "Choose your path", "Complete your application", "Review your application", "Download your application"],
         stepCounter: step => `STEP ${step} OF 5`,
         reviewTitle: "Review Your Application",
         reviewDesc: "Please review your information below before generating your official county PDF.",
@@ -881,6 +889,7 @@ const uiTranslations = {
         startOver: "Comenzar de nuevo",
         answersEnglish: "Escriba sus respuestas en inglés.",
         stepLabels: ["Idioma", "Ruta", "Preguntas", "Revisión", "Listo"],
+        stepHelpers: ["Elija su idioma", "Elija su ruta", "Complete su solicitud", "Revise su solicitud", "Descargue su solicitud"],
         stepCounter: step => `PASO ${step} DE 5`,
         reviewTitle: "Revise su solicitud",
         reviewDesc: "Revise la información a continuación antes de generar el PDF oficial del condado.",
@@ -910,6 +919,7 @@ const uiTranslations = {
         startOver: "重新开始",
         answersEnglish: "请用英文填写您的答案。",
         stepLabels: ["语言", "路径", "问题", "审核", "完成"],
+        stepHelpers: ["选择您的语言", "选择您的路径", "完成您的申请", "查看您的申请", "下载您的申请"],
         stepCounter: step => `第 ${step} 步，共 5 步`,
         validationError: "请在继续之前填写所有必填字段。",
         reviewTitle: "查看您的申请",
@@ -941,6 +951,7 @@ const uiTranslations = {
         startOver: "फिर से शुरू करें",
         answersEnglish: "अपने उत्तर अंग्रेज़ी में लिखें।",
         stepLabels: ["भाषा", "मार्ग", "प्रश्न", "समीक्षा", "पूर्ण"],
+        stepHelpers: ["अपनी भाषा चुनें", "अपना मार्ग चुनें", "अपना आवेदन पूरा करें", "अपने आवेदन की समीक्षा करें", "अपना आवेदन डाउनलोड करें"],
         stepCounter: step => `चरण ${step} / 5`,
         reviewTitle: "अपने आवेदन की समीक्षा करें",
         reviewDesc: "आधिकारिक काउंटी PDF बनाने से पहले नीचे दी गई जानकारी की समीक्षा करें।",
@@ -964,6 +975,7 @@ function updatePageText() {
     const lang = appState.lang;
     const t = uiTranslations[lang];
     if (!t) return;
+    updateStepTracker(appState.currentStep);
 
     const startOver = document.getElementById("startOverBtn");
     if (startOver) startOver.textContent = t.startOver;
