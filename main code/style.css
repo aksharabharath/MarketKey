@@ -49,6 +49,8 @@
     background: #d9641f;
     color: #fff8ed;
 }
+.landing-language:not(.active) { opacity: 0.72; }
+.landing-language.active { box-shadow: 0 3px 8px rgba(113, 53, 21, 0.18); }
 .landing-language:focus-visible,
 .app-home-button:focus-visible {
     outline: 3px solid #713515;
