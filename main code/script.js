@@ -543,6 +543,12 @@ function normalizePdfFieldName(name) {
     return String(name).toLowerCase().replace(/[^a-z0-9]/g, "");
 }
 
+function dataUrlToBytes(dataUrl) {
+    const base64 = dataUrl.split(",")[1];
+    const binary = atob(base64);
+    return Uint8Array.from(binary, character => character.charCodeAt(0));
+}
+
 function collectFormData() {
     const data = { ...appState.formData };
     questionnaireQuestions.forEach(question => {
@@ -801,7 +807,8 @@ async function generateCountyPDF() {
                     || pdfDoc.getPages()[5];
 
                 const rect = widget.getRectangle();
-                const signatureImage = await pdfDoc.embedPng(signature);
+                const signatureImageBytes = dataUrlToBytes(signature);
+                const signatureImage = await pdfDoc.embedPng(signatureImageBytes);
 
                 page.drawImage(signatureImage, {
                     x: rect.x + 2,
