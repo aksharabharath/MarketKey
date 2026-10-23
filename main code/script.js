@@ -1112,6 +1112,9 @@ function updatePageText() {
     });
 
     renderReviewScreen();
+    transalteHeadingAndStuff();
+    updateLiveCounter();
+}
 }
 
 let questionnaireQuestions = [];
@@ -1265,7 +1268,7 @@ function renderQuestionnaire() {
                                 ? values.preparationLocation
                                 : column === "preppedAtEventOnly" && values.preparationLocation?.toLowerCase().includes("before") === false
                                     ? values.preparationLocation
-                                    : column === "cookingServingEquipment" ? values.equipmentUsed : "");
+                                    : column === "cookingServingEquipment" ? (values.equipmentUsed ?? "") : "");
                         field.required = question.required;
                         field.className = "w-full";
                         field.setAttribute("aria-label", column.replace(/([A-Z])/g, " $1"));
@@ -1328,8 +1331,9 @@ function renderQuestionnaire() {
         targetForm.appendChild(container);
         });
     prefillAutoDates();
+    translateExtraText();
     updateLiveCounter();
-}
+}}}
 
 function prefillAutoDates() {
     const today = new Date().toISOString().split('T')[0];
@@ -1396,8 +1400,16 @@ function updateLiveCounter() {
     const counter = document.getElementById("liveCounter");
 
     if (counter) {
-        counter.textContent =
-            `${answered} of ${requiredQuestions.length} required questions answered`;
+        const total = requiredQuestions.length;
+
+        const messages = {
+            en: `${answered} of ${total} required questions answered`,
+            es: `${answered} de ${total} preguntas obligatorias respondidas`,
+            zh: `已回答 ${answered} / ${total} 个必填问题`,
+            hi: `${total} आवश्यक प्रश्नों में से ${answered} के उत्तर दिए गए`
+        };
+
+        counter.textContent = messages[appState.lang] || messages.en;
     }
 }
 
@@ -1530,3 +1542,119 @@ function fillPage3() {
 window.fillPage1 = fillPage1;
 window.fillPage2 = fillPage2;
 window.fillPage3 = fillPage3;
+
+function transalteHeadingAndStuff() {
+    const translations = {
+        en: {
+            hero: "Your food business starts here.",
+            subtitle: "Find the permits you need to sell food in Alameda County. We'll guide you through the requirements, step by step.",
+            location: "Fremont vendors · Alameda County",
+            trust: "Free to get started · Guided step by step",
+            title: "Temporary Food Facility Application",
+            date: "Application Date",
+            back: "Back",
+            next: "Save & Continue",
+            select: "-- Select an option --",
+            add: "Add Row",
+            columns: [
+                "Menu Item", "Prepped Before Event",
+                "Prepped at Event Only", "Hot/Cold Transport",
+                "Served Hot/Cold/Reheated", "Transport Equipment",
+                "Cooking/Serving Equipment"
+            ]
+        },
+        es: {
+            hero: "Su negocio de comida comienza aquí.",
+            subtitle: "Encuentre los permisos que necesita para vender alimentos en el condado de Alameda. Le guiaremos paso a paso.",
+            location: "Vendedores de Fremont · Condado de Alameda",
+            trust: "Gratis para comenzar · Orientación paso a paso",
+            title: "Solicitud para una instalación temporal de alimentos",
+            date: "Fecha de solicitud",
+            back: "Atrás",
+            next: "Guardar y continuar",
+            select: "-- Seleccione una opción --",
+            add: "Añadir fila",
+            columns: [
+                "Producto del menú", "Preparado antes del evento",
+                "Preparado solo en el evento", "Transporte caliente/frío",
+                "Servido caliente/frío/recalentado", "Equipo de transporte",
+                "Equipo para cocinar/servir"
+            ]
+        },
+        zh: {
+            hero: "您的食品生意从这里开始。",
+            subtitle: "了解在阿拉米达县销售食品所需的许可证。我们将逐步指导您完成各项要求。",
+            location: "弗里蒙特商家 · 阿拉米达县",
+            trust: "免费开始 · 逐步指导",
+            title: "临时食品设施申请",
+            date: "申请日期",
+            back: "返回",
+            next: "保存并继续",
+            select: "-- 请选择 --",
+            add: "添加一行",
+            columns: [
+                "菜单食品", "活动前准备",
+                "仅在活动现场准备", "热／冷运输",
+                "热食／冷食／重新加热", "运输设备",
+                "烹饪／供餐设备"
+            ]
+        },
+        hi: {
+            hero: "आपका खाद्य व्यवसाय यहाँ से शुरू होता है।",
+            subtitle: "अलामेडा काउंटी में खाद्य पदार्थ बेचने के लिए आवश्यक परमिट जानें। हम हर चरण में आपका मार्गदर्शन करेंगे।",
+            location: "फ्रीमोंट विक्रेता · अलामेडा काउंटी",
+            trust: "शुरुआत मुफ़्त · हर चरण में मार्गदर्शन",
+            title: "अस्थायी खाद्य सुविधा आवेदन",
+            date: "आवेदन की तारीख",
+            back: "पीछे",
+            next: "सहेजें और आगे बढ़ें",
+            select: "-- एक विकल्प चुनें --",
+            add: "पंक्ति जोड़ें",
+            columns: [
+                "खाद्य पदार्थ", "कार्यक्रम से पहले तैयार",
+                "केवल कार्यक्रम स्थल पर तैयार", "गर्म/ठंडा परिवहन",
+                "गर्म/ठंडा/दोबारा गर्म करके परोसा गया",
+                "परिवहन उपकरण", "पकाने/परोसने के उपकरण"
+            ]
+        }
+    };
+
+    const text = translations[appState.lang] || translations.en;
+
+    const elements = {
+        "#screen1 .tagline": text.hero,
+        "#screen1 .hero-subtitle": text.subtitle,
+        "#screen1 .intro .eyebrow": text.location,
+        "#screen1 .trust-microcopy": text.trust,
+        "#formPage1 h2": text.title,
+        'label[for="applicationDate"]': text.date,
+        "#qBackBtn": text.back,
+        "#qSubmitBtn": text.next
+    };
+
+    Object.entries(elements).forEach(function([selector, value]) {
+        const element = document.querySelector(selector);
+        if (element) element.textContent = value;
+    });
+
+    document.querySelectorAll("#screen3 select").forEach(function(select) {
+        const placeholder = select.querySelector('option[value=""]');
+        if (placeholder) placeholder.textContent = text.select;
+    });
+
+    const table = document.getElementById("menuTableBuilderTable");
+
+    if (table) {
+        table.querySelectorAll("thead th").forEach(function(heading, index) {
+            if (text.columns[index]) {
+                heading.textContent = text.columns[index];
+            }
+        });
+
+        // The Add Row button is directly after the table.
+        const addButton = table.nextElementSibling;
+        if (addButton && addButton.tagName === "BUTTON") {
+            addButton.textContent = text.add;
+        }
+    }
+}
