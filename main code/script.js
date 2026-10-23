@@ -1331,7 +1331,7 @@ function renderQuestionnaire() {
         targetForm.appendChild(container);
         });
     prefillAutoDates();
-    translateExtraText();
+    transalteHeadingAndStuff();
     updateLiveCounter();
 }}}
 
