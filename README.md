@@ -1,53 +1,59 @@
 # MarketKey
-**Simplifying Temporary Food Facility (TFF) permits for Fremont food vendors through lightweight civic tech and multilingual accessibility.**
 
-## Team:
-Akshara Bharath, Sharayu Patil, Sriya Lingam
+MarketKey is a web-based permit helper for food vendors in Fremont and Alameda County. It turns a complicated health permit application into a guided set of questions and produces a completed county PDF at the end.
 
----
+## Why we built it
 
-## About the Project
-Navigating county health permits can be an intimidating, bureaucratic hurdle—especially for small business owners and immigrant food vendors. MarketKey is a zero-backend web application designed to streamline the Alameda County TFF permit application process. 
+Small food businesses often have to work through dense government wording, branching rules, and several disconnected PDF pages just to figure out which permit they need. The difference between paths such as a Temporary Food Facility (TFF) and a Mobile Food Facility is not always obvious, especially for someone opening a booth for the first time.
 
-By translating complex government forms into an intuitive, plain-language questionnaire, MarketKey helps Fremont vendors generate official, ready-to-file PDF applications in seconds.
+We built MarketKey to make that process easier to understand. It explains the requirements in plain English, asks questions in a useful order, and keeps the official application format for the final submission.
 
 ---
 
-## Key Features
-* Built using pure HTML, CSS (Tailwind), and Vanilla JavaScript for maximum speed and simplicity. No bloated build tools or complex frameworks.
-* Leverages `pdf-lib` directly in the browser to map user answers onto the official government PDF template (`tff-application.pdf`) instantly.
-*  All processing happens entirely in the user's browser memory. No sensitive business or personal data is ever saved to an external database or server.
-*  Designed to support local vendors in multiple languages (English, Spanish, Mandarin).
-*  Hosted seamlessly via Vercel for immediate public accessibility.
+## Core features
+
+- **Guided questionnaire and routing:** A 58-question workflow uses plain language and routes vendors through the relevant permit questions.
+- **Multilingual access:** The interface supports English, Spanish, Mandarin, and Hindi. Labels can be localized while stored answers keep their canonical English values for reliable PDF mapping.
+- **Official PDF generation:** `pdf-lib` fills the official county PDF template in the browser. The flow also captures and embeds a signature drawing.
+- **Landing page and app flow:** A two-layer layout gives visitors a short overview first, then opens the five-step application workflow when they are ready to start.
+- **Privacy-minded drafts:** Form data is handled on the client, with local draft state used to keep answers available during the session. The app does not need a backend database for the application.
 
 ---
 
-## Project Directory Structure
+## Tech stack and architecture
+
+MarketKey uses vanilla JavaScript, HTML5, and CSS3. Tailwind utility classes are used for some layout styles, but there is no large frontend framework or build step.
+
+The main files are in `main code/`:
 
 ```text
-MarketKey/
-├── index.html           # Main user interface and multi-step wizard structure
-├── style.css            # Custom styles complementing Tailwind CSS
-├── script.js            # Frontend logic, form handlers, and pdf-lib generator engine
-├── tff-application.pdf  # The official blank government form template
-└── README.md            # Project documentation
-
+main code/
+├── index.html       # landing page and five-step app markup
+├── script.js        # state, routing, translations, validation, and PDF export
+├── style.css        # custom responsive styles
+├── questions.json   # questionnaire definitions and localized prompts
+└── assets/
+    └── tff-application.pdf  # official PDF template
 ```
 
 ---
 
-## How It Works (Technical Architecture)
-1. Vendors answer simple, localized questions across a clean interface styled with Tailwind CSS.
-2. When the suer completes the questionnaire and clicks download, JavaScript fetches the local template (`tff-application.pdf`) as a binary byte array.
-3. `pdf-lib` programmatically fills the exact native form fields with the user's data.
-4. The browser automatically triggers a download of the completed PDF file, and the application state instantly clears to protect user privacy.
+The app loads the questionnaire and PDF template in the browser. User answers are collected in client-side state, then mapped to the PDF's AcroForm fields when the vendor downloads the completed application.
 
----
+## Run it locally
 
-## Development
-This project is configured for instant continuous deployment via Vercel. Every push to the `main` branch automatically updates the live production URL.
+Because the app loads JSON and PDF files, open it through a local web server instead of double-clicking `index.html`.
 
----
+From the repository root, run:
+
+```bash
+python3 -m http.server 8000
+```
+
+Then open [http://localhost:8000/main%20code/](http://localhost:8000/main%20code/) in a browser.
+
+You can also open `main code/index.html` with the VS Code Live Server extension. There is no package installation or build command required for the current version.
 
 ## Congressional App Challenge
-Built with passion by the MarketKey team to empower local small businesses and food entrepreneurs in Fremont, California.
+
+MarketKey is a student-built project for local food entrepreneurs. We hope it helps a vendor spend less time decoding a government form and more time getting their business ready for the community.
