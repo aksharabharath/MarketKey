@@ -1,6 +1,7 @@
 // set up the app state
 const appState = {
     lang: 'en',
+    currentView: 'landing',
     currentStep: 1,
     currentFormPage: 1,
     skipCommissary: false,
@@ -39,7 +40,19 @@ function resetApp() {
     showScreen('screen1');
 }
 
+function switchView(view) {
+    appState.currentView = view;
+    const landing = get('view-landing');
+    const app = get('view-app');
+    if (!landing || !app) return;
+
+    landing.hidden = view !== 'landing';
+    app.hidden = view !== 'app';
+    if (view === 'app') showScreen('screen1');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    switchView('landing');
     showScreen('screen1');
     updateStepTracker(1);
     loadQuestionnaire();
@@ -51,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (confirm('Are you sure you want to start over? All entered data will be cleared.')) resetApp();
     });
     listen('startNewAppBtn', 'click', resetApp);
+    listen('getStartedBtn', 'click', () => switchView('app'));
     listen('revBackBtn', 'click', () => {
         showScreen('screen3');
         restoreSignatureCanvas();
@@ -872,7 +886,7 @@ const uiTranslations = {
             tagline: "Your food business starts here.",
             subtitle: "Find the permits you need to sell food in Alameda County. We'll guide you through the requirements, step by step.",
             trust: "Free to get started · Guided step by step",
-            cta: "Next",
+            cta: "Get Started →",
             features: [
                 "Know what to do next",
                 "Finish with a ready-to-use application",
@@ -918,7 +932,7 @@ const uiTranslations = {
             tagline: "Su negocio de comida comienza aquí.",
             subtitle: "Encuentre los permisos que necesita para vender alimentos en el condado de Alameda. Le guiaremos paso a paso.",
             trust: "Gratis para comenzar · Orientación paso a paso",
-            cta: "Siguiente",
+            cta: "Comenzar →",
             features: [
                 "Sepa qué hacer después",
                 "Termine con una solicitud lista para usar",
@@ -964,7 +978,7 @@ const uiTranslations = {
             tagline: "您的食品生意从这里开始。",
             subtitle: "了解在阿拉米达县销售食品所需的许可证。我们将逐步指导您完成各项要求。",
             trust: "免费开始 · 逐步指导",
-            cta: "下一步",
+            cta: "开始 →",
             features: [
                 "了解下一步该做什么",
                 "完成一份可直接使用的申请",
@@ -1010,7 +1024,7 @@ const uiTranslations = {
             tagline: "आपका खाद्य व्यवसाय यहाँ से शुरू होता है।",
             subtitle: "अलामेडा काउंटी में खाद्य पदार्थ बेचने के लिए आवश्यक परमिट जानें। हम हर चरण में आपका मार्गदर्शन करेंगे।",
             trust: "शुरुआत मुफ़्त · हर चरण में मार्गदर्शन",
-            cta: "अगला",
+            cta: "शुरू करें →",
             features: [
                 "जानें कि आगे क्या करना है",
                 "तैयार उपयोग योग्य आवेदन पूरा करें",
@@ -1030,10 +1044,10 @@ function updateLandingPageText() {
     if (!landing) return;
 
     const elements = {
-        "#screen1 .tagline": landing.tagline,
-        "#screen1 .hero-subtitle": landing.subtitle,
+        "#screen1 .tagline, #view-landing .landing-title": landing.tagline,
+        "#screen1 .hero-subtitle, #view-landing .landing-subtitle": landing.subtitle,
         "#screen1 .trust-microcopy": landing.trust,
-        "#langNextBtn": landing.cta
+        "#getStartedBtn": landing.cta
     };
 
     Object.entries(elements).forEach(([selector, text]) => {
@@ -1041,11 +1055,11 @@ function updateLandingPageText() {
         if (element) element.textContent = text;
     });
 
-    document.querySelectorAll("#screen1 .feature-card h3, #screen1 [data-landing-feature-title]")
+    document.querySelectorAll("#screen1 .feature-card h3, #screen1 [data-landing-feature-title], #view-landing [data-landing-feature-title]")
         .forEach((element, index) => {
             if (landing.features[index]) element.textContent = landing.features[index];
         });
-    document.querySelectorAll("#screen1 .feature-card p, #screen1 [data-landing-feature-description]")
+    document.querySelectorAll("#screen1 .feature-card p, #screen1 [data-landing-feature-description], #view-landing [data-landing-feature-description]")
         .forEach((element, index) => {
             if (landing.featureDescriptions[index]) {
                 element.textContent = landing.featureDescriptions[index];
