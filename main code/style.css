@@ -133,7 +133,7 @@
 body, #view-app { background-color: #faf5ee; background-image: none; color: #d9641f; }
 .site-header { gap: 16px; background-color: #d9641f; color: #faf5ee; border-bottom: 1px solid rgba(250, 245, 238, 0.25); }
 header img { height: 120px !important; width: auto !important; max-height: none !important; object-fit: contain; }
-header { padding: 15px 32px !important; display: flex; justify-content: space-between; align-items: center; }
+header { padding: 4px 24px !important; display: flex; justify-content: space-between; align-items: center; }
 .site-header #startOverBtn { color: #faf5ee; }
 .site-header .lang-pill { border-color: rgba(250, 245, 238, 0.65); color: #faf5ee; }
 .site-header .lang-pill:hover, .site-header .lang-pill:focus-visible, .site-header .lang-pill.active { border-color: #faf5ee; background-color: rgba(250, 245, 238, 0.18); }
