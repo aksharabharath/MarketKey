@@ -1115,7 +1115,6 @@ function updatePageText() {
     transalteHeadingAndStuff();
     updateLiveCounter();
 }
-}
 
 let questionnaireQuestions = [];
 
@@ -1333,7 +1332,7 @@ function renderQuestionnaire() {
     prefillAutoDates();
     transalteHeadingAndStuff();
     updateLiveCounter();
-}}}
+}
 
 function prefillAutoDates() {
     const today = new Date().toISOString().split('T')[0];
