@@ -19,6 +19,12 @@
     "type": "select",
     "required": true,
     "options": ["Yes", "No"],
+    "optionLabels": {
+      "en": ["Yes", "No"],
+      "es": ["Sí", "No"],
+      "zh": ["是", "否"],
+      "hi": ["हाँ", "नहीं"]
+    },
     "prompts": {
       "en": "Do you have sponsor approval to participate? (Note: If no, your application will not be reviewed)",
       "es": "¿Tiene la aprobación del patrocinador para participar? (Nota: Si no, su solicitud no será revisada)",
@@ -59,6 +65,12 @@
     "type": "select",
     "required": true,
     "options": ["Indoor", "Outdoor"],
+    "optionLabels": {
+      "en": ["Indoor", "Outdoor"],
+      "es": ["Interior", "Exterior"],
+      "zh": ["室内", "室外"],
+      "hi": ["इनडोर", "आउटडोर"]
+    },
     "prompts": {
       "en": "Indicate Indoor or Outdoor",
       "es": "Indique si es bajo techo (Indoor) o al aire libre (Outdoor)",
@@ -268,11 +280,17 @@
     "type": "select",
     "required": true,
     "options": ["Yes", "No"],
+    "optionLabels": {
+      "en": ["Yes", "No"],
+      "es": ["Sí", "No"],
+      "zh": ["是", "否"],
+      "hi": ["हाँ", "नहीं"]
+    },
     "prompts": {
-      "en": "Do all of your menu items, including samples, remain in the original factory sealed package or are they pre-packaged by you at a commercial kitchen?",
-      "es": "¿Todos sus artículos de menú, incluidas las muestras, permanecen en su paquete original sellado de fábrica o son preempaquetados por usted en una cocina comercial?",
-      "zh": "您的所有菜单项（包括样品）是否都保留在原厂密封包装中，或者由您在商业厨房中预先包装？",
-      "hi": "क्या आपके सभी मेनू आइटम, नमूनों सहित, मूल कारखाने से सील बंद पैकेज में रहते हैं या आपके द्वारा वाणिज्यिक रसोई में पहले से पैक किए जाते हैं?"
+      "en": "Are all menu items and samples factory-sealed, or are they prepackaged by you in a commercial kitchen?",
+      "es": "¿Todos sus artículos del menú y las muestras están sellados de fábrica, o los prepara y empaca usted en una cocina comercial?",
+      "zh": "您的所有菜单项和样品是原厂密封包装，还是由您在商业厨房中预先包装？",
+      "hi": "क्या आपके सभी मेनू आइटम और नमूने कारखाने में सीलबंद हैं, या आप उन्हें वाणिज्यिक रसोई में पहले से पैक करते हैं?"
     }
   },
   {
@@ -478,7 +496,7 @@
     "required": true,
     "prompts": {
       "en": "7. All cold foods are well iced and are below 45°F.",
-      "es": "7. Todos los alimentos fríos están bien encongelados/con hielo y por debajo de 45°F.",
+      "es": "7. Todos los alimentos fríos están bien cubiertos de hielo y por debajo de 45°F.",
       "zh": "7. 所有冷藏食品均保持冰镇且温度低于 45°F。",
       "hi": "7. सभी ठंडे खाद्य पदार्थ अच्छी तरह से बर्फ में रखे गए हैं और 45°F से कम हैं।"
     }
@@ -569,7 +587,7 @@
     "required": true,
     "prompts": {
       "en": "14. I know the location of the on-site clean water supply, grey water disposal, and fry oil disposal sites.",
-      "es": "14. Conozco la ubicación del suministro de agua limpia, eliminación de agua gris y aceite de freír.",
+      "es": "14. Conozco la ubicación del suministro de agua limpia en el evento, los lugares para desechar el agua gris y los lugares para desechar el aceite de freír.",
       "zh": "14. 我知道现场清洁供水、废水处理和炸油处理地点的具体位置。",
       "hi": "14. मुझे ऑन-साइट स्वच्छ पानी की आपूर्ति, ग्रे वाटर निपटान और तलने के तेल के निपटान स्थलों का पता है।"
     }
