@@ -2,8 +2,16 @@
  * Photo Permit Scanner — demo prototype (no live OCR or county verification).
  */
 (function initPhotoPermitScanner() {
+  const FIELD_KEYS = [
+    "permitNumber",
+    "businessName",
+    "issueDate",
+    "expirationDate",
+    "permitType"
+  ];
+
   const DEMO_EXTRACTION = {
-    permitNumber: "FA-2024-01892",
+    permitNumber: "",
     businessName: "Rivera Fresh Foods",
     issueDate: "2024-03-15",
     expirationDate: "2025-03-14",
@@ -13,9 +21,70 @@
   const els = {};
   let previewObjectUrl = null;
   let scanState = "idle"; // idle | scanning | extracted
+  let detectedValues = {};
 
   function $(id) {
     return document.getElementById(id);
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function getFieldValue(key) {
+    return (els.fields[key]?.value ?? "").trim();
+  }
+
+  function getCorrectedValues() {
+    return FIELD_KEYS.reduce((values, key) => {
+      values[key] = getFieldValue(key);
+      return values;
+    }, {});
+  }
+
+  function fieldProvenance(key) {
+    const current = getFieldValue(key);
+    const detected = (detectedValues[key] ?? "").trim();
+
+    if (!detected && !current) {
+      return { kind: "uncertain", label: "Not detected — enter manually" };
+    }
+    if (!detected && current) {
+      return { kind: "filled", label: "Entered by you (not detected in demo scan)" };
+    }
+    if (detected && current === detected) {
+      return { kind: "detected", label: "Matches detected demo value" };
+    }
+    return { kind: "corrected", label: "Corrected by you" };
+  }
+
+  function updateFieldStatus(key) {
+    const wrap = els.fieldWraps[key];
+    const statusEl = els.fieldStatuses[key];
+    const input = els.fields[key];
+    if (!wrap || !statusEl || !input) return;
+
+    const provenance = fieldProvenance(key);
+    statusEl.textContent = provenance.label;
+    statusEl.className = `permit-scanner-field-status permit-scanner-field-status--${provenance.kind}`;
+
+    wrap.classList.remove(
+      "permit-scanner-field--corrected",
+      "permit-scanner-field--uncertain"
+    );
+    if (provenance.kind === "corrected" || provenance.kind === "filled") {
+      wrap.classList.add("permit-scanner-field--corrected");
+    } else if (provenance.kind === "uncertain") {
+      wrap.classList.add("permit-scanner-field--uncertain");
+    }
+  }
+
+  function updateAllFieldStatuses() {
+    FIELD_KEYS.forEach(updateFieldStatus);
   }
 
   function setStep(step) {
@@ -38,13 +107,16 @@
   function resetScanner() {
     revokePreview();
     scanState = "idle";
+    detectedValues = {};
     els.fileInput.value = "";
     els.previewImg.removeAttribute("src");
     els.previewImg.hidden = true;
     els.previewPlaceholder.hidden = false;
     els.scanBtn.disabled = true;
     els.scanStatus.textContent = "";
-    Object.values(els.fields).forEach((input) => {
+    FIELD_KEYS.forEach((key) => {
+      const input = els.fields[key];
+      if (!input) return;
       input.value = "";
       input.disabled = true;
     });
@@ -52,22 +124,38 @@
     els.confirmExpirationDate.checked = false;
     els.confirmTransfer.checked = false;
     els.continueBtn.disabled = true;
+    updateAllFieldStatuses();
     setStep("upload");
   }
 
-  function showExtractionBadge(fieldKey) {
-    return `<span class="permit-scanner-tag permit-scanner-tag--ocr" data-field-tag="${fieldKey}">Demo extraction — not verified</span>`;
+  function provenanceTag(key) {
+    const provenance = fieldProvenance(key);
+    if (provenance.kind === "corrected") {
+      return '<span class="permit-scanner-tag permit-scanner-tag--corrected">Corrected</span>';
+    }
+    if (provenance.kind === "filled") {
+      return '<span class="permit-scanner-tag permit-scanner-tag--user">You entered</span>';
+    }
+    if (provenance.kind === "uncertain") {
+      return '<span class="permit-scanner-tag permit-scanner-tag--ocr">Missing</span>';
+    }
+    return '<span class="permit-scanner-tag permit-scanner-tag--ocr">Detected (demo)</span>';
   }
 
   function applyDemoExtraction() {
-    const values = { ...DEMO_EXTRACTION };
-    Object.entries(els.fields).forEach(([key, input]) => {
-      input.value = values[key] || "";
+    detectedValues = { ...DEMO_EXTRACTION };
+    FIELD_KEYS.forEach((key) => {
+      const input = els.fields[key];
+      if (!input) return;
+      input.value = detectedValues[key] ?? "";
       input.disabled = false;
     });
     scanState = "extracted";
-    els.scanStatus.innerHTML = `${showExtractionBadge("status")}<span class="permit-scanner-scan-note">Prototype scan complete. Values are sample data for demonstration — not read from your photo.</span>`;
+    els.scanStatus.innerHTML =
+      '<span class="permit-scanner-tag permit-scanner-tag--ocr">Demo extraction — not verified</span>' +
+      '<span class="permit-scanner-scan-note">Prototype scan complete. Review and edit every field below before continuing.</span>';
     setStep("extract");
+    updateAllFieldStatuses();
     validateConfirmStep();
   }
 
@@ -87,8 +175,16 @@
     const datesOk =
       els.confirmIssueDate.checked && els.confirmExpirationDate.checked;
     const transferOk = els.confirmTransfer.checked;
-    const fieldsOk = Object.values(els.fields).every((input) => input.value.trim());
+    const corrected = getCorrectedValues();
+    const fieldsOk = FIELD_KEYS.every((key) => corrected[key] !== "");
     els.continueBtn.disabled = !(datesOk && transferOk && fieldsOk);
+  }
+
+  function onFieldEdited(key) {
+    if (key === "issueDate") els.confirmIssueDate.checked = false;
+    if (key === "expirationDate") els.confirmExpirationDate.checked = false;
+    updateFieldStatus(key);
+    validateConfirmStep();
   }
 
   function setApplicationField(questionId, value) {
@@ -104,10 +200,10 @@
       typeof questionnaireQuestions !== "undefined"
         ? questionnaireQuestions.find((item) => item.id === questionId)
         : null;
-    const key = question?.pdfFieldKey || questionId;
+    const storageKey = question?.pdfFieldKey || questionId;
 
-    if (typeof appState !== "undefined" && key !== "faNumber" && key !== "FANumber") {
-      appState.formData[key] = value;
+    if (typeof appState !== "undefined" && storageKey !== "faNumber" && storageKey !== "FANumber") {
+      appState.formData[storageKey] = value;
     }
   }
 
@@ -118,12 +214,13 @@
   }
 
   function buildConfirmSummary() {
+    const corrected = getCorrectedValues();
     return [
-      ["Business name", "businessName", els.fields.businessName.value],
-      ["Permit number", "permitNumber", els.fields.permitNumber.value],
-      ["Issue date → Application Date", "issueDate", els.fields.issueDate.value],
-      ["Expiration date → Event End Date", "expirationDate", els.fields.expirationDate.value],
-      ["Permit type (reference only)", "permitType", els.fields.permitType.value]
+      ["Business name", "businessName", corrected.businessName],
+      ["Permit number", "permitNumber", corrected.permitNumber],
+      ["Issue date → Application Date", "issueDate", corrected.issueDate],
+      ["Expiration date → Event End Date", "expirationDate", corrected.expirationDate],
+      ["Permit type (reference only)", "permitType", corrected.permitType]
     ];
   }
 
@@ -132,7 +229,12 @@
     buildConfirmSummary().forEach(([label, key, value]) => {
       const row = document.createElement("li");
       row.className = "permit-scanner-confirm-row";
-      row.innerHTML = `<strong>${label}</strong><span>${value}</span>${showExtractionBadge(key)}`;
+      const detectedHint =
+        (detectedValues[key] ?? "").trim() &&
+        fieldProvenance(key).kind === "corrected"
+          ? `<span class="permit-scanner-confirm-detected">Was detected: ${escapeHtml(detectedValues[key])}</span>`
+          : "";
+      row.innerHTML = `<strong>${label}</strong><span>${escapeHtml(value)}</span>${provenanceTag(key)}${detectedHint}`;
       els.confirmList.append(row);
     });
   }
@@ -144,6 +246,7 @@
   }
 
   async function transferToApplication() {
+    const corrected = getCorrectedValues();
 
     if (typeof switchView === "function") switchView("app");
     if (typeof appState !== "undefined") appState.path = "tff";
@@ -154,21 +257,21 @@
       await loadQuestionnaire();
     }
 
-    setApplicationField("businessName", els.fields.businessName.value.trim());
-    storePermitNumberForPdf(els.fields.permitNumber.value.trim());
+    setApplicationField("businessName", corrected.businessName);
+    storePermitNumberForPdf(corrected.permitNumber);
     const applicationDate = $("applicationDate");
     if (applicationDate) {
-      applicationDate.value = els.fields.issueDate.value;
+      applicationDate.value = corrected.issueDate;
       applicationDate.dispatchEvent(new Event("input", { bubbles: true }));
       if (typeof appState !== "undefined") {
-        appState.formData.todaysDate = els.fields.issueDate.value;
+        appState.formData.todaysDate = corrected.issueDate;
       }
     }
-    setApplicationField("endDate", els.fields.expirationDate.value);
+    setApplicationField("endDate", corrected.expirationDate);
 
     els.transferResult.hidden = false;
     els.transferResult.textContent =
-      "Confirmed fields were copied into the questionnaire as draft answers. Official permit status was not checked.";
+      "Your reviewed values were copied into the questionnaire as draft answers. Official permit status was not checked.";
     setStep("done");
   }
 
@@ -222,6 +325,12 @@
       expirationDate: $("permitScannerExpirationDate"),
       permitType: $("permitScannerPermitType")
     };
+    els.fieldStatuses = {};
+    els.fieldWraps = {};
+    FIELD_KEYS.forEach((key) => {
+      els.fieldStatuses[key] = els.root.querySelector(`[data-field-status="${key}"]`);
+      els.fieldWraps[key] = els.root.querySelector(`.permit-scanner-field[data-field-key="${key}"]`);
+    });
   }
 
   function bindEvents() {
@@ -229,12 +338,11 @@
     els.scanBtn?.addEventListener("click", runScan);
     els.scanBtnClear?.addEventListener("click", resetScanner);
 
-    [
-      els.confirmIssueDate,
-      els.confirmExpirationDate,
-      els.confirmTransfer,
-      ...Object.values(els.fields)
-    ].forEach((node) => node?.addEventListener("input", validateConfirmStep));
+    FIELD_KEYS.forEach((key) => {
+      els.fields[key]?.addEventListener("input", () => onFieldEdited(key));
+      els.fields[key]?.addEventListener("change", () => onFieldEdited(key));
+    });
+
     [
       els.confirmIssueDate,
       els.confirmExpirationDate,

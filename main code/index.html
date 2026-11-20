@@ -83,30 +83,36 @@
                 <div class="permit-scanner-verified-banner permit-scanner-verified-banner--unverified">
                     Unverified demo extraction — not official county data
                 </div>
+                <p class="permit-scanner-review-note font-['League_Spartan']">Edit any detected value below before continuing. Fields marked &ldquo;not detected&rdquo; must be filled in manually.</p>
                 <div class="permit-scanner-fields">
-                    <div class="permit-scanner-field">
+                    <div class="permit-scanner-field" data-field-key="permitNumber">
                         <label for="permitScannerPermitNumber">Permit number <span class="permit-scanner-tag permit-scanner-tag--ocr">Demo extraction</span></label>
-                        <input type="text" id="permitScannerPermitNumber" disabled autocomplete="off" />
+                        <input type="text" id="permitScannerPermitNumber" disabled autocomplete="off" placeholder="Enter if not detected" />
+                        <p class="permit-scanner-field-status" data-field-status="permitNumber" aria-live="polite"></p>
                     </div>
-                    <div class="permit-scanner-field">
+                    <div class="permit-scanner-field" data-field-key="businessName">
                         <label for="permitScannerBusinessName">Business name <span class="permit-scanner-tag permit-scanner-tag--ocr">Demo extraction</span></label>
-                        <input type="text" id="permitScannerBusinessName" disabled autocomplete="organization" />
+                        <input type="text" id="permitScannerBusinessName" disabled autocomplete="organization" placeholder="Required before transfer" />
+                        <p class="permit-scanner-field-status" data-field-status="businessName" aria-live="polite"></p>
                     </div>
-                    <div class="permit-scanner-field">
+                    <div class="permit-scanner-field" data-field-key="issueDate">
                         <label for="permitScannerIssueDate">Issue date <span class="permit-scanner-tag permit-scanner-tag--ocr">Demo extraction</span></label>
                         <input type="date" id="permitScannerIssueDate" disabled />
+                        <p class="permit-scanner-field-status" data-field-status="issueDate" aria-live="polite"></p>
                     </div>
                     <p class="permit-scanner-date-note">Confirm this issue date matches your permit — photos may misread digits.</p>
                     <label class="permit-scanner-check"><input type="checkbox" id="permitScannerConfirmIssue" /> I confirm the issue date above is correct.</label>
-                    <div class="permit-scanner-field">
+                    <div class="permit-scanner-field" data-field-key="expirationDate">
                         <label for="permitScannerExpirationDate">Expiration date <span class="permit-scanner-tag permit-scanner-tag--ocr">Demo extraction</span></label>
                         <input type="date" id="permitScannerExpirationDate" disabled />
+                        <p class="permit-scanner-field-status" data-field-status="expirationDate" aria-live="polite"></p>
                     </div>
                     <p class="permit-scanner-date-note">Expiration from a photo is not proof of validity. County records are authoritative.</p>
                     <label class="permit-scanner-check"><input type="checkbox" id="permitScannerConfirmExpiration" /> I confirm the expiration date above is correct.</label>
-                    <div class="permit-scanner-field">
+                    <div class="permit-scanner-field" data-field-key="permitType">
                         <label for="permitScannerPermitType">Permit type <span class="permit-scanner-tag permit-scanner-tag--ocr">Demo extraction</span></label>
-                        <input type="text" id="permitScannerPermitType" disabled autocomplete="off" />
+                        <input type="text" id="permitScannerPermitType" disabled autocomplete="off" placeholder="Required before transfer" />
+                        <p class="permit-scanner-field-status" data-field-status="permitType" aria-live="polite"></p>
                     </div>
                 </div>
                 <div class="permit-scanner-verified-banner permit-scanner-verified-banner--verified-info">
