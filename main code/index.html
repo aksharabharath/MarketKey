@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;600;700&family=Yeseva+One&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
+    <script src="photo-permit-scanner.js" defer></script>
     <script src="script.js" defer></script>
 </head>
 
@@ -46,6 +47,92 @@
                 <p data-i18n="landing.feature3Description">Plain-language explanations for each permit requirement.</p>
             </article>
         </div>
+
+        <section id="permitScanner" class="permit-scanner" aria-labelledby="permitScannerTitle">
+            <div class="permit-scanner-eyebrow font-['League_Spartan']">Prototype tool</div>
+            <h2 id="permitScannerTitle" class="permit-scanner-title font-['Yeseva_One']">Photo Permit Scanner</h2>
+            <p class="permit-scanner-lead">Upload a photo of an existing health permit to preview demo extraction and copy confirmed details into your MarketKey application.</p>
+            <p class="permit-scanner-warning" role="note">
+                <strong>OCR vs. verified:</strong> This prototype does not run real OCR and has not consulted county records. Extracted text is demo data. Blurry or angled photos can misread dates — confirm every date before transferring. MarketKey never marks a permit valid or expired from a scan alone.
+            </p>
+
+            <ol id="permitScannerStepper" class="permit-scanner-stepper font-['League_Spartan']" aria-label="Scanner steps">
+                <li class="active" data-step-target="upload">1. Upload</li>
+                <li data-step-target="extract">2. Review</li>
+                <li data-step-target="confirm">3. Confirm</li>
+                <li data-step-target="done">4. Transfer</li>
+            </ol>
+
+            <div data-scanner-step="upload" class="permit-scanner-step">
+                <label class="permit-scanner-upload font-['League_Spartan']" for="permitScannerFile">
+                    <span>Choose permit photo</span>
+                    <input type="file" id="permitScannerFile" accept="image/*" capture="environment" />
+                </label>
+                <div class="permit-scanner-preview-wrap">
+                    <p id="permitScannerPreviewPlaceholder" class="permit-scanner-preview-placeholder">Image preview appears here after upload.</p>
+                    <img id="permitScannerPreview" class="permit-scanner-preview" alt="Uploaded permit preview" hidden />
+                </div>
+                <div class="permit-scanner-actions">
+                    <button type="button" id="permitScannerScanBtn" class="permit-scanner-btn permit-scanner-btn--primary" disabled>Run demo scan</button>
+                    <button type="button" id="permitScannerClearBtn" class="permit-scanner-btn permit-scanner-btn--ghost">Clear</button>
+                </div>
+                <p id="permitScannerStatus" class="permit-scanner-status" role="status" aria-live="polite"></p>
+            </div>
+
+            <div data-scanner-step="extract" class="permit-scanner-step" hidden>
+                <div class="permit-scanner-verified-banner permit-scanner-verified-banner--unverified">
+                    Unverified demo extraction — not official county data
+                </div>
+                <div class="permit-scanner-fields">
+                    <div class="permit-scanner-field">
+                        <label for="permitScannerPermitNumber">Permit number <span class="permit-scanner-tag permit-scanner-tag--ocr">Demo extraction</span></label>
+                        <input type="text" id="permitScannerPermitNumber" disabled autocomplete="off" />
+                    </div>
+                    <div class="permit-scanner-field">
+                        <label for="permitScannerBusinessName">Business name <span class="permit-scanner-tag permit-scanner-tag--ocr">Demo extraction</span></label>
+                        <input type="text" id="permitScannerBusinessName" disabled autocomplete="organization" />
+                    </div>
+                    <div class="permit-scanner-field">
+                        <label for="permitScannerIssueDate">Issue date <span class="permit-scanner-tag permit-scanner-tag--ocr">Demo extraction</span></label>
+                        <input type="date" id="permitScannerIssueDate" disabled />
+                    </div>
+                    <p class="permit-scanner-date-note">Confirm this issue date matches your permit — photos may misread digits.</p>
+                    <label class="permit-scanner-check"><input type="checkbox" id="permitScannerConfirmIssue" /> I confirm the issue date above is correct.</label>
+                    <div class="permit-scanner-field">
+                        <label for="permitScannerExpirationDate">Expiration date <span class="permit-scanner-tag permit-scanner-tag--ocr">Demo extraction</span></label>
+                        <input type="date" id="permitScannerExpirationDate" disabled />
+                    </div>
+                    <p class="permit-scanner-date-note">Expiration from a photo is not proof of validity. County records are authoritative.</p>
+                    <label class="permit-scanner-check"><input type="checkbox" id="permitScannerConfirmExpiration" /> I confirm the expiration date above is correct.</label>
+                    <div class="permit-scanner-field">
+                        <label for="permitScannerPermitType">Permit type <span class="permit-scanner-tag permit-scanner-tag--ocr">Demo extraction</span></label>
+                        <input type="text" id="permitScannerPermitType" disabled autocomplete="off" />
+                    </div>
+                </div>
+                <div class="permit-scanner-verified-banner permit-scanner-verified-banner--verified-info">
+                    Officially verified information would appear here only after an authoritative county lookup (not available in this prototype).
+                </div>
+                <label class="permit-scanner-check permit-scanner-check--strong">
+                    <input type="checkbox" id="permitScannerConfirmTransfer" />
+                    I understand these values are unverified drafts and I will review every application field before submitting.
+                </label>
+                <button type="button" id="permitScannerContinueBtn" class="permit-scanner-btn permit-scanner-btn--primary" disabled>Continue to confirmation</button>
+            </div>
+
+            <div data-scanner-step="confirm" class="permit-scanner-step" hidden>
+                <h3 class="permit-scanner-subtitle font-['Yeseva_One']">Confirm before transfer</h3>
+                <ul id="permitScannerConfirmList" class="permit-scanner-confirm-list"></ul>
+                <p class="permit-scanner-warning">No validity check performed. Transfer only copies your edited values into the questionnaire.</p>
+                <button type="button" id="permitScannerTransferBtn" class="permit-scanner-btn permit-scanner-btn--primary">Apply confirmed fields to application</button>
+            </div>
+
+            <div data-scanner-step="done" class="permit-scanner-step" hidden>
+                <p id="permitScannerTransferResult" class="permit-scanner-transfer-result" hidden></p>
+                <button type="button" id="getStartedBtnScanner" class="permit-scanner-btn permit-scanner-btn--primary" onclick="document.getElementById('getStartedBtn').click()">Open application to review fields</button>
+            </div>
+        </section>
+
+        <button type="button" id="openPermitScannerBtn" class="permit-scanner-jump font-['League_Spartan']">Jump to Photo Permit Scanner</button>
         <button type="button" id="getStartedBtn" class="landing-cta font-['League_Spartan']" data-i18n="landing.cta">Get Started →</button>
     </section>
 
