@@ -70,6 +70,10 @@ MarketKey/
 └── README.md
 ```
 
+### Development Branches
+
+Branches prefixed with `feature/` are experimental testing and development branches. They may contain prototypes or work in progress and are not necessarily integrated into the stable `main` branch or included in the live deployment. The `main` branch represents the primary version of MarketKey.
+
 ## Getting Started
 
 ### Prerequisites
