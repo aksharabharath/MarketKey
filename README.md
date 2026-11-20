@@ -2,9 +2,9 @@
 
 ![MarketKey Application Screenshot](marketkey-screenshot.png)
 
-**Simplifying health permit applications for food vendors in Fremont and Alameda County through accessible, multilingual civic technology.**
+**A permit-navigation helper for food vendors in Fremont and Alameda County—plain-language guidance and a guided path to the county Temporary Food Facility (TFF) application.**
 
-MarketKey is a web-based permit helper that transforms complicated food facility health permit applications into a guided, plain-language questionnaire. Vendors answer questions about their business and receive a completed county PDF application at the end.
+MarketKey is a static web app that helps vendors understand Alameda County–oriented permit steps. On the **TFF path**, users complete a structured workflow and download a filled county PDF. On the **agricultural path**, the app shows exemption-oriented guidance only (no PDF is generated).
 
 **[Try MarketKey Live](https://marketkey-one.vercel.app/)**
 
@@ -12,59 +12,59 @@ MarketKey is a web-based permit helper that transforms complicated food facility
 
 ## Why We Built It
 
-Small food businesses often face complicated government terminology, branching requirements, and multiple disconnected PDF pages when trying to determine which health permits they need.
+Small food businesses often face dense terminology, branching requirements, and multi-page county forms when preparing health permit paperwork.
 
-For first-time vendors, understanding the difference between permit categories such as a Temporary Food Facility (TFF) and a Mobile Food Facility can be particularly challenging.
+We built MarketKey to make that process easier to follow locally: a landing overview, language selection, product-path triage, and—for prepared-food vendors—a guided walkthrough that maps answers onto the official Alameda County TFF template.
 
-We built MarketKey to make this process easier to navigate. By translating complicated requirements into straightforward questions and organizing them into a guided workflow, MarketKey helps vendors understand the application process while preserving the official county application format.
+MarketKey is focused on **Fremont and Alameda County** use cases. It is not a statewide permit system.
 
 ## Core Features
 
-- **Guided Questionnaire:** A 58-question workflow uses plain language and routes vendors through relevant permit questions.
-- **Multilingual Accessibility:** Supports English, Spanish, Mandarin, and Hindi. Interface labels are localized while stored answers retain canonical English values for consistent PDF field mapping.
-- **Automated PDF Generation:** Uses `pdf-lib` to populate the official county PDF template directly in the browser.
-- **Digital Signature:** Allows users to draw and embed their signature into the generated application.
-- **Two-Layer Interface:** Introduces visitors to the project through an overview before opening the five-step application workflow.
-- **Client-Side Processing:** Handles application form data in the browser without requiring a backend database for application submissions.
+- **Five-step workflow:** Language → path selection → questions (form, commissary, food-safety quiz, checklist, signature) → review → download confirmation.
+- **Question bank:** `questions.json` defines **58** county-application questions with localized prompts; the UI renders most of them on the TFF path (one office-use field is omitted from the form).
+- **Food-safety quiz & checklist:** Additional English-language quiz and self-inspection checklist steps are part of the TFF experience beyond the JSON question bank.
+- **Multilingual UI:** English, Spanish, Chinese (`zh`), and Hindi for navigation, many form labels, and select options. Free-text answers are labeled **“Type your answers in English”** for consistent PDF mapping.
+- **TFF PDF generation:** The TFF path uses [pdf-lib](https://pdf-lib.js.org/) (loaded from jsDelivr) to fill `main code/assets/tff-application.pdf` in the browser.
+- **Digital signature:** Users draw a signature on a canvas; it is embedded into the generated TFF PDF when supported by the template.
+- **Client-side processing:** No backend receives completed applications; state lives in browser memory for the active session.
 
 ## How It Works
 
-MarketKey combines a guided questionnaire with browser-based PDF generation.
+1. **Landing & language:** Visitors review the overview, then choose English, Spanish, Chinese, or Hindi.
+2. **Path selection:** **TFF** (prepared food, baked goods, samples) opens the full questionnaire. **Agricultural** (farm-grown whole produce, etc.) shows guidance text only.
+3. **TFF questionnaire:** Dynamic fields from `questions.json`, plus food-safety quiz items and a booth checklist (see above).
+4. **Review:** Users confirm answers, then trigger PDF generation.
+5. **Download:** `pdf-lib` fills the bundled county template and embeds the signature. In-memory form data is cleared after a successful download. The agricultural path does not run this step.
 
-1. **Choose a language:** Vendors select from the available interface languages.
-2. **Complete the questionnaire:** The application presents relevant questions in a structured workflow.
-3. **Process responses:** JavaScript manages application state, validates responses, and maps canonical answer values to the corresponding PDF fields.
-4. **Generate the application:** `pdf-lib` fills the official PDF template and embeds the vendor's signature.
-5. **Download the PDF:** The completed application is generated and made available for download.
-
-## Tech Stack & Architecture
-
-MarketKey is built using vanilla JavaScript, HTML5, and CSS3, with `pdf-lib` for PDF manipulation. Utility styles and custom CSS provide the interface without requiring a heavy frontend framework or complex build process.
-
-### Technologies
+## Tech Stack
 
 | Technology | Purpose |
 |---|---|
-| HTML5 | Application structure |
-| CSS3 | Styling and responsive interface |
-| JavaScript | Application logic, routing, validation, and state management |
-| JSON | Questionnaire definitions and localized prompts |
-| pdf-lib | Browser-based PDF generation and form filling |
-| Vercel | Application deployment |
+| HTML5, CSS3, JavaScript | Static app shell, styling, and logic |
+| `questions.json` | Question definitions and localized prompts |
+| pdf-lib (CDN) | Client-side PDF form filling |
+| Tailwind CSS (CDN) | Utility layout on top of custom CSS |
+| Google Fonts | League Spartan, Yeseva One |
+| Vercel | Hosting for the live demo |
+
+No frontend build step is required to run the app locally.
 
 ### Project Structure
 
-The main application files are organized under `main code/`:
-
 ```text
 MarketKey/
-├── main code/
+├── main code/                 # Application root (also Vercel deploy root)
 │   ├── index.html
 │   ├── script.js
 │   ├── style.css
 │   ├── questions.json
 │   └── assets/
+│       ├── logo.png
 │       └── tff-application.pdf
+├── data/                      # PDF field reference data (development)
+├── docs/                      # Design and permit research notes
+├── scripts/                   # Optional maintainer checks
+├── package.json               # Optional dev dependency (e.g. field extraction)
 ├── marketkey-screenshot.png
 ├── LICENSE
 └── README.md
@@ -74,52 +74,42 @@ MarketKey/
 
 ### Prerequisites
 
-- Python 3 installed on your computer.
-- A modern web browser.
-- Git installed to clone the repository.
+- [Python 3](https://www.python.org/) (for a local static file server)
+- A modern web browser
+- [Git](https://git-scm.com/) (to clone the repository)
 
-### Run Locally
+### Run locally
 
-MarketKey does not require a frontend build process.
-
-**1. Clone the repository:**
+```bash
 git clone https://github.com/aksharabharath/MarketKey.git
-
-**2. Navigate to the application directory:**
 cd MarketKey/"main code"
-
-**3. Start a local development server:**
 python3 -m http.server 8000
+```
 
-**4. Open the application in your browser:**
-http://localhost:8000
+Open [http://localhost:8000](http://localhost:8000) in your browser.
 
-To stop the server, press `Control + C` in your terminal.
+Stop the server with `Control+C` in the terminal.
 
-### Live Demo
+### Live demo
 
-You can also access the deployed application without installing anything:
-
-**[https://marketkey-one.vercel.app/](https://marketkey-one.vercel.app/)**
+[https://marketkey-one.vercel.app/](https://marketkey-one.vercel.app/)
 
 ## Privacy & Data Handling
 
-MarketKey is designed to minimize the need for external storage of sensitive vendor information.
+MarketKey reduces reliance on a central database for vendor form data, but it is not an offline-only app.
 
-- Application form data is processed on the client side.
-- The application does not require a backend database to process or generate submissions.
-- Local draft state keeps answers available during the application session.
-- PDF generation takes place directly in the user's browser.
+- **Session state:** Answers are kept in **browser memory** (`appState`) while the tab is open. Closing or refreshing the page clears unsaved progress; data is reset after a successful PDF download on the TFF path.
+- **No submission backend:** Completed applications are **not** sent to MarketKey servers. Users download the PDF locally and submit it to the county themselves.
+- **PDF generation:** Runs entirely in the browser for the TFF path.
+- **Network requests:** The app may load **Google Fonts**, the **Tailwind CSS** CDN, **jsDelivr** (pdf-lib), and static files such as `questions.json` and `tff-application.pdf` from the host serving the site.
 
-Users should review their completed application before downloading or submitting it.
+Review your PDF carefully before submitting it to Alameda County Environmental Health or an event coordinator.
 
 ## Important Disclaimer
 
-MarketKey is an independent project designed to help food vendors navigate the county application process.
+MarketKey is an independent student civic-tech project. It is **not** affiliated with or endorsed by Alameda County.
 
-It is not affiliated with or endorsed by Alameda County. It does not issue permits, determine official eligibility, or guarantee application approval.
-
-Vendors should consult the appropriate county department for current requirements and official submission instructions. The generated PDF should be reviewed for accuracy before submission.
+It does **not** issue permits, decide eligibility, or guarantee approval. Requirements change; always confirm current rules with the county.
 
 ## Team
 
@@ -129,15 +119,11 @@ Vendors should consult the appropriate county department for current requirement
 - Sharayu Patil
 - Sriya Lingam
 
-## Recognition
-
-MarketKey won the **Congressional App Challenge**, recognizing its approach to using technology to address a real-world community problem.
-
 ## License
 
-The original MarketKey source code is released under the [MIT License](LICENSE).
+MarketKey source code in this repository is released under the [MIT License](LICENSE).
 
-The official county PDF template and other third-party materials may be subject to separate ownership and usage terms. The MIT License does not automatically grant rights to those materials.
+The bundled **Alameda County PDF template** (`main code/assets/tff-application.pdf`), county form content, fonts, and other third-party assets may be subject to **separate** ownership and usage terms. The MIT License does not grant rights to those materials.
 
 ---
 
