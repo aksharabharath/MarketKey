@@ -1,4 +1,5 @@
 # MarketKey
+![MarketKey Application Screenshot](marketkey-screenshot.png)
 
 MarketKey is a web-based permit helper for food vendors in Fremont and Alameda County. It turns a complicated health permit application into a guided set of questions and produces a completed county PDF at the end.
 
