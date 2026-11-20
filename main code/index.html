@@ -100,14 +100,15 @@
                         <input type="date" id="permitScannerIssueDate" disabled />
                         <p class="permit-scanner-field-status" data-field-status="issueDate" aria-live="polite"></p>
                     </div>
-                    <p class="permit-scanner-date-note">Confirm this issue date matches your permit — photos may misread digits.</p>
                     <label class="permit-scanner-check"><input type="checkbox" id="permitScannerConfirmIssue" /> I confirm the issue date above is correct.</label>
                     <div class="permit-scanner-field" data-field-key="expirationDate">
                         <label for="permitScannerExpirationDate">Expiration date <span class="permit-scanner-tag permit-scanner-tag--ocr">Demo extraction</span></label>
                         <input type="date" id="permitScannerExpirationDate" disabled />
                         <p class="permit-scanner-field-status" data-field-status="expirationDate" aria-live="polite"></p>
                     </div>
-                    <p class="permit-scanner-date-note">Expiration from a photo is not proof of validity. County records are authoritative.</p>
+                    <p class="permit-scanner-date-disclaimer" role="note">
+                        <strong>Important:</strong> This scan does not verify whether your permit is currently valid. Confirm expiration dates and permit status with your local health department.
+                    </p>
                     <label class="permit-scanner-check"><input type="checkbox" id="permitScannerConfirmExpiration" /> I confirm the expiration date above is correct.</label>
                     <div class="permit-scanner-field" data-field-key="permitType">
                         <label for="permitScannerPermitType">Permit type <span class="permit-scanner-tag permit-scanner-tag--ocr">Demo extraction</span></label>
