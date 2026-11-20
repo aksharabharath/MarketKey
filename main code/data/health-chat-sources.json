@@ -1,31 +1,49 @@
 {
   "disclaimer_en": "Responses are demo helpers only. They are not legal advice and are not official county guidance.",
   "disclaimer_es": "Las respuestas son ayudas de demostración solamente. No son asesoramiento legal ni orientación oficial del condado.",
+  "catalogScope_en": "This catalog lists MarketKey project files and Alameda County TFF workflow references only. It does not include California statewide regulations, fees, deadlines, or other counties’ rules.",
+  "catalogScope_es": "Este catálogo enumera solo archivos del proyecto MarketKey y referencias del flujo TFF del Condado de Alameda. No incluye regulaciones estatales de California, tarifas, plazos ni reglas de otros condados.",
   "sources": [
     {
       "id": "tff_vs_agri",
+      "scope": "marketkey-app",
+      "scopeLabel_en": "MarketKey app (not California statewide law)",
+      "scopeLabel_es": "Aplicación MarketKey (no es ley estatal de California)",
       "label_en": "MarketKey doc: TFF vs agricultural route",
       "label_es": "Documento MarketKey: TFF vs ruta agrícola",
-      "location": "docs/tff_vs_agri.md"
+      "location": "docs/tff_vs_agri.md",
+      "inspectPath": "../docs/tff_vs_agri.md"
     },
     {
       "id": "questionnaire_originalPackageCheck",
+      "scope": "alameda-county-app",
+      "scopeLabel_en": "Alameda County TFF questionnaire (this app)",
+      "scopeLabel_es": "Cuestionario TFF del Condado de Alameda (esta aplicación)",
       "label_en": "MarketKey questionnaire — commercial kitchen / packaging question",
       "label_es": "Cuestionario MarketKey — cocina comercial / empaque",
       "location": "main code/questions.json",
+      "inspectPath": "./questions.json",
       "fieldId": "originalPackageCheck"
     },
     {
       "id": "questionnaire_path",
+      "scope": "marketkey-app",
+      "scopeLabel_en": "MarketKey app (not California statewide law)",
+      "scopeLabel_es": "Aplicación MarketKey (no es ley estatal de California)",
       "label_en": "MarketKey application flow (language → path → questionnaire)",
       "label_es": "Flujo de solicitud MarketKey (idioma → ruta → cuestionario)",
-      "location": "docs/ui-design-spec.md"
+      "location": "docs/ui-design-spec.md",
+      "inspectPath": "../docs/ui-design-spec.md"
     },
     {
       "id": "food_safety_quiz",
+      "scope": "alameda-county-app",
+      "scopeLabel_en": "Alameda County TFF quiz copy in this app",
+      "scopeLabel_es": "Cuestionario TFF del Condado de Alameda en esta aplicación",
       "label_en": "MarketKey in-app Alameda County food safety quiz (form page 3)",
       "label_es": "Cuestionario de seguridad alimentaria en la aplicación (página 3)",
-      "location": "main code/index.html#formPage3"
+      "location": "main code/index.html#formPage3",
+      "inspectPath": "./index.html#formPage3"
     }
   ]
 }

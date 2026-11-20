@@ -181,6 +181,14 @@ header { padding: 4px 24px !important; display: flex; justify-content: space-bet
 .health-chat-citation-label { display: block; color: #713515; font-weight: 600; }
 .health-chat-citation-loc { display: block; color: #8b6248; font-size: 0.72rem; }
 .health-chat-citations-empty, .health-chat-footnote { margin: 6px 0 0; font-size: 0.75rem; color: #8b6248; }
+.health-chat-citation-scope { display: block; margin-top: 2px; font-size: 0.68rem; font-weight: 700; color: #8b6248; text-transform: uppercase; letter-spacing: 0.03em; }
+.health-chat-citation-inspect { display: inline-block; margin-top: 4px; font-size: 0.74rem; font-weight: 700; color: #b95018; }
+.health-chat-verification { margin: 0 0 8px; padding: 8px 10px; border-radius: 8px; font-size: 0.78rem; line-height: 1.4; font-weight: 600; }
+.health-chat-verification--failed { background: #fde8e8; border: 1px solid rgba(229, 62, 62, 0.35); color: #c53030; }
+.health-chat-verification--supported { background: #f3ece3; border: 1px solid rgba(217, 100, 31, 0.22); color: #713515; }
+.health-chat-source-scope { margin: 0 0 8px; font-size: 0.76rem; line-height: 1.4; color: #8b6248; }
+.health-chat-catalog-link { margin: 0 0 8px; font-size: 0.75rem; text-align: center; }
+.health-chat-catalog-link a { color: #b95018; font-weight: 700; }
 .health-chat-form { display: flex; gap: 8px; margin-top: auto; }
 .health-chat-input { flex: 1 1 auto; min-width: 0; padding: 11px 12px; border: 2px solid rgba(217, 100, 31, 0.45); border-radius: 10px; background: #fff; color: #713515; font: inherit; }
 .health-chat-input:focus { outline: 3px solid #fdcb7b; outline-offset: 1px; }
