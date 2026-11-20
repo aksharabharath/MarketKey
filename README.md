@@ -32,3 +32,25 @@ main code/
     └── tff-application.pdf  # official PDF template
 
 ```
+
+## Getting Started
+
+### Run Locally
+
+MarketKey does not require a frontend build process.
+
+1. Clone the repository:
+git clone https://github.com/aksharabharath/MarketKey.git
+
+2. Navigate to the application directory:
+cd MarketKey/"main code"
+
+3. Start a local development server:
+python3 -m http.server 8000
+
+4. Open the application in your browser:
+http://localhost:8000
+
+### Live Demo
+
+Try MarketKey here: https://marketkey-one.vercel.app/
