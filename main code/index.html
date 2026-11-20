@@ -49,8 +49,15 @@
         </div>
         <section id="california-county-wizard" class="county-wizard" aria-labelledby="countyWizardTitle" aria-live="polite">
             <h2 id="countyWizardTitle" class="county-wizard-title font-['Yeseva_One']">California County Permit Sources</h2>
+            <p id="countyWizardDataSource" class="county-wizard-data-source font-['League_Spartan']"></p>
             <p id="countySourcesStatus" class="county-wizard-status" role="status" hidden></p>
-            <div id="countySourcesList" class="county-wizard-grid" hidden></div>
+            <label class="county-wizard-select-label font-['League_Spartan']" for="countyWizardSelect">Select county</label>
+            <select id="countyWizardSelect" class="county-wizard-select" disabled>
+                <option value="">Select a California county</option>
+            </select>
+            <div id="countyWizardDetail" class="county-wizard-detail" hidden></div>
+            <div id="countyQuestionnairePreview" class="county-wizard-preview" hidden></div>
+            <p id="countyWizardUnavailable" class="county-wizard-unavailable" hidden></p>
             <button type="button" id="countySourcesRetryBtn" class="county-wizard-retry font-['League_Spartan']" hidden>Try again</button>
         </section>
         <button type="button" id="getStartedBtn" class="landing-cta font-['League_Spartan']" data-i18n="landing.cta">Get Started →</button>

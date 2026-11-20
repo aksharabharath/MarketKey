@@ -1,0 +1,94 @@
+{
+  "updatedAt": "2026-11-20",
+  "catalogNotice": "County links in this file are reference URLs only. Questionnaire previews labeled demo are not official county forms.",
+  "counties": [
+    {
+      "id": "alameda",
+      "name": "Alameda County",
+      "environmentalHealthUrl": "https://deh.acgov.org/",
+      "permitInfoUrl": "https://deh.acgov.org/operations-trainings/temp-food-facilities",
+      "summary": "Temporary food facility permits for farmers markets, festivals, and community events.",
+      "sourceTier": "verified",
+      "sourceTierNote": "Official department links. Full application workflow ships in MarketKey (main code/questions.json + TFF PDF).",
+      "applicationSupport": "full",
+      "questionnairePreview": {
+        "tier": "verified",
+        "title": "Alameda County TFF application (shipped in MarketKey)",
+        "sections": [
+          {
+            "name": "Vendor & booth (phase 1)",
+            "items": ["Owner name", "Business name", "Booth name", "Business address", "Contact phone and email"]
+          },
+          {
+            "name": "Event logistics (phase 2)",
+            "items": ["Event name and address", "Start and end dates/times", "Event sponsor contact"]
+          },
+          {
+            "name": "Operations (phase 3)",
+            "items": ["Commercial kitchen / sealed packaging", "Water and waste plan", "Booth enclosure", "Menu & equipment table"]
+          },
+          {
+            "name": "Commissary, quiz & signatures",
+            "items": ["Commissary agreement (when required)", "Food safety quiz", "Applicant signature"]
+          }
+        ]
+      }
+    },
+    {
+      "id": "santa-clara",
+      "name": "Santa Clara County",
+      "environmentalHealthUrl": "https://eh.santaclaracounty.gov/",
+      "permitInfoUrl": "https://eh.santaclaracounty.gov/consumer-protection/food-protection/temporary-food-facilities",
+      "summary": "County environmental health department issues temporary event food permits.",
+      "sourceTier": "verified",
+      "sourceTierNote": "Official department links only. MarketKey does not ship a Santa Clara PDF workflow.",
+      "applicationSupport": "sources-only",
+      "questionnairePreview": {
+        "tier": "demo",
+        "title": "Demo preview — Santa Clara temporary food event intake",
+        "sections": [
+          {
+            "name": "Organizer & event",
+            "items": ["Event sponsor name", "Event location and dates", "Type of temporary food service"]
+          },
+          {
+            "name": "Operator",
+            "items": ["Business or vendor name", "Primary contact", "Menu summary"]
+          },
+          {
+            "name": "Next step",
+            "items": ["Confirm requirements on the county permit page before applying"]
+          }
+        ]
+      }
+    },
+    {
+      "id": "san-francisco",
+      "name": "San Francisco County",
+      "environmentalHealthUrl": "https://www.sf.gov/departments/environmental-health",
+      "permitInfoUrl": "https://www.sf.gov/information/get-temporary-food-facility-permit",
+      "summary": "Department of Public Health processes temporary food facility registrations.",
+      "sourceTier": "verified",
+      "sourceTierNote": "Official department links only. MarketKey does not ship a San Francisco PDF workflow.",
+      "applicationSupport": "sources-only",
+      "questionnairePreview": {
+        "tier": "demo",
+        "title": "Demo preview — San Francisco temporary food facility intake",
+        "sections": [
+          {
+            "name": "Facility & location",
+            "items": ["Temporary facility type", "Event or street location", "Service dates"]
+          },
+          {
+            "name": "Food operation",
+            "items": ["Business name", "Food types sold", "Commissary or prep kitchen (if applicable)"]
+          },
+          {
+            "name": "Next step",
+            "items": ["Use the county permit information link for current forms"]
+          }
+        ]
+      }
+    }
+  ]
+}
