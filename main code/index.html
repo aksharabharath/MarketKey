@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;600;700&family=Yeseva+One&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
+    <script src="california-county-wizard.js" defer></script>
     <script src="script.js" defer></script>
 </head>
 
@@ -46,6 +47,12 @@
                 <p data-i18n="landing.feature3Description">Plain-language explanations for each permit requirement.</p>
             </article>
         </div>
+        <section id="california-county-wizard" class="county-wizard" aria-labelledby="countyWizardTitle" aria-live="polite">
+            <h2 id="countyWizardTitle" class="county-wizard-title font-['Yeseva_One']">California County Permit Sources</h2>
+            <p id="countySourcesStatus" class="county-wizard-status" role="status" hidden></p>
+            <div id="countySourcesList" class="county-wizard-grid" hidden></div>
+            <button type="button" id="countySourcesRetryBtn" class="county-wizard-retry font-['League_Spartan']" hidden>Try again</button>
+        </section>
         <button type="button" id="getStartedBtn" class="landing-cta font-['League_Spartan']" data-i18n="landing.cta">Get Started →</button>
     </section>
 

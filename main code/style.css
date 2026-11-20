@@ -153,4 +153,19 @@ header { padding: 4px 24px !important; display: flex; justify-content: space-bet
 .feature-card { padding: 22px; border: 2px solid rgba(217, 100, 31, 0.2); border-radius: 16px; background: #fff8ed; text-align: left; }
 .feature-card h2 { margin: 0 0 8px; color: #d9641f; font: 400 1.25rem 'Yeseva One', serif; line-height: 1.2; }
 .feature-card p { margin: 0; color: #d9641f; font-size: 0.95rem; line-height: 1.5; opacity: 0.9; }
-@media (max-width: 640px) { header { flex-wrap: wrap; gap: 12px; } #headerControls { width: 100%; justify-content: flex-end; } .feature-grid { grid-template-columns: 1fr; margin: 28px auto; } .feature-card { text-align: center; } }
+.county-wizard { width: min(100%, 860px); margin: 28px auto 36px; padding: 22px; border: 2px solid rgba(217, 100, 31, 0.2); border-radius: 16px; background: #fff8ed; text-align: left; }
+.county-wizard-title { margin: 0 0 12px; color: #d9641f; font-size: 1.35rem; line-height: 1.2; text-align: center; }
+.county-wizard-status { margin: 0 0 14px; font-family: 'League Spartan', sans-serif; font-size: 0.95rem; line-height: 1.45; text-align: center; color: #713515; }
+.county-wizard-status--loading { color: #713515; font-weight: 600; }
+.county-wizard-status--error { padding: 10px 14px; border-radius: 10px; background: #fde8e8; border: 2px solid #e53e3e; color: #c53030; font-weight: 600; }
+.county-wizard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.county-wizard-card { padding: 16px; border: 2px solid rgba(217, 100, 31, 0.18); border-radius: 12px; background: #faf5ee; }
+.county-wizard-card h3 { margin: 0 0 8px; color: #d9641f; font: 400 1.05rem 'Yeseva One', serif; }
+.county-wizard-card p { margin: 0 0 10px; color: #713515; font-size: 0.9rem; line-height: 1.45; opacity: 0.95; }
+.county-wizard-links { display: flex; flex-wrap: wrap; gap: 10px; font-family: 'League Spartan', sans-serif; font-size: 0.85rem; font-weight: 700; }
+.county-wizard-links a { color: #b95018; text-decoration: underline; text-underline-offset: 2px; }
+.county-wizard-links a:hover, .county-wizard-links a:focus-visible { color: #d9641f; }
+.county-wizard-retry { display: block; margin: 12px auto 0; padding: 10px 18px; border: 2px solid #d9641f; border-radius: 8px; background: transparent; color: #d9641f; font-size: 0.95rem; font-weight: 700; cursor: pointer; }
+.county-wizard-retry:hover, .county-wizard-retry:focus-visible { background: rgba(217, 100, 31, 0.08); outline: 3px solid #fdcb7b; outline-offset: 2px; }
+.county-wizard-retry[disabled] { opacity: 0.55; cursor: not-allowed; }
+@media (max-width: 640px) { header { flex-wrap: wrap; gap: 12px; } #headerControls { width: 100%; justify-content: flex-end; } .feature-grid { grid-template-columns: 1fr; margin: 28px auto; } .feature-card { text-align: center; } .county-wizard-title { font-size: 1.2rem; } }

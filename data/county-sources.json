@@ -1,0 +1,26 @@
+{
+  "updatedAt": "2026-11-20",
+  "counties": [
+    {
+      "id": "alameda",
+      "name": "Alameda County",
+      "environmentalHealthUrl": "https://deh.acgov.org/",
+      "permitInfoUrl": "https://deh.acgov.org/operations-trainings/temp-food-facilities",
+      "summary": "Temporary food facility permits for farmers markets, festivals, and community events."
+    },
+    {
+      "id": "santa-clara",
+      "name": "Santa Clara County",
+      "environmentalHealthUrl": "https://eh.santaclaracounty.gov/",
+      "permitInfoUrl": "https://eh.santaclaracounty.gov/consumer-protection/food-protection/temporary-food-facilities",
+      "summary": "County environmental health department issues temporary event food permits."
+    },
+    {
+      "id": "san-francisco",
+      "name": "San Francisco County",
+      "environmentalHealthUrl": "https://www.sf.gov/departments/environmental-health",
+      "permitInfoUrl": "https://www.sf.gov/information/get-temporary-food-facility-permit",
+      "summary": "Department of Public Health processes temporary food facility registrations."
+    }
+  ]
+}
