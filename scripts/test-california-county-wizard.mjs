@@ -50,6 +50,36 @@ function buildQuestionnairePreview(county) {
   };
 }
 
+function deriveCountyVerification(county) {
+  function departmentLinks() {
+    const tier = county?.sourceTier;
+    if (tier === "verified") return "verified";
+    if (tier === "demo") return "demo";
+    if (tier === "pending") return "pending";
+    return "pending";
+  }
+  function questionnairePreview() {
+    const preview = county?.questionnairePreview;
+    if (!preview?.sections?.length) return "unavailable";
+    const tier = preview.tier;
+    if (tier === "verified") return "verified";
+    if (tier === "demo") return "demo";
+    if (tier === "pending") return "pending";
+    return "pending";
+  }
+  function inAppWorkflow() {
+    const support = county?.applicationSupport;
+    if (support === "full") return "verified";
+    if (support === "sources-only") return "demo";
+    return "pending";
+  }
+  return {
+    departmentLinks: departmentLinks(),
+    questionnairePreview: questionnairePreview(),
+    inAppWorkflow: inAppWorkflow()
+  };
+}
+
 async function loadCanonicalCatalog() {
   const filePath = path.join(process.cwd(), "main code", "data", "county-sources.json");
   const raw = await fs.readFile(filePath, "utf8");
@@ -123,12 +153,40 @@ async function assertCountyPreviews() {
   }
 }
 
+async function assertVerificationStatusFromCatalog() {
+  const catalog = await loadCanonicalCatalog();
+  const alameda = findCountyById(catalog, "alameda");
+  const santaClara = findCountyById(catalog, "santa-clara");
+
+  const alamedaVerification = deriveCountyVerification(alameda);
+  if (
+    alamedaVerification.departmentLinks !== "verified" ||
+    alamedaVerification.questionnairePreview !== "verified" ||
+    alamedaVerification.inAppWorkflow !== "verified"
+  ) {
+    throw new Error("Alameda verification must be verified for links, preview, and in-app workflow");
+  }
+
+  const scVerification = deriveCountyVerification(santaClara);
+  if (scVerification.departmentLinks !== "verified") {
+    throw new Error("Santa Clara department links must stay verified only when catalog sourceTier is verified");
+  }
+  if (scVerification.questionnairePreview !== "demo" || scVerification.inAppWorkflow !== "demo") {
+    throw new Error("Santa Clara preview and in-app workflow must be demo per catalog");
+  }
+
+  if (!catalog.verificationLegend?.verified) {
+    throw new Error("Catalog must define verificationLegend for UI hints");
+  }
+}
+
 async function main() {
   await assertDedup();
   await assertHttpError();
   await assertStaticApiFixtureMatchesCanonical();
   await assertVercelHandlerPath();
   await assertCountyPreviews();
+  await assertVerificationStatusFromCatalog();
   console.log("California County Wizard tests passed.");
 }
 

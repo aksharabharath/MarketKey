@@ -173,15 +173,27 @@ header { padding: 4px 24px !important; display: flex; justify-content: space-bet
 .county-wizard-select { width: 100%; margin-bottom: 12px; padding: 11px 12px; border: 2px solid rgba(217, 100, 31, 0.45); border-radius: 8px; background: #fff; color: #713515; font: inherit; }
 .county-wizard-select:disabled { opacity: 0.6; }
 .county-wizard-detail { margin: 10px 0 12px; padding: 12px; border-radius: 10px; border: 2px solid rgba(217, 100, 31, 0.16); background: #faf5ee; }
-.county-wizard-tier { margin: 0 0 8px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
-.county-wizard-tier--verified { color: #2f6b3b; }
-.county-wizard-tier--demo { color: #b55d22; }
+.county-wizard-verify { margin: 0 0 10px; }
+.county-wizard-verify-heading { margin: 0 0 6px; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #8b6248; }
+.county-wizard-verify-list { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px 12px; }
+.county-wizard-verify-item { display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1 1 140px; max-width: 100%; }
+.county-wizard-verify-aspect { font-size: 0.72rem; font-weight: 600; color: #713515; line-height: 1.2; }
+.county-wizard-verify-pill { display: inline-block; align-self: flex-start; padding: 3px 8px; border-radius: 999px; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; border: 1px solid transparent; cursor: help; }
+.county-wizard-verify-pill--verified { color: #2f6b3b; background: #e8f4ea; border-color: rgba(47, 107, 59, 0.35); }
+.county-wizard-verify-pill--demo { color: #9a4d14; background: #fff1e0; border-color: rgba(181, 93, 34, 0.35); }
+.county-wizard-verify-pill--pending { color: #5c4d3f; background: #ece6de; border-color: rgba(92, 77, 63, 0.35); }
+.county-wizard-verify-pill--unavailable { color: #6b5a4d; background: #f3ece3; border-color: rgba(107, 90, 77, 0.3); }
+.county-wizard-preview .county-wizard-verify { margin-bottom: 8px; }
+.county-wizard-preview .county-wizard-verify-list { gap: 6px; }
+.county-wizard-preview .county-wizard-verify-item { flex: 0 1 auto; }
 .county-wizard-source-note { margin: 0 0 8px; font-size: 0.86rem; color: #713515; line-height: 1.4; }
 .county-wizard-support { margin: 10px 0 0; font-size: 0.82rem; color: #8b6248; }
 .county-wizard-preview { margin-top: 10px; padding: 12px; border: 2px dashed rgba(217, 100, 31, 0.28); border-radius: 10px; background: #fff; text-align: left; }
 .county-wizard-preview-tier { margin: 0 0 8px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
 .county-wizard-preview-tier--verified { color: #2f6b3b; }
 .county-wizard-preview-tier--demo { color: #b55d22; }
+.county-wizard-preview-tier--pending { color: #5c4d3f; }
+.county-wizard-preview-tier--unavailable { color: #6b5a4d; }
 .county-wizard-preview-title { margin: 0 0 10px; color: #d9641f; font: 400 1rem 'Yeseva One', serif; }
 .county-wizard-preview-section { margin-bottom: 10px; }
 .county-wizard-preview-section h4 { margin: 0 0 4px; font-size: 0.85rem; color: #713515; }

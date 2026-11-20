@@ -1,6 +1,12 @@
 {
   "updatedAt": "2026-11-20",
   "catalogNotice": "County links in this file are reference URLs only. Questionnaire previews labeled demo are not official county forms.",
+  "verificationLegend": {
+    "verified": "Marked verified only when this catalog sets sourceTier or questionnairePreview.tier to verified, or applicationSupport to full.",
+    "demo": "Illustrative or links-only content — not a verified in-app county workflow.",
+    "pending": "Catalog entry present but awaiting verification in this file.",
+    "unavailable": "No questionnaire preview sections in the catalog for this county."
+  },
   "counties": [
     {
       "id": "alameda",

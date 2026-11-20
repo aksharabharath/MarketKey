@@ -60,6 +60,87 @@ function findCountyById(catalog, countyId) {
   return catalog.counties.find((county) => county.id === countyId) || null;
 }
 
+const VERIFICATION_PRESENTATION = {
+  verified: {
+    label: "Verified",
+    hint: "Confirmed in county source catalog"
+  },
+  demo: {
+    label: "Demo template",
+    hint: "Illustrative — not an official county form"
+  },
+  pending: {
+    label: "Awaiting verification",
+    hint: "Not yet verified in this catalog"
+  },
+  unavailable: {
+    label: "Unavailable",
+    hint: "No preview in catalog"
+  }
+};
+
+function catalogStatusForDepartmentLinks(county) {
+  const tier = county?.sourceTier;
+  if (tier === "verified") return "verified";
+  if (tier === "demo") return "demo";
+  if (tier === "pending") return "pending";
+  return "pending";
+}
+
+function catalogStatusForQuestionnairePreview(county) {
+  const preview = county?.questionnairePreview;
+  if (!preview?.sections?.length) return "unavailable";
+  const tier = preview.tier;
+  if (tier === "verified") return "verified";
+  if (tier === "demo") return "demo";
+  if (tier === "pending") return "pending";
+  return "pending";
+}
+
+function catalogStatusForInAppWorkflow(county) {
+  const support = county?.applicationSupport;
+  if (support === "full") return "verified";
+  if (support === "sources-only") return "demo";
+  return "pending";
+}
+
+function deriveCountyVerification(county) {
+  return {
+    departmentLinks: catalogStatusForDepartmentLinks(county),
+    questionnairePreview: catalogStatusForQuestionnairePreview(county),
+    inAppWorkflow: catalogStatusForInAppWorkflow(county)
+  };
+}
+
+function formatVerificationPill(status) {
+  const presentation = VERIFICATION_PRESENTATION[status] || VERIFICATION_PRESENTATION.pending;
+  const safeStatus = VERIFICATION_PRESENTATION[status] ? status : "pending";
+  return `<span class="county-wizard-verify-pill county-wizard-verify-pill--${escapeHtml(safeStatus)}" title="${escapeHtml(presentation.hint)}">${escapeHtml(presentation.label)}</span>`;
+}
+
+function buildVerificationStripHtml(county, { aspects = "all" } = {}) {
+  const verification = deriveCountyVerification(county);
+  const rows = [];
+
+  if (aspects === "all" || aspects === "departmentLinks") {
+    rows.push(
+      `<li class="county-wizard-verify-item"><span class="county-wizard-verify-aspect">Department links</span>${formatVerificationPill(verification.departmentLinks)}</li>`
+    );
+  }
+  if (aspects === "all" || aspects === "questionnairePreview") {
+    rows.push(
+      `<li class="county-wizard-verify-item"><span class="county-wizard-verify-aspect">Questionnaire preview</span>${formatVerificationPill(verification.questionnairePreview)}</li>`
+    );
+  }
+  if (aspects === "all" || aspects === "inAppWorkflow") {
+    rows.push(
+      `<li class="county-wizard-verify-item"><span class="county-wizard-verify-aspect">In-app application</span>${formatVerificationPill(verification.inAppWorkflow)}</li>`
+    );
+  }
+
+  return `<div class="county-wizard-verify"><p class="county-wizard-verify-heading">Source verification (from catalog)</p><ul class="county-wizard-verify-list" role="list">${rows.join("")}</ul></div>`;
+}
+
 function buildQuestionnairePreview(county) {
   if (!county?.questionnairePreview?.sections?.length) {
     return {
@@ -71,10 +152,8 @@ function buildQuestionnairePreview(county) {
   }
 
   const preview = county.questionnairePreview;
-  const tierLabel =
-    preview.tier === "verified"
-      ? "Verified (matches MarketKey shipment)"
-      : "Demo template (not an official county form)";
+  const previewStatus = catalogStatusForQuestionnairePreview(county);
+  const presentation = VERIFICATION_PRESENTATION[previewStatus] || VERIFICATION_PRESENTATION.pending;
 
   const sectionsHtml = preview.sections
     .map((section) => {
@@ -87,10 +166,12 @@ function buildQuestionnairePreview(county) {
 
   return {
     tier: preview.tier,
+    verificationStatus: previewStatus,
     title: preview.title,
     sections: preview.sections,
     html: `
-      <p class="county-wizard-preview-tier county-wizard-preview-tier--${escapeHtml(preview.tier)}">${escapeHtml(tierLabel)}</p>
+      ${buildVerificationStripHtml(county, { aspects: "questionnairePreview" })}
+      <p class="county-wizard-preview-tier county-wizard-preview-tier--${escapeHtml(previewStatus)}">${escapeHtml(presentation.label)} — ${escapeHtml(presentation.hint)}</p>
       <h3 class="county-wizard-preview-title">${escapeHtml(preview.title)}</h3>
       <div class="county-wizard-preview-sections">${sectionsHtml}</div>
     `
@@ -167,12 +248,8 @@ function initCaliforniaCountyWizard() {
     detailEl.hidden = false;
     detailEl.replaceChildren();
 
-    const tier = document.createElement("p");
-    tier.className = `county-wizard-tier county-wizard-tier--${county.sourceTier || "demo"}`;
-    tier.textContent =
-      county.sourceTier === "verified"
-        ? "Verified sources: official department links in catalog."
-        : "Demonstration sources only.";
+    const verifyWrap = document.createElement("div");
+    verifyWrap.innerHTML = buildVerificationStripHtml(county);
 
     const note = document.createElement("p");
     note.className = "county-wizard-source-note";
@@ -207,7 +284,7 @@ function initCaliforniaCountyWizard() {
         ? "MarketKey ships the full Alameda questionnaire and PDF workflow."
         : "MarketKey provides source links only for this county — no county PDF is shipped.";
 
-    detailEl.append(tier, note, summary, links, support);
+    detailEl.append(verifyWrap, note, summary, links, support);
   }
 
   function renderUnavailable(message) {
@@ -274,10 +351,11 @@ function initCaliforniaCountyWizard() {
       populateCountySelect();
       selectEl.disabled = false;
       if (dataSourceNote) {
+        const catalogLine = catalog?.catalogNotice ? ` ${catalog.catalogNotice}` : "";
         dataSourceNote.textContent =
-          source === "api"
+          (source === "api"
             ? "Loaded from /api/county-sources."
-            : "Loaded from ./data/county-sources.json (local fallback).";
+            : "Loaded from ./data/county-sources.json (local fallback).") + catalogLine;
       }
       setStatus(null, "");
     } catch (error) {
@@ -310,4 +388,5 @@ if (typeof window !== "undefined") {
   window.createCountySourcesFetcher = createCountySourcesFetcher;
   window.buildQuestionnairePreview = buildQuestionnairePreview;
   window.findCountyById = findCountyById;
+  window.deriveCountyVerification = deriveCountyVerification;
 }
