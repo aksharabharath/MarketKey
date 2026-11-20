@@ -1,0 +1,31 @@
+{
+  "disclaimer_en": "Responses are demo helpers only. They are not legal advice and are not official county guidance.",
+  "disclaimer_es": "Las respuestas son ayudas de demostración solamente. No son asesoramiento legal ni orientación oficial del condado.",
+  "sources": [
+    {
+      "id": "tff_vs_agri",
+      "label_en": "MarketKey doc: TFF vs agricultural route",
+      "label_es": "Documento MarketKey: TFF vs ruta agrícola",
+      "location": "docs/tff_vs_agri.md"
+    },
+    {
+      "id": "questionnaire_originalPackageCheck",
+      "label_en": "MarketKey questionnaire — commercial kitchen / packaging question",
+      "label_es": "Cuestionario MarketKey — cocina comercial / empaque",
+      "location": "main code/questions.json",
+      "fieldId": "originalPackageCheck"
+    },
+    {
+      "id": "questionnaire_path",
+      "label_en": "MarketKey application flow (language → path → questionnaire)",
+      "label_es": "Flujo de solicitud MarketKey (idioma → ruta → cuestionario)",
+      "location": "docs/ui-design-spec.md"
+    },
+    {
+      "id": "food_safety_quiz",
+      "label_en": "MarketKey in-app Alameda County food safety quiz (form page 3)",
+      "label_es": "Cuestionario de seguridad alimentaria en la aplicación (página 3)",
+      "location": "main code/index.html#formPage3"
+    }
+  ]
+}

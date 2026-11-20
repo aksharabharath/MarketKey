@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;600;700&family=Yeseva+One&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
+    <script src="health-code-chatbot.js" defer></script>
     <script src="script.js" defer></script>
 </head>
 
@@ -346,6 +347,34 @@
             </div>
         </section>
     </main>
+
+    <button type="button" id="healthChatToggle" class="health-chat-fab font-['League_Spartan']" aria-expanded="false" aria-controls="healthChatPanel">
+        Health helper
+    </button>
+
+    <aside id="healthChatPanel" class="health-chat-panel" aria-hidden="true" aria-labelledby="healthChatTitle">
+        <header class="health-chat-header">
+            <div class="health-chat-header-text">
+                <h2 id="healthChatTitle" class="health-chat-title font-['Yeseva_One']">Health code helper</h2>
+                <p id="healthChatSubtitle" class="health-chat-subtitle font-['League_Spartan']">Demo assistant — not official guidance</p>
+            </div>
+            <div class="health-chat-header-actions">
+                <div class="health-chat-lang" role="group" aria-label="Chat language">
+                    <button type="button" class="health-chat-lang-btn active" data-chat-lang="en" aria-pressed="true">EN</button>
+                    <button type="button" class="health-chat-lang-btn" data-chat-lang="es" aria-pressed="false">ES</button>
+                </div>
+                <button type="button" id="healthChatClose" class="health-chat-close" aria-label="Close panel">×</button>
+            </div>
+        </header>
+        <p id="healthChatSuggestedLabel" class="health-chat-suggested-label font-['League_Spartan']">Suggested questions</p>
+        <div id="healthChatSuggested" class="health-chat-suggested"></div>
+        <div id="healthChatLog" class="health-chat-log" role="log" aria-live="polite" aria-relevant="additions"></div>
+        <form id="healthChatForm" class="health-chat-form">
+            <label class="sr-only" for="healthChatInput">Message</label>
+            <input type="text" id="healthChatInput" class="health-chat-input" autocomplete="off" maxlength="500" />
+            <button type="submit" id="healthChatSend" class="health-chat-send font-['League_Spartan']">Send</button>
+        </form>
+    </aside>
 
 </body>
 

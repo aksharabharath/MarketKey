@@ -153,4 +153,38 @@ header { padding: 4px 24px !important; display: flex; justify-content: space-bet
 .feature-card { padding: 22px; border: 2px solid rgba(217, 100, 31, 0.2); border-radius: 16px; background: #fff8ed; text-align: left; }
 .feature-card h2 { margin: 0 0 8px; color: #d9641f; font: 400 1.25rem 'Yeseva One', serif; line-height: 1.2; }
 .feature-card p { margin: 0; color: #d9641f; font-size: 0.95rem; line-height: 1.5; opacity: 0.9; }
-@media (max-width: 640px) { header { flex-wrap: wrap; gap: 12px; } #headerControls { width: 100%; justify-content: flex-end; } .feature-grid { grid-template-columns: 1fr; margin: 28px auto; } .feature-card { text-align: center; } }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.health-chat-fab { position: fixed; right: 18px; bottom: 18px; z-index: 60; padding: 12px 16px; border: 2px solid #fdcb7b; border-radius: 999px; background: #d9641f; color: #fdcb7b; font-size: 0.9rem; font-weight: 700; cursor: pointer; box-shadow: 0 10px 24px rgba(113, 53, 21, 0.22); transition: transform 160ms ease, background-color 160ms ease; }
+.health-chat-fab:hover, .health-chat-fab:focus-visible { background: #b95018; transform: translateY(-2px); outline: 3px solid #fdcb7b; outline-offset: 2px; }
+.health-chat-panel { position: fixed; top: 0; right: 0; z-index: 70; display: flex; flex-direction: column; width: min(100vw, 380px); height: 100vh; padding: 16px 16px 18px; border-left: 2px solid rgba(217, 100, 31, 0.35); background: #fff8ed; color: #713515; box-shadow: -12px 0 32px rgba(113, 53, 21, 0.14); transform: translateX(100%); transition: transform 220ms ease; }
+.health-chat-panel--open { transform: translateX(0); }
+.health-chat-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.health-chat-title { margin: 0; color: #d9641f; font-size: 1.35rem; line-height: 1.15; }
+.health-chat-subtitle { margin: 6px 0 0; font-size: 0.78rem; font-weight: 600; line-height: 1.35; color: #8b6248; }
+.health-chat-header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.health-chat-lang { display: flex; gap: 4px; padding: 3px; border-radius: 999px; background: rgba(217, 100, 31, 0.1); }
+.health-chat-lang-btn { padding: 5px 9px; border: none; border-radius: 999px; background: transparent; color: #d9641f; font: 600 0.75rem 'League Spartan', sans-serif; cursor: pointer; }
+.health-chat-lang-btn.active { background: #d9641f; color: #fdcb7b; }
+.health-chat-close { width: 34px; height: 34px; border: 2px solid rgba(217, 100, 31, 0.35); border-radius: 8px; background: transparent; color: #d9641f; font-size: 1.3rem; line-height: 1; cursor: pointer; }
+.health-chat-suggested-label { margin: 0 0 8px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #b55d22; }
+.health-chat-suggested { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; max-height: 140px; overflow-y: auto; }
+.health-chat-suggested-btn { padding: 10px 12px; border: 2px solid rgba(217, 100, 31, 0.22); border-radius: 10px; background: #faf5ee; color: #713515; font: 600 0.82rem 'League Spartan', sans-serif; text-align: left; cursor: pointer; }
+.health-chat-suggested-btn:hover, .health-chat-suggested-btn:focus-visible { border-color: #d9641f; background: rgba(253, 203, 123, 0.25); outline: none; }
+.health-chat-log { flex: 1 1 auto; min-height: 120px; margin-bottom: 12px; padding: 10px; overflow-y: auto; border: 2px solid rgba(217, 100, 31, 0.16); border-radius: 12px; background: #faf5ee; }
+.health-chat-bubble { margin: 0 0 10px; padding: 10px 12px; border-radius: 12px; font-size: 0.88rem; line-height: 1.45; text-align: left; }
+.health-chat-bubble--user { margin-left: 28px; background: #d9641f; color: #fdcb7b; border-bottom-right-radius: 4px; }
+.health-chat-bubble--assistant { margin-right: 12px; background: #fff; border: 1px solid rgba(217, 100, 31, 0.2); color: #713515; border-bottom-left-radius: 4px; }
+.health-chat-demo-badge { display: inline-block; margin-bottom: 6px; padding: 2px 8px; border-radius: 999px; background: rgba(217, 100, 31, 0.12); color: #b55d22; font: 700 0.68rem 'League Spartan', sans-serif; letter-spacing: 0.04em; text-transform: uppercase; }
+.health-chat-body { margin: 0 0 8px; }
+.health-chat-citations-title { margin: 8px 0 4px; font: 700 0.68rem 'League Spartan', sans-serif; letter-spacing: 0.05em; text-transform: uppercase; color: #b55d22; }
+.health-chat-citations { margin: 0; padding-left: 18px; font-size: 0.78rem; }
+.health-chat-citation-label { display: block; color: #713515; font-weight: 600; }
+.health-chat-citation-loc { display: block; color: #8b6248; font-size: 0.72rem; }
+.health-chat-citations-empty, .health-chat-footnote { margin: 6px 0 0; font-size: 0.75rem; color: #8b6248; }
+.health-chat-form { display: flex; gap: 8px; margin-top: auto; }
+.health-chat-input { flex: 1 1 auto; min-width: 0; padding: 11px 12px; border: 2px solid rgba(217, 100, 31, 0.45); border-radius: 10px; background: #fff; color: #713515; font: inherit; }
+.health-chat-input:focus { outline: 3px solid #fdcb7b; outline-offset: 1px; }
+.health-chat-send { padding: 11px 14px; border: none; border-radius: 10px; background: #d9641f; color: #fdcb7b; font-size: 0.9rem; font-weight: 700; cursor: pointer; }
+.health-chat-send:hover, .health-chat-send:focus-visible { background: #b95018; outline: 3px solid #fdcb7b; outline-offset: 1px; }
+.health-chat-field-highlight { outline: 3px solid #fdcb7b; outline-offset: 4px; border-radius: 10px; transition: outline-color 200ms ease; }
+@media (max-width: 640px) { header { flex-wrap: wrap; gap: 12px; } #headerControls { width: 100%; justify-content: flex-end; } .feature-grid { grid-template-columns: 1fr; margin: 28px auto; } .feature-card { text-align: center; } .health-chat-panel { width: 100vw; } .health-chat-fab { right: 12px; bottom: 12px; } }
