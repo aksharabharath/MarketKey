@@ -225,7 +225,7 @@ function initCaliforniaCountyWizard() {
     selectEl.replaceChildren();
     const placeholder = document.createElement("option");
     placeholder.value = "";
-    placeholder.textContent = "Select a California county";
+    placeholder.textContent = "Enter a California city or county";
     placeholder.disabled = true;
     placeholder.selected = true;
     selectEl.append(placeholder);
