@@ -836,34 +836,72 @@ async function generateCountyPDF() {
 }
 
 async function downloadAndWipe() {
-    const businessName = appState.formData['BusinessName'] ||
-                         appState.formData['businessName'] ||
-                         appState.formData['business_name'] || 
-                         appState.formData['companyName'] || 
-                         appState.formData['applicantName'] || 
-                         'Vendor';
-    
-    const pdfBytes = await generateCountyPDF();
-    if (!pdfBytes) return;
+    const downloadButton = get('downloadPdfBtn');
 
-    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-    const blobUrl = URL.createObjectURL(blob);
-    
-    const link = document.createElement('a');
-    link.href = blobUrl;
-    link.download = `MarketKey-TFF-${businessName.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    if (downloadButton?.disabled) return;
 
-    setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
+    const originalButtonText = downloadButton?.textContent;
 
-    appState.formData = {};
-    appState.path = null;
+    if (downloadButton) {
+        downloadButton.disabled = true;
+        downloadButton.textContent = 'Generating PDF...';
+        downloadButton.setAttribute('aria-busy', 'true');
+    }
 
-    showScreen('screen5');
-    updateStepTracker(5);
+    try {
+        const businessName =
+            appState.formData['BusinessName'] ||
+            appState.formData['businessName'] ||
+            appState.formData['business_name'] ||
+            appState.formData['companyName'] ||
+            appState.formData['applicantName'] ||
+            'Vendor';
+
+        const pdfBytes = await generateCountyPDF();
+
+        if (!pdfBytes) return;
+
+        const blob = new Blob([pdfBytes], {
+            type: 'application/pdf'
+        });
+
+        const blobUrl = URL.createObjectURL(blob);
+
+        try {
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = `MarketKey-TFF-${businessName.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
+
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        } finally {
+            setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
+        }
+
+        appState.formData = {};
+        appState.path = null;
+
+        showScreen('screen5');
+        updateStepTracker(5);
+
+    } catch (error) {
+        console.error('Error downloading application PDF:', error);
+        alert('Something went wrong while downloading your application. Please try again.');
+
+    } finally {
+        if (downloadButton) {
+            downloadButton.disabled = false;
+
+            if (originalButtonText !== undefined) {
+                downloadButton.textContent = originalButtonText;
+            }
+
+            downloadButton.removeAttribute('aria-busy');
+        }
+    }
 }
+
 
 const uiTranslations = {
     en: {
