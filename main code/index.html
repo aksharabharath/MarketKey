@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;600;700&family=Yeseva+One&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
+    <script src="photo-permit-ocr.js" defer></script>
     <script src="photo-permit-scanner.js" defer></script>
     <script src="script.js" defer></script>
 </head>
@@ -51,9 +52,9 @@
         <section id="permitScanner" class="permit-scanner" aria-labelledby="permitScannerTitle">
             <div class="permit-scanner-eyebrow font-['League_Spartan']">Prototype tool</div>
             <h2 id="permitScannerTitle" class="permit-scanner-title font-['Yeseva_One']">Photo Permit Scanner</h2>
-            <p class="permit-scanner-lead">Upload a photo of an existing health permit to preview demo extraction and copy confirmed details into your MarketKey application.</p>
+            <p class="permit-scanner-lead">Upload a photo of a health permit or application page. OCR runs locally in your browser; only confirmed <strong>Business Name</strong> can be copied into the TFF questionnaire.</p>
             <p class="permit-scanner-warning" role="note">
-                <strong>OCR vs. verified:</strong> This prototype does not run real OCR and has not consulted county records. Extracted text is demo data. Blurry or angled photos can misread dates — confirm every date before transferring. MarketKey never marks a permit valid or expired from a scan alone.
+                <strong>Local OCR — not verified:</strong> Text recognition uses Tesseract.js in your browser (English). Results are not checked against county records and do not prove a permit is valid or current. PDF uploads are not supported — use a photo (JPG, PNG, or WebP, max 12&nbsp;MB). Language data loads from a pinned CDN on first use.
             </p>
 
             <ol id="permitScannerStepper" class="permit-scanner-stepper font-['League_Spartan']" aria-label="Scanner steps">
@@ -66,14 +67,15 @@
             <div data-scanner-step="upload" class="permit-scanner-step">
                 <label class="permit-scanner-upload font-['League_Spartan']" for="permitScannerFile">
                     <span>Choose permit photo</span>
-                    <input type="file" id="permitScannerFile" accept="image/*" capture="environment" />
+                    <input type="file" id="permitScannerFile" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" capture="environment" />
                 </label>
                 <div class="permit-scanner-preview-wrap">
                     <p id="permitScannerPreviewPlaceholder" class="permit-scanner-preview-placeholder">Image preview appears here after upload.</p>
                     <img id="permitScannerPreview" class="permit-scanner-preview" alt="Uploaded permit preview" hidden />
                 </div>
                 <div class="permit-scanner-actions">
-                    <button type="button" id="permitScannerScanBtn" class="permit-scanner-btn permit-scanner-btn--primary" disabled>Run demo scan</button>
+                    <button type="button" id="permitScannerScanBtn" class="permit-scanner-btn permit-scanner-btn--primary" disabled>Run OCR</button>
+                    <button type="button" id="permitScannerCancelOcr" class="permit-scanner-btn permit-scanner-btn--ghost" hidden>Cancel OCR</button>
                     <button type="button" id="permitScannerClearBtn" class="permit-scanner-btn permit-scanner-btn--ghost">Clear</button>
                 </div>
                 <p id="permitScannerStatus" class="permit-scanner-status" role="status" aria-live="polite"></p>
@@ -81,28 +83,34 @@
 
             <div data-scanner-step="extract" class="permit-scanner-step" hidden>
                 <div class="permit-scanner-verified-banner permit-scanner-verified-banner--unverified">
-                    Unverified demo extraction — not official county data
+                    Unverified OCR — not official county data
                 </div>
-                <p class="permit-scanner-review-note font-['League_Spartan']">Edit any detected value below before continuing. Fields marked &ldquo;not detected&rdquo; must be filled in manually.</p>
-                <div class="permit-scanner-fields">
+                <div id="permitScannerClassBanner" class="permit-scanner-class-banner" hidden></div>
+                <div id="permitScannerUnrecognized" class="permit-scanner-unrecognized" hidden></div>
+                <p class="permit-scanner-review-note font-['League_Spartan']">Edit any value below before continuing. OCR can misread labels — confirm each field.</p>
+                <details class="permit-scanner-raw-text">
+                    <summary>OCR text from your image (for comparison)</summary>
+                    <pre id="permitScannerRawText" class="permit-scanner-raw-text-pre"></pre>
+                </details>
+                <div id="permitScannerReviewFields" class="permit-scanner-fields">
                     <div class="permit-scanner-field" data-field-key="permitNumber">
-                        <label for="permitScannerPermitNumber">Permit number <span class="permit-scanner-tag permit-scanner-tag--ocr">Demo extraction</span></label>
+                        <label for="permitScannerPermitNumber">Permit number <span class="permit-scanner-tag permit-scanner-tag--ocr">OCR</span></label>
                         <input type="text" id="permitScannerPermitNumber" disabled autocomplete="off" placeholder="Enter if not detected" />
                         <p class="permit-scanner-field-status" data-field-status="permitNumber" aria-live="polite"></p>
                     </div>
                     <div class="permit-scanner-field" data-field-key="businessName">
-                        <label for="permitScannerBusinessName">Business name <span class="permit-scanner-tag permit-scanner-tag--ocr">Demo extraction</span></label>
+                        <label for="permitScannerBusinessName">Business name <span class="permit-scanner-tag permit-scanner-tag--ocr">OCR</span></label>
                         <input type="text" id="permitScannerBusinessName" disabled autocomplete="organization" placeholder="Required before transfer" />
                         <p class="permit-scanner-field-status" data-field-status="businessName" aria-live="polite"></p>
                     </div>
                     <div class="permit-scanner-field" data-field-key="issueDate">
-                        <label for="permitScannerIssueDate">Issue date <span class="permit-scanner-tag permit-scanner-tag--ocr">Demo extraction</span></label>
+                        <label for="permitScannerIssueDate">Issue date <span class="permit-scanner-tag permit-scanner-tag--ocr">OCR</span></label>
                         <input type="date" id="permitScannerIssueDate" disabled />
                         <p class="permit-scanner-field-status" data-field-status="issueDate" aria-live="polite"></p>
                     </div>
                     <label class="permit-scanner-check"><input type="checkbox" id="permitScannerConfirmIssue" /> I confirm the issue date above is correct.</label>
                     <div class="permit-scanner-field" data-field-key="expirationDate">
-                        <label for="permitScannerExpirationDate">Expiration date <span class="permit-scanner-tag permit-scanner-tag--ocr">Demo extraction</span></label>
+                        <label for="permitScannerExpirationDate">Expiration date <span class="permit-scanner-tag permit-scanner-tag--ocr">OCR</span></label>
                         <input type="date" id="permitScannerExpirationDate" disabled />
                         <p class="permit-scanner-field-status" data-field-status="expirationDate" aria-live="polite"></p>
                     </div>
@@ -111,26 +119,36 @@
                     </p>
                     <label class="permit-scanner-check"><input type="checkbox" id="permitScannerConfirmExpiration" /> I confirm the expiration date above is correct.</label>
                     <div class="permit-scanner-field" data-field-key="permitType">
-                        <label for="permitScannerPermitType">Permit type <span class="permit-scanner-tag permit-scanner-tag--ocr">Demo extraction</span></label>
-                        <input type="text" id="permitScannerPermitType" disabled autocomplete="off" placeholder="Required before transfer" />
+                        <label for="permitScannerPermitType">Permit type <span class="permit-scanner-tag permit-scanner-tag--ocr">OCR</span></label>
+                        <input type="text" id="permitScannerPermitType" disabled autocomplete="off" placeholder="Optional reference" />
                         <p class="permit-scanner-field-status" data-field-status="permitType" aria-live="polite"></p>
                     </div>
+                    <div class="permit-scanner-field" data-field-key="issuingAgency">
+                        <label for="permitScannerIssuingAgency">Issuing agency <span class="permit-scanner-tag permit-scanner-tag--ocr">OCR</span></label>
+                        <input type="text" id="permitScannerIssuingAgency" disabled autocomplete="off" placeholder="Reference only" />
+                        <p class="permit-scanner-field-status" data-field-status="issuingAgency" aria-live="polite"></p>
+                    </div>
                 </div>
+                <div id="permitScannerReviewActions">
                 <div class="permit-scanner-verified-banner permit-scanner-verified-banner--verified-info">
-                    Officially verified information would appear here only after an authoritative county lookup (not available in this prototype).
+                    County lookup is not available in this tool — confirm all details with your local environmental health department.
                 </div>
                 <label class="permit-scanner-check permit-scanner-check--strong">
                     <input type="checkbox" id="permitScannerConfirmTransfer" />
-                    I understand these values are unverified drafts and I will review every application field before submitting.
+                    I understand OCR results are unverified and I will review every application field before submitting.
                 </label>
                 <button type="button" id="permitScannerContinueBtn" class="permit-scanner-btn permit-scanner-btn--primary" disabled>Continue to confirmation</button>
+                </div>
             </div>
 
             <div data-scanner-step="confirm" class="permit-scanner-step" hidden>
                 <h3 class="permit-scanner-subtitle font-['Yeseva_One']">Confirm before transfer</h3>
                 <ul id="permitScannerConfirmList" class="permit-scanner-confirm-list"></ul>
-                <p class="permit-scanner-warning">No validity check performed. Transfer only copies your edited values into the questionnaire.</p>
-                <button type="button" id="permitScannerTransferBtn" class="permit-scanner-btn permit-scanner-btn--primary">Apply confirmed fields to application</button>
+                <p class="permit-scanner-warning">No validity check performed. Only <strong>Business Name</strong> is copied into the TFF questionnaire; other fields stay as scanner reference.</p>
+                <div class="permit-scanner-actions">
+                    <button type="button" id="permitScannerBackToReview" class="permit-scanner-btn permit-scanner-btn--ghost">Back to review</button>
+                    <button type="button" id="permitScannerTransferBtn" class="permit-scanner-btn permit-scanner-btn--primary">Apply confirmed fields to application</button>
+                </div>
             </div>
 
             <div data-scanner-step="done" class="permit-scanner-step" hidden>

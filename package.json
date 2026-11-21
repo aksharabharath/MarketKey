@@ -1,4 +1,17 @@
 {
+  "scripts": {
+    "test": "npm run test:permit-ocr && npm run test:permit-scanner-static && npx playwright test",
+    "test:permit-ocr": "node scripts/test-photo-permit-ocr.mjs",
+    "test:permit-scanner-static": "node scripts/test-permit-scanner-static.mjs",
+    "test:permit-scanner": "node scripts/test-photo-permit-scanner.mjs",
+    "test:permit-e2e": "npx playwright test tests/permit-scanner/e2e.spec.mjs",
+    "test:permit-transfer": "npx playwright test tests/permit-scanner/transfer.spec.mjs",
+    "test:permit-browser": "npx playwright test tests/permit-scanner/e2e.spec.mjs tests/permit-scanner/transfer.spec.mjs",
+    "postinstall": "npx playwright install chromium || true"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.1"
+  },
   "dependencies": {
     "pdf-lib": "^1.17.1"
   }
