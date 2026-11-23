@@ -1194,14 +1194,8 @@ function updatePageText() {
     const headingText = headings[lang] || headings.en;
 
     const headingElements = {
-        "#screen1 .tagline": headingText.tagline,
-        "#screen1 .hero-subtitle": headingText.subtitle,
         "#languageHeading": headingText.language,
-        "#langNextBtn": headingText.next,
-        "#formPage1 h2": headingText.application,
-        "#formPage2 h2": headingText.commissary,
-        "#formPage3 h2": headingText.quiz,
-        "#formPage3 > p": headingText.quizDescription
+        "#langNextBtn": headingText.next
     };
 
     Object.entries(headingElements).forEach(function([selector, text]) {
@@ -1212,15 +1206,6 @@ function updatePageText() {
         }
     });
 
-    const sectionHeadings = document.querySelectorAll("#formPage3 h3");
-
-    if (sectionHeadings[0]) {
-        sectionHeadings[0].textContent = headingText.checklist;
-    }
-
-    if (sectionHeadings[1]) {
-        sectionHeadings[1].textContent = headingText.signatures;
-    }
     const startOver = document.getElementById("startOverBtn");
     if (startOver) startOver.textContent = t.startOver;
     document.querySelectorAll(".step-tracker .step-dot span").forEach((label, index) => {
@@ -1745,6 +1730,11 @@ function transalteHeadingAndStuff() {
             location: "Fremont vendors · Alameda County",
             trust: "Free to get started · Guided step by step",
             title: "Temporary Food Facility Application",
+            commissary: "Commercial Kitchen / Commissary Agreement",
+            quiz: "Food Safety Quiz",
+            quizDescription: "Complete the official Alameda County food safety quiz.",
+            checklist: "Self-Inspection Checklist",
+            signatures: "Final Signatures / Contact Info",
             date: "Application Date",
             back: "Back",
             next: "Save & Continue",
@@ -1763,6 +1753,11 @@ function transalteHeadingAndStuff() {
             location: "Vendedores de Fremont · Condado de Alameda",
             trust: "Gratis para comenzar · Orientación paso a paso",
             title: "Solicitud para una instalación temporal de alimentos",
+            commissary: "Acuerdo de cocina comercial / comisariato",
+            quiz: "Cuestionario de seguridad alimentaria",
+            quizDescription: "Complete el cuestionario oficial de seguridad alimentaria del condado de Alameda.",
+            checklist: "Lista de autoinspección",
+            signatures: "Firmas finales / Información de contacto",
             date: "Fecha de solicitud",
             back: "Atrás",
             next: "Guardar y continuar",
@@ -1781,6 +1776,11 @@ function transalteHeadingAndStuff() {
             location: "弗里蒙特商家 · 阿拉米达县",
             trust: "免费开始 · 逐步指导",
             title: "临时食品设施申请",
+            commissary: "商业厨房／中央厨房协议",
+            quiz: "食品安全测验",
+            quizDescription: "请完成阿拉米达县官方食品安全测验。",
+            checklist: "自查清单",
+            signatures: "最终签名／联系信息",
             date: "申请日期",
             back: "返回",
             next: "保存并继续",
@@ -1799,6 +1799,11 @@ function transalteHeadingAndStuff() {
             location: "फ्रीमोंट विक्रेता · अलामेडा काउंटी",
             trust: "शुरुआत मुफ़्त · हर चरण में मार्गदर्शन",
             title: "अस्थायी खाद्य सुविधा आवेदन",
+            commissary: "व्यावसायिक रसोई / कमिसरी समझौता",
+            quiz: "खाद्य सुरक्षा प्रश्नोत्तरी",
+            quizDescription: "अलामेडा काउंटी की आधिकारिक खाद्य सुरक्षा प्रश्नोत्तरी पूरी करें।",
+            checklist: "स्व-निरीक्षण सूची",
+            signatures: "अंतिम हस्ताक्षर / संपर्क जानकारी",
             date: "आवेदन की तारीख",
             back: "पीछे",
             next: "सहेजें और आगे बढ़ें",
@@ -1816,11 +1821,10 @@ function transalteHeadingAndStuff() {
     const text = translations[appState.lang] || translations.en;
 
     const elements = {
-        "#screen1 .tagline": text.hero,
-        "#screen1 .hero-subtitle": text.subtitle,
-        "#screen1 .intro .eyebrow": text.location,
-        "#screen1 .trust-microcopy": text.trust,
         "#formPage1 h2": text.title,
+        "#formPage2 h2": text.commissary,
+        "#formPage3 h2": text.quiz,
+        "#formPage3 > p": text.quizDescription,
         'label[for="applicationDate"]': text.date,
         "#qBackBtn": text.back,
         "#qSubmitBtn": text.next
@@ -1830,6 +1834,10 @@ function transalteHeadingAndStuff() {
         const element = document.querySelector(selector);
         if (element) element.textContent = value;
     });
+
+    const sectionHeadings = document.querySelectorAll("#formPage3 h3");
+    if (sectionHeadings[0]) sectionHeadings[0].textContent = text.checklist;
+    if (sectionHeadings[1]) sectionHeadings[1].textContent = text.signatures;
 
     document.querySelectorAll("#screen3 select").forEach(function(select) {
         const placeholder = select.querySelector('option[value=""]');
